@@ -1,37 +1,168 @@
 \documentclass{scrartcl}
 \usepackage{fontenc}
 
-\title{Dispositionspapier zur Studienarbeit\\Titel der Arbeit}
-\author{ Ihr Name }
-\date{xx.01.2025}
+\title{Dispositionspapier zur Studienarbeit\\Erkennung von Bewegungen mittels Python und Sensoren}
+\author{Aziz Carducci (1965015), Sven Sendke (8469950)}
+\date{13.01.2025}
 
 \begin{document}
 
 \maketitle
 
 \section{Kurzbeschreibung der Arbeit}
-<Worum geht es in der Arbeit? Wie ist die (aktuelle) Ausgangssituation? Welches
-Themenfeld wird bearbeitet? Welche Problemstellung soll angegangen werden? Welche
-Grundlagen müssen vorhanden sein und welche Randbedingungen sind gegeben? Welche
-Zielsetzungen gibt es in dieser Arbeit? Welche methodische Vorgehensweise wird
-gewählt?>
+In dieser Arbeit wird ein System zur Erkennung und Klassifikation von Bewegungsmustern auf Basis von Sensordaten entwickelt. Ziel ist es, verschiedene Bewegungsarten wie Joggen, Rennen oder Gehen durch die Kombination von Hardware-Komponenten, insbesondere Arduino-Gyrosensoren und einem Raspberry Pi, aufzuzeichnen, zu analysieren und zu verarbeiten. Besonderes Augenmerk liegt dabei auf Edge Cases, wie beispielsweise der Einfluss des Gewichts einer Powerbank auf die Bewegung. Die Untersuchung solcher Szenarien soll dazu beitragen, ein fundiertes Verständnis der Bewegungsmuster zu entwickeln und konkrete Anwendungsziele zu definieren. Letztlich strebt die Arbeit an, Empfehlungen zu erarbeiten, wie man effizienter laufen kann, welche Gewichte Bewegungen beeinträchtigen und wie Sensordaten optimal übertragen werden können.
 
-\emph{Dies soll möglichst in einem Fließtext dokumentiert werden. Idealerweise
-abschließend mit sehr konkreten Zielbeschreibungen, die auch validierbar sind\/}.
+Die Ausgangssituation zeigt, dass bislang keine umfassende Integration von Hard- und Software existiert, um Sensordaten systematisch zu erfassen, zu speichern und zu analysieren. Im Rahmen dieser Arbeit werden Themenfelder wie die Python-basierte Auswertung von Sensordaten, der Einsatz von Machine-Learning-Methoden zur Bewegungsanalyse, die Integration von Sensoren mit Hardware (Arduino, Raspberry Pi) sowie die Visualisierung und Speicherung der Daten behandelt.
 
+Die zentrale Fragestellung lautet: Wie können Bewegungsmuster zuverlässig aus Sensordaten erkannt und klassifiziert werden? Dabei sollen Herausforderungen wie Sensordatenrauschen, Echtzeitanalyse und effiziente Datenverarbeitung überwunden werden. Um dies zu erreichen, werden grundlegende Kenntnisse in Python (einschließlich Data-Science-Bibliotheken wie Pandas und Numpy), Sensortechnologien, Datenbanken und Machine Learning vorausgesetzt. Das System soll kosteneffizient und prototypisch realisierbar sein, wobei standardisierte und leicht verfügbare Hardwarekomponenten verwendet werden.
+
+Die Ziele dieser Arbeit umfassen die Entwicklung eines Hardware-Prototyps zur Erfassung von Bewegungsdaten, die Implementierung einer Softwarelösung zur Speicherung, Visualisierung und Analyse der Sensordaten sowie die Validierung der Ergebnisse durch Vergleich von Testbewegungen mit den Sensordaten. Optional wird auch die Anwendung von Machine-Learning-Modellen zur Bewegungsidentifikation untersucht. Methodisch wird dabei wie folgt vorgegangen: Zunächst werden die Anforderungen analysiert, um die benötigten Bewegungsarten und die Sensorplatzierung zu klären. Anschließend erfolgt der Aufbau eines Systems mit Arduino-Gyrosensoren und einem Raspberry Pi. Daraufhin wird ein Datenbankmodell implementiert und ein Visualisierungstool entwickelt. Zudem werden Machine-Learning-Modelle zur Klassifikation der Bewegungen trainiert und evaluiert. Abschließend wird ein Prototyp erstellt, getestet und iterativ optimiert.
+
+Die validierbaren Ziele der Arbeit lassen sich wie folgt zusammenfassen: Aufbau eines funktionierenden Hardware-Prototyps zur zuverlässigen Erfassung von Bewegungsdaten, Entwicklung einer Python-Software zur Speicherung, Visualisierung und Analyse dieser Daten, Implementierung eines Klassifikationsmodells mit mindestens 80\% Genauigkeit bei der Erkennung von Bewegungsarten sowie die Erstellung einer umfassenden Dokumentation der Methodik, Ergebnisse und potenziellen Erweiterungsmöglichkeiten.
 
 \section{Gliederung und Zeitplan}
-<Identifikation der wesentlichen Arbeitsschritte. Meilensteinplan. Konsequenzen
-und Möglichkeiten der Meilensteine. Zeitplan bis zur Beendigung des praktischen
-Teils sowie der Dokumentation.> \emph{Das gehört nicht in die endgültige Ausarbeitung!\/}
+\subsection*{Gliederung}
+\begin{enumerate}
+	\item \textbf{Einleitung}
+	\begin{enumerate}
+        \item Definition der Bewegung in Bezug auf das System
+         \item Wichtige Aspekte, die bei der Bewegungserkennung berücksichtigt werden müssen
+	\end{enumerate}
+	
+	\item \textbf{Theoretische Grundlagen}
+	\begin{enumerate}
+		\item Grundlagen der Sensorik und Hardware
+		\item Grundlagen der Datenverarbeitung
+	\end{enumerate}
+	
+	\item \textbf{Methodisches Vorgehen}
+	\begin{enumerate}
+		\item Analyse der Anforderungen
+		\begin{itemize}
+			\item Beschreibung der Anforderungsanalyse und der daraus abgeleiteten Systemkomponenten.
+		\end{itemize}
+		\item Hardware-Integration
+		\begin{itemize}
+			\item Auswahl und Integration der Hardware-Komponenten.
+			\item Beschreibung des Systemaufbaus.
+		\end{itemize}
+		\item Datenverarbeitung
+		\begin{itemize}
+			\item Implementierung des Datenbankmodells.
+			\item Konzeption und Entwicklung von Visualisierungstools.
+		\end{itemize}
+		\item Auswertung
+		\begin{itemize}
+			\item Machine-Learning, wie k-Nearest Neighbors.
+		\end{itemize}
+		\item Prototyp-Erstellung
+	\end{enumerate}
+	
+	\item \textbf{Ergebnisse und Diskussion}
+	\begin{enumerate}
+		\item Interpretation der Ergebnisse
+		\begin{itemize}
+			\item Ergebnisse der Hardware-Tests.
+			\item Performance der Klassifikationsmodelle.
+			\item Ergebnisse der Visualisierung und Datenanalyse.
+		\end{itemize}
+	\end{enumerate}
+	
+	\item \textbf{Fazit und Ausblick}
+\end{enumerate}
 
-<Eine erste Gliederung der Arbeit. Benennung von
-Kapiteln und Unterkapiteln. Dies gilt als Leitfaden und ist noch nicht als abschließend.>
+\subsection*{Zeitplan für die Abschlussarbeit}
+
+\subsubsection*{Phase 1: Vorbereitungsphase}
+\textbf{Zeitraum:} 02.10.2024 – 26.01.2025 (15 Wochen)  \\
+\textbf{Aktivitäten:}
+\begin{itemize}
+	\item Einarbeitung in das Thema.
+	\item Erstellung eines detaillierten Arbeitsplans.
+	\item Sammlung und Sichtung relevanter Literatur.
+	\item Festlegen der Hardware- und Softwareanforderungen.
+	\item \textbf{Abschluss:} Fertigstellung der Einleitung und erste Version des Kapitels "Theoretische Grundlagen".
+\end{itemize}
+
+\subsubsection*{Phase 2: Theoretische Grundlagen erarbeiten}
+\textbf{Zeitraum:} 27.01.2025 – 16.02.2025 (3 Wochen)  \\
+\textbf{Ziele:}
+\begin{itemize}
+	\item Verfassen der Abschnitte:
+	\begin{itemize}
+		\item 2.1 Grundlagen der Sensorik und Hardware.
+		\item 2.2 Grundlagen der Datenverarbeitung.
+	\end{itemize}
+	\item \textbf{Abschluss:} Fertigstellung des Kapitels "Theoretische Grundlagen".
+\end{itemize}
+
+\subsubsection*{Phase 3: Methodisches Vorgehen – Anforderungen und Hardware}
+\textbf{Zeitraum:} 17.02.2025 – 16.03.2025 (4 Wochen)  \\
+\textbf{Ziele:}
+\begin{itemize}
+	\item Durchführung der Anforderungsanalyse (3.1).
+	\item Auswahl und Integration der Hardware-Komponenten (3.2).
+	\item Dokumentation der Systemkomponenten und des Aufbaus.
+	\item \textbf{Abschluss:} Fertigstellung der Abschnitte 3.1 und 3.2.
+\end{itemize}
+
+\subsubsection*{Phase 4: Datenverarbeitung und Machine Learning}
+\textbf{Zeitraum:} 17.03.2025 – 13.04.2025 (4 Wochen)  \\
+\textbf{Ziele:}
+\begin{itemize}
+	\item Implementierung des Datenbankmodells (3.3).
+	\item Entwicklung von Visualisierungstools (3.3).
+	\item Konzeption und Training des Machine-Learning-Modells (3.4).
+	\item Validierung der Modelle.
+	\item \textbf{Abschluss:} Fertigstellung der Abschnitte 3.3 und 3.4.
+\end{itemize}
+
+\subsubsection*{Phase 5: Prototyp-Erstellung und Testphase}
+\textbf{Zeitraum:} 14.04.2025 – 11.05.2025 (4 Wochen)  \\
+\textbf{Ziele:}
+\begin{itemize}
+	\item Erstellung des Prototyps (3.5).
+	\item Durchführung von Tests der Hardware- und Softwarekomponenten.
+	\item Optimierung des Systems auf Basis der Testergebnisse.
+	\item \textbf{Abschluss:} Fertigstellung des Kapitels 3 und Start des Kapitels 4.
+\end{itemize}
+
+\subsubsection*{Phase 6: Ergebnisse und Diskussion}
+\textbf{Zeitraum:} 12.05.2025 – 25.05.2025 (2 Wochen)  \\
+\textbf{Ziele:}
+\begin{itemize}
+	\item Interpretation der Testergebnisse (4.1).
+	\item Diskussion der Performance des Systems und der Klassifikationsmodelle.
+	\item Erstellung von Visualisierungen zur Unterstützung der Ergebnisse.
+	\item \textbf{Abschluss:} Fertigstellung des Kapitels "Ergebnisse und Diskussion".
+\end{itemize}
+
+\subsubsection*{Phase 7: Fazit und Abgabe}
+\textbf{Zeitraum:} 26.05.2025 – 12.06.2025 (2,5 Wochen)  \\
+\textbf{Ziele:}
+\begin{itemize}
+	\item Verfassen des Fazits und des Ausblicks (Kapitel 5).
+	\item Abschluss der finalen Korrekturen und Lektorat.
+	\item Formatierung und Abgabe der Arbeit.
+	\item \textbf{Abschluss:} Einreichung der Arbeit am 12.06.2025.
+\end{itemize}
 
 \section{Grundlegende Literatur}
-<Belegen der Ausgangssituation. Wer hat auf ähnlichem Themenfeld bereits
-gearbeitet? Wie passt die Studienarbeit in die aktuelle wissenschaftliche
-Landschaft und was ist neu (dies wird oben dargelegt und hier belegt). Was wird
-durch die erstellte Lösung verbessert und wie wird dies nachgewiesen?>
+Die Erkennung und Auswertung von Bewegungen ist ein etabliertes Forschungsgebiet, das in den letzten Jahren durch Fortschritte in der Sensortechnologie und Machine Learning maßgeblich erweitert wurde. In der Literatur finden sich zahlreiche Arbeiten, die Bewegungsdaten analysieren, z. B. für folgende Themen:
+
+\begin{itemize} 
+	%https://link.springer.com/chapter/10.1007/978-981-19-5482-5_9
+	\item Gestenerkennung mit Sensoren: Die Arbeit "Gesture Detection Using Accelerometer and Gyroscope" (von Gupta, Raghav, et al.) zeigt, wie der Arduino Nano 33 BLE mit IMU präzise Handgesten (90–96\% Genauigkeit) erkennt. Mithilfe eines CNN-Modells werden Gesten flexibel Anwendungen zugeordnet, was die Mensch-Maschine-Interaktion optimiert.
+	
+	%https://academic.oup.com/dmfr/article-abstract/46/2/20160289/7263622
+	\item Bewegungserkennung in der Medizin: In "Detection of patient movement during CBCT examination" (von Spin-Neto, Rubens, et al.) wird gezeigt, dass AG-Systeme Bewegungen präziser (77.7\%) als video-basierte Methoden (22.3\%) erkennen. Besonders multiplanare Bewegungen wie Kopfrotationen werden besser erfasst, was die Bewegungserkennung im medizinischen Umfeld verbessert.
+	
+	%https://www.nature.com/articles/s41598-019-56862-5
+	\item Bewegungstracking bei Säuglingen: "Automatic Posture and Movement Tracking of Infants" (von Airaksinen, Manu, et al.) beschreibt ein Wearable-System, das mit Accelerometern und Gyroskopen infantile Bewegungen präzise analysiert. Mit einem CNN erreicht es menschliche Genauigkeit und dient der Früherkennung von Entwicklungsstörungen.
+\end{itemize}
+
+Die Studienarbeit zielt darauf ab, einen Prototyp zu entwickeln, der Sensordaten mit Python-Software kombiniert und sowohl deren Erfassung als auch Echtzeitanalyse ermöglicht. Dabei wird ein integriertes System geschaffen, das kostengünstige Standardkomponenten wie Arduino- und Raspberry-Pi-Module nutzt, um Sensordaten in Echtzeit zu erfassen, zu speichern und zu visualisieren. Zudem wird Machine Learning gezielt für die Bewegungsanalyse in einer prototypischen Umgebung angewendet und evaluiert.
+
+Die erstellte Lösung verbessert die Datenintegration und -verarbeitung, erhöht die Genauigkeit der Bewegungserkennung durch Machine-Learning-Modelle und setzt auf Kosteneffizienz durch die Verwendung gängiger Hardware und Open-Source-Software. Die Validierung erfolgt durch den Aufbau und Test des Prototyps, die Evaluierung der Software mit einem Zielwert von mindestens 80\% Klassifikationsgenauigkeit und einen Vergleich mit bestehenden Systemen hinsichtlich Leistung, Kosten und Genauigkeit.
 
 \end{document}
