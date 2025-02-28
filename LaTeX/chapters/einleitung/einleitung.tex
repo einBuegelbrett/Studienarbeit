@@ -2,14 +2,21 @@
 Die Erfassung und Auswertung von Körperbewegungen mittels fortschrittlicher Sensorik hat in den letzten Jahren enorm an Bedeutung gewonnen. Diese Technologie findet Anwendung in verschiedenen Bereichen, von der Medizin und Rehabilitation bis hin zu Sportwissenschaften und virtueller Realität. Die präzise Messung und Analyse von Bewegungsdaten ermöglicht es, tiefere Einblicke in menschliche Bewegungsmuster zu gewinnen und daraus wertvolle Rückschlüsse zu ziehen.
 
 \section{Ausgangssituation}
+Die Ausgangssituation zeigt, dass bislang keine umfassende Integration von Hard-
+und Software existiert, um Sensordaten systematisch zu erfassen, zu speichern und zu
+analysieren. Aktuelle Systeme fokussieren sich meist nur auf einzelne Aspekte wie Sensordatenerfassung oder Bewegungsanalyse, jedoch fehlt eine durchgängige Lösung, die eine nahtlose Verbindung zwischen Hardware, Software und Datenverarbeitung herstellt. Zudem sind kommerzielle Systeme häufig teuer oder erfordern spezielle proprietäre Hardware.
 
 \section{Problemstellung}
+Ein zentrales Problem bei der Erfassung von Bewegungsdaten ist das Rauschen in Sensordaten sowie die Notwendigkeit einer Echtzeitanalyse. Außerdem stellt die effiziente Verarbeitung und Klassifikation großer Datenmengen eine Herausforderung dar. Des Weiteren beeinflussen äußere Faktoren wie das Tragen zusätzlicher Gewichte (z. B. einer Powerbank zur Energieversorgung) das natürliche Bewegungsverhalten, was zu Messfehlern führen kann. Ein weiteres Problem ist die optimale Platzierung der Sensoren, um zuverlässige und reproduzierbare Daten zu erhalten.
 
 \section{Aufgabenstellung}
+Die zentrale Aufgabe dieser Arbeit besteht in der Entwicklung eines Systems, das verschiedene Bewegungsarten – insbesondere Stehen, Gehen und Laufen – anhand von Sensordaten erfasst, analysiert und klassifiziert. Dazu sollen geeignete Sensoren (z. B. Arduino-Gyrosensoren) mit einer Datenverarbeitungseinheit (Raspberry Pi) kombiniert werden. Die erfassten Daten müssen gespeichert, visualisiert und mithilfe von Machine-Learning-Algorithmen ausgewertet werden. Ziel ist es, ein funktionsfähiges Prototypsystem zu entwickeln, das eine zuverlässige Klassifikation der Bewegungsmuster ermöglicht.
 
 \section{Zielsetzung}
 Das Ziel dieser Arbeit ist es, ein System zu entwickeln, das mithilfe von Hardware-Komponenten Körperbewegungen erfasst und diese anschließend auswertet und in die Bewegungsarten Stehen, Laufen und Rennen klassifiziert. Dabei sollen Machine-Learning-Algorithmen eingesetzt werden, um die erfassten Bewegungen zu erkennen und zu kategorisieren. Die zentrale Forschungsfrage lautet: Wie können Bewegungsmuster zuverlässig aus Sensordaten erkannt und klassifiziert werden?
 
+Zusätzlich sollen konkrete Anwendungsfragen untersucht werden, beispielsweise wie sich externe Faktoren wie das Gewicht einer Powerbank auf die Bewegung auswirken und welche Optimierungsmöglichkeiten es gibt, um Bewegungsabläufe effizienter zu gestalten. Neben der technischen Umsetzung liegt der Fokus auch auf der Validierung der Ergebnisse durch Vergleich der Sensordaten mit realen Testbewegungen.
+
 \section{Vorgehensweise}
-Zuerst wird das Thema weiter in der EInleitung erläutert. Dann wird die Bewegung und die benötigte Hardware angeschaut. Danach wird angeschaut wie diese eingesetzt werden kann um dann die Datenverarbeitung und die Machine Learning Algorithmen eingesetzt. Nachdem ein Prototyp erstellt wurde wird dann dieser getestet und die Ergebnisse preisgegeben. Am ende kommt es zu einer Zusammenfassung und zu einer Diskussion.
+Zuerst wird das Thema weiter in der Einleitung erläutert. Dann wird die Bewegung und die benötigte Hardware angeschaut. Danach wird untersucht, welche Sensoren und Platzierungen optimal für die Erfassung der Bewegungsmuster sind und wie diese eingesetzt werden können. Anschließend erfolgt die Entwicklung eines Prototyps mit Arduino-Gyrosensoren und einem Raspberry Pi, woraufhin die erfassten Sensordaten gespeichert und visualisiert werden. Danach werden Machine-Learning-Algorithmen eingesetzt, um die Bewegungen zu klassifizieren. Es wird angestrebt, eine Klassifikationsgenauigkeit von mindestens 80\% zu erreichen. Nachdem ein Prototyp erstellt wurde, wird dieser getestet und die Ergebnisse analysiert. Am Ende kommt es zu einer Zusammenfassung und einer Diskussion der Ergebnisse sowie möglicher Verbesserungen.
 
