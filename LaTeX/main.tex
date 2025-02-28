@@ -15,7 +15,7 @@
 \def\meineMatrikelNr{1965015, 8469950}
 \def\firmenName{Allianz Lebensversicherungs-AG}
 \def\projektBetreuer{Alfred Becker}
-\def\abgabeDatum{dd.MM.yyyy}
+\def\abgabeDatum{12.06.2025}
 %-----------------------------------------------------------------------------------
 
 
@@ -41,7 +41,7 @@
 \usepackage{stfloats} % Tabular at bottom
 %\usepackage[table]{xcolor} %Tabellen farben
 \usepackage{tabularx} % Anpassbarere tabellen
-\usepackage{easyreview} % Review anmerkungen
+\usepackage{easyReview} % Review anmerkungen
 
 \usepackage[utf8]{inputenc} % this is needed for umlauts
 \usepackage[ngerman]{babel} % this is needed for umlauts
@@ -351,25 +351,18 @@ Diese Arbeit wurde bisher in gleicher oder ähnlicher Form oder auszugsweise noc
 %********************************
 %Einleitung
 %********************************
-\chapter{Einleitung}
-
-%********************************
-%Aufgabenstellung
-%********************************
+\include{chapters/einleitung/einleitung.tex}
 \pagebreak
-\section{Aufgabenstellung}
-
 
 %********************************
-%Vorüberlegung
+%Bewegung
 %********************************
+\include{chapters/bewegung/bewegung.tex}
 \pagebreak
-\section{Vorüberlegung}
 
 %********************************
 %Lösung
 %********************************
-\newpage
 \chapter{Umsetzung}
 
 %********************************
@@ -395,7 +388,7 @@ Diese Arbeit wurde bisher in gleicher oder ähnlicher Form oder auszugsweise noc
 
 %Quellenverzeichnis
 \renewcommand{\refname}{Literaturverzeichnis}
-\bibliographystyle{IEEEtran}
+\bibliographystyle{/usr/local/texlive/2024/texmf-dist/bibtex/bst/ieeetran/IEEEtran.bst}
 \bibliography{./sources}
 
 

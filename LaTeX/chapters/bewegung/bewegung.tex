@@ -1,0 +1,33 @@
+\chapter{Bewegung}
+Bevor die Implementierung der Erkennung geläutert wird, muss definiert werden was unter Bewegung steht um dann eine Optimale Stelle zu finden wo die Erfassung der Daten angebracht werden kann und welche Schwierigkeiten sich aus der Bewegung herauszieht.
+
+\section{Definition der Bewegung in Bezug auf das System}
+In dieser Arbeit werden drei verschiedene Bewegungsarten analysiert: Stehen, Gehen und Laufen. Jede dieser Bewegungsarten zeichnet sich durch spezifische biomechanische Merkmale aus. Beim Gehen bewegt sich der Körper analog zu einem umgekehrten Pendel – die kinetische Energie der ersten Standphase wird in potenzielle Gravitationsenergie umgewandelt und anschließend teilweise zurückgewonnen, wenn der Körper nach vorne und unten fällt \cite{cappellini2006motor}. Im Gegensatz dazu ähnelt das Laufen dem Hüpfen auf einem Pogo-Stick, bei dem kinetische und potenzielle Gravitationsenergie vorübergehend als elastische Dehnungsenergie in Muskeln, Sehnen und Bändern gespeichert und in der zweiten Hälfte der Standphase nahezu vollständig zurückgewonnen wird \cite{cappellini2006motor}. Diese Unterschiede ist auf die Abbildung \ref{fig:walking_running} zu erkennen.
+
+Ein weiterer bedeutender Unterschied zwischen diesen Bewegungen liegt in den Phasen des Bodenkontakts: Während das Gehen durch eine doppelte Stützphase gekennzeichnet ist, in der beide Füße kurzzeitig den Boden berühren, weist das Laufen eine „Flugphase“ auf, in der sich keine der Gliedmaßen am Boden befindet \cite{cappellini2006motor}. Diese Unterschiede sind für die spätere Klassifizierung der Bewegungen essenziell, da sie als zentrale Merkmale zur Unterscheidung genutzt werden können.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.5\linewidth]{walkingrunning}
+	\caption{Walking and Running  \cite{cappellini2006motor}}
+	\label{fig:walking_running}
+\end{figure}
+
+\section{Welche Körperteile werden genutzt?}
+Um die unterschiede zwischen stehen, gehen und rennen zu analysieren, muss überlegt werden, welche Körperstellen benutzt werden dafür um zu wissen, wo der Sensor hingestellt werden soll. Während des Anfang der Acceleration sind die quadriceps, also die Oberschenkelmuskel die größten Beiträger. Danach sind die Muskeln Soleus, ein Skelettmuskel, der zur Unterschenkelmuskulatur zählt und Gastrocnemius ein Skelettmuskel, der zur Unterschenkelmuskulatur die größten Beiträgenden. Obwohl die Arme nur minimal zur direkten Vorwärtsbewegung oder Stützung beitragen, sind sie entscheidend für das Ausgleichen des vertikalen Drehimpulses der unteren Extremitäten. \cite{hamner2010muscle} Also soll der Sensor am besten an den Armen und Beinschenkeln gebracht werden. Diese mögliche Platzierungen sind auf die Abbildung \ref{fig:sensor} zu sehen.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.5\linewidth]{sensor}
+	\caption{Mögliche Sensorplatzierungen (eigene Abbildung)}
+	\label{fig:sensor}
+\end{figure}
+
+\section{Schwierigkeiten}
+Bei der späteren Erfassung könnte es später zu Schwierigkeiten kommen, diese sind mitunter die verschiedene Konditionen des menschlichen Körpers sowie der Umgebung als auch das anbringen der Hardware an dem menschlichen Körper.
+
+\subsection{Verschiedene Konditionen}
+Obwohl das Gehen eine typisch menschliche Art der Fortbewegung ist, ist jeder Bewegungsablauf indiividuell sehr unterschiedlich. Diese werden von persönlichen Faktoren wie Konstitution, Beweglichkeit, Kraft, Koordinationsfähigkeit der beteiligten Musekl, die Stimmung oder sogar Umwetfaktoren wie Bodenbeschaffenheit und Umgebung sowie das Bewegungsziel beeinflusst \cite{suppe2013fbl}.
+
+\subsection{Hardware}
+In dem nächsten Teil werden für die Erfassung der Daten die Hardware vorgestellt. Diese muss dann an dem menschlichen Körper angebracht werden. Eine der Hauptschwierigkeiten bei der Erfassung von Bewegungsdaten mit dem Arduino besteht in der Platzierung und dem Gewicht der Energieversorgung. Da der Arduino für mobile Anwendungen eine externe Stromquelle wie eine Powerbank benötigt, kann das zusätzliche Gewicht die natürlichen Bewegungsabläufe beeinträchtigen. Besonders beim Rennen kann die Powerbank störend wirken und die Bewegungsfreiheit einschränken. Ein erhöhtes Gewicht kann die Bewegungsfähigkeit der Probanden erheblich beeinträchtigen \cite{monfrini2023technological} und somit zu verfälschten Messdaten führen, da die Bewegungen nicht mehr natürlich und ungehindert ausgeführt werden. Es ist daher wichtig, eine leichte und ergonomische Lösung für die Energieversorgung zu finden, um die Genauigkeit der Bewegungserfassung zu gewährleisten.
