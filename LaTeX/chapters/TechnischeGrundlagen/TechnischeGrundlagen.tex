@@ -1,0 +1,54 @@
+\chapter{Grundlagen der Sensorik und Hardware}
+
+Dieses Kapitel behandelt die grundlegenden Konzepte der Sensorik und die für dieses Projekt verwendete Hardware. Zunächst werden die allgemeinen Prinzipien der Sensorik erläutert sowie deren Relevanz für die Bewegungserkennung. Anschließend folgt eine detaillierte Vorstellung der eingesetzten Hardware-Komponenten. Abschließend werden die verwendeten Sensoren beschrieben und ihre Bedeutung für die Erfassung und Analyse von Bewegungen dargelegt.
+
+\section{Einführung}
+%Hier muss noch was hi, mir fällt aber nichts ein
+\subsection{Was ist Sensorik und Hardware?}
+
+\emph{Sensorik} befasst sich mit der Erfassung physikalischer, chemischer oder biologischer Größen durch Sensoren, die diese in elektrische Signale umwandeln. Diese Signale können anschließend verarbeitet, analysiert und interpretiert werden, um Informationen über die Umgebung oder den Zustand eines Systems zu erhalten.  
+
+\emph{Hardware} Umfasst die physischen Komponenten, wie Mikrocontroller, Sensoren und Datenverarbeitungseinheiten, die für die Erfassung und Verarbeitung dieser Signale erforderlich sind.
+
+\subsection{Warum ist Sensorik für die Bewegungserkennung relevant?}
+
+Die präzise Erfassung und Analyse von Bewegungen ist in vielen Bereichen von Bedeutung, beispielsweise in der \emph{Medizintechnik}, \emph{Sportwissenschaft} und \emph{Robotik}. Durch den Einsatz von Sensoren können Bewegungsmuster erkannt, analysiert und klassifiziert werden. Dies ermöglicht unter anderem die Überwachung von körperlichen Aktivitäten, die Steuerung von Prothesen oder die Interaktion mit Robotern.  
+
+\textbf{Mehrfachsensorik:} Bewegungserkennungssysteme nutzen häufig eine Kombination verschiedener Sensoren, um möglichst genaue Daten zu erfassen. Daher ist die Wahl geeigneter Hardware entscheidend.
+
+
+
+\section{Auswahl der Hardware}
+In diesem Abschnitt wird erläutert, welche Hardware-Komponenten  verwendet werden und warum wir diese verwenden.
+\subsection{Arduino Nano 33 BLE REV2}
+
+Für die Erfassung der Sensordaten wird der \texttt{Arduino Nano 33 BLE REV2} verwendet. Dieser kompakte Mikrocontroller eignet sich besonders gut für Sensordatenanwendungen, da er eine integrierte \texttt{Inertial Measurement Unit (IMU)} besitzt. Diese Einheit kann \emph{Beschleunigungswerte}, \emph{Drehbewegungen} und \emph{Magnetfelder} erfassen, wodurch er ideal für die Bewegungserkennung ist.  
+Ein wesentlicher Vorteil dieses Boards ist seine \emph{Bluetooth Low Energy (BLE)}-Funktionalität, die eine drahtlose Übertragung der Sensordaten ermöglicht. Dadurch können Messwerte direkt an einen zentralen Rechner gesendet werden, ohne dass eine physische Verbindung erforderlich ist. Wie einem Raspberry Pi
+
+\subsection{Raspberry Pi 4}
+
+Für die Verarbeitung der Sensordaten wird ein \texttt{Raspberry Pi 4} verwendet. Dieser leistungsfähige Einplatinencomputer dient als zentrale Recheneinheit und ist dank seines \textbf{Quad-Core-Prozessors} in der Lage, große Mengen an Sensordaten effizient zu verarbeiten. Seine Schnittstellenvielfalt ermöglicht eine einfache Integration mit dem Arduino und anderen Hardware-Komponenten. Zudem ist der Raspberry Pi für seine breite Unterstützung von Programmiersprachen und Software-Frameworks bekannt, darunter Python, was die Implementierung von Machine-Learning-Modellen zur Bewegungsanalyse erleichtert.
+
+\subsection{Warum diese Kombination?}
+
+Die Kombination aus \texttt{Arduino Nano 33 BLE REV2} und \texttt{Raspberry Pi 4} wurde gewählt, weil beide Geräte ihre jeweiligen Stärken optimal ergänzen:
+
+\begin{itemize}
+	\item \textbf{Echtzeit-Datenerfassung:} Der Arduino eignet sich ideal für die direkte Erfassung von Sensordaten, da er direkt mit den Bewegungssensoren verbunden ist und durch seine niedrige Leistungsaufnahme effizient arbeitet.
+	\item \textbf{Leistungsstarke Verarbeitung:} Der Raspberry Pi bietet ausreichend Rechenleistung, um die gesammelten Daten zu analysieren, zu speichern und für Machine-Learning-Modelle aufzubereiten.
+	\item \textbf{Drahtlose Kommunikation:} Durch die Nutzung von \emph{BLE} können die Sensordaten kabellos an den Raspberry Pi übertragen werden, was eine flexible und skalierbare Architektur ermöglicht.
+\end{itemize}
+
+Nachdem nun die Hardware-Auswahl erläutert wurde, wird im nächsten Abschnitt auf die verwendeten Sensoren eingegangen und deren Bedeutung für die Bewegungserkennung erläutert.
+
+\section{Sensoren zur Bewegungserkennung}
+
+Um Bewegungen zuverlässig erfassen zu können, werden mehrere Sensortypen kombiniert. Jeder dieser Sensoren liefert spezifische Informationen, die zusammen eine präzise Analyse ermöglichen:
+
+\begin{itemize}
+	\item \textbf{Beschleunigungssensor (Accelerometer):} Misst die \emph{lineare Beschleunigung} entlang der drei Raumachsen und ermöglicht die Erkennung von Bewegungen wie Gehen, Laufen oder Springen.
+	\item \textbf{Gyroskop:} Erfasst \emph{Drehbewegungen} um die drei Raumachsen und hilft dabei, \emph{Rotationen} und \emph{Orientierungsänderungen} zu bestimmen. In Kombination mit dem Beschleunigungssensor ermöglicht das Gyroskop eine präzise Bestimmung der Bewegungsrichtung und -geschwindigkeit.
+	\item \textbf{Magnetometer:} Misst das \emph{Magnetfeld} der Erde und unterstützt die Bestimmung der absoluten Orientierung im Raum. Durch die Kombination von Magnetometerdaten mit denen des Beschleunigungssensors und des Gyroskops kann die Bewegungsrichtung genauer bestimmt und \emph{Driftfehler} korrigiert werden. 
+\end{itemize}
+
+

@@ -1,0 +1,9 @@
+Schwierigkeiten:
+Wie oft messen wir Daten pro lauf?
+Sensorikplatzierung - Mit oder ohne Tasche?
+Bluetooth oder Kabel? Bluetooth wird erstmal versucht
+Wer misst, also welche Personen? wenn mehrere, wie viele?
+Wie lange? Schritte Anzahl, keine gute Methode --> also Zeit? Wie Lange? Vielleicht Rotationen, bei den Messungen
+Welche Daten messen wir überhaupt?
+Zu Welchen Temperaturen und was für folgen das hat?
+Wie wir das Speichern? Datenbankaufbau
