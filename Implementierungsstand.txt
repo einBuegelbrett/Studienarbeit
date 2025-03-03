@@ -1,4 +1,0 @@
-Implementierungsstand:
-
-Arduino läuft, erste Daten bekommt man (Beschleunigungsdaten)
-Raspberry Pi ist initialisiert
