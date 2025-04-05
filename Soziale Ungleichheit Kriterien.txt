@@ -1,0 +1,27 @@
+https://ctb.ku.edu/en/table-of-contents/structure/hiring-and-training/job-descriptions/main#:~:text=Selection%20criteria%20for%20a%20position,and%20personal%20attributes%20and%20traits.
+
+Standard Kriterien 
+Bildungsstand (Explizit Testen, "Gute" oder "Schlechte" Schule, Bildungsstand vorhanden?)
+
+Jobspezifische Skills (Explizit Testen, fragen ob das zur Rolle 
+Hilfreich ist und ob alte Rollen hierbei auch nutz voll sind),
+
+Soziale Skills (Nicht Testbar),
+
+Persönliche Eigenschaften (Kann man nicht Testen über KI)
+
+Weitere Kriterien:
+Loyalität bei alten Firmen (wie lange Person geblieben ist bei einer Firma oder ob die Person "Jobhopping" betrieben hat)
+
+Zusammenfassungssatz am Anfang der Bewerbung (Zeigt der Satz, ob die Persönlich, Arrogant ist, Selbstvertrauen hat und oder Selbstreflektierend ist)
+
+In einer gleichen Atmosphäre gearbeitet? (Also Wenn Person bei Google gearbeitet hat und dann bei einem neuen Startup bewerben will =/= Atmosphäre, Also Bewerbungsfirma mit alter Firma vergleichen)
+
+Länge der Bewerbung. (Kommt die Person Schnell auf den Punkt und gibt nur die neusten und wesentlichsten Sachen an (Kann Selbstvetrauen und Fähigkeiten zeigen) oder schreibt die Person bei der Bewerbung alle alten Arbeitsgeber und alle Rollen auf bis zur Grundschule)
+
+Grammatik und Rechtschreibung bei der Bewerbung (Selbsterklärend)
+
+
+Als ein Scoring System, kann man ähnliche Kriterienspunte in eine "Gruppe" Zusammenfassen lassen und dann eine bestimmte anzahl an Punkte verteilen um ein Bias für die jeweiligen Gruppen rauslesen zu können (auch zwischen den KI's)
+
+Für jede BEwertungskategorie eine Punkteskala von 1-10 zu geben, und am ende den Durchschnitt zu bekommen (Vielleicht eine genauere Methode wäre manche Kriterien stärker zu bewerten zmb mit Prozentzahlen, also Länge der Bewwerbung und Rechtschreibung/Grammatik sind nur 10% während Jobspezifische Skills 25% sind oder so)
