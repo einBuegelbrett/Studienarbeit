@@ -1,0 +1,15 @@
+services:
+  cassandra:
+    image: cassandra:latest
+    container_name: cassandra-secure
+    ports:
+      - "9042:9042"
+    environment:
+      - CASSANDRA_AUTHENTICATOR=PasswordAuthenticator
+      - CASSANDRA_USER=admin
+      - CASSANDRA_PASSWORD=admin123
+    networks:
+      - studienarbeit-docker
+
+networks:
+  studienarbeit-docker:
