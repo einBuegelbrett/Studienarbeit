@@ -1,6 +1,17 @@
 \chapter{Bewegung}
 Bevor die Umsetzung der Erfassung geklärt werden kann, muss definiert werden, was unter Bewegung zu verstehen ist, um die optimale Stelle am Körper für die Datenerfassung zu finden.
 
+\section{Wahl für Stehen, Gehen und Rennen}
+Die Auswahl der Bewegungsarten Stehen, Gehen und Rennen für diese Arbeit basiert auf den deutlichen Unterschieden in den Bewegungsmustern, die für einen Sensor leichter zu unterscheiden sind. Hier eine kurze Beschreibung der drei:
+
+\begin{itemize}
+	\item \textbf{Stehen} ist eine statische Bewegung, bei der der Körper aufrecht und stabil auf den Füßen ruht. Es erfordert minimale Muskelaktivität, um das Gleichgewicht zu halten, und dient als Ausgangspunkt für andere Bewegungen.
+	\item \textbf{Gehen} ist eine dynamische Bewegung, bei der der Körper in einem rhythmischen Muster vorwärts bewegt wird. Es zeichnet sich durch eine doppelte Stützphase aus, in der beide Füße kurzzeitig den Boden berühren, was es von anderen Fortbewegungsarten wie Rennen unterscheidet.
+	\item \textbf{Rennen} ist eine schnellere und intensivere Form der Fortbewegung, bei der der Körper in einer fliegenden Phase keine Bodenberührung hat. Es erfordert eine höhere Muskelaktivität und Koordination im Vergleich zu Gehen.
+\end{itemize}
+
+Die Studie von Gonzalez et al. (2021) \cite{gonzalez2020ablation} unterstützt diese Wahl, indem sie zeigt, dass die Analyse mit Sensoren und die Klassifizierung von Stehen, Gehen und Rennen mit hoher Genauigkeit geeignet sind. Die Unterschiede in den Bewegungsmustern ermöglichen somit eine präzise Erfassung und Unterscheidung durch Sensoren.
+
 \section{Definition der Bewegung in Bezug auf das System}
 In dieser Arbeit werden drei verschiedene Bewegungsarten analysiert: Stehen, Gehen und Rennen. Jede dieser Bewegungsarten zeichnet sich durch spezifische biomechanische Merkmale aus. Beim Gehen bewegt sich der Körper analog zu einem umgekehrten Pendel – die kinetische Energie der ersten Standphase wird in potenzielle Gravitationsenergie umgewandelt und anschließend teilweise zurückgewonnen, wenn der Körper nach vorne und unten fällt \cite{cappellini2006motor}. Im Gegensatz dazu ähnelt das Rennen dem Hüpfen auf einem Pogo-Stick, bei dem kinetische und potenzielle Gravitationsenergie vorübergehend als elastische Dehnungsenergie in Muskeln, Sehnen und Bändern gespeichert und in der zweiten Hälfte der Standphase nahezu vollständig zurückgewonnen wird \cite{cappellini2006motor}. Diese Unterschiede ist auf die Abbildung \ref{fig:walking_running} zu erkennen.
 
