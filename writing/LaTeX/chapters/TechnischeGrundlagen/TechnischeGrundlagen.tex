@@ -39,6 +39,32 @@ Die Kombination aus \texttt{Arduino Nano 33 BLE REV2} und \texttt{Raspberry Pi 4
 	\item \textbf{Drahtlose Kommunikation:} Durch die Nutzung von \emph{BLE} können die Sensordaten kabellos an den Raspberry Pi übertragen werden, was eine flexible und skalierbare Architektur ermöglicht.
 \end{itemize}
 
+Die folgende Tabelle listet die gängigsten alternativen Hardwareoptionen auf. Diese wurden mit dem Arduino Nano 33 BLE Rev2 und dem Raspberry Pi 4 verglichen. Nachfolgend wird erläutert, warum sie für dieses Projekt nicht geeignet sind:
+
+\bgroup
+\def\arraystretch{1.5}
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{|p{3cm}|p{5cm}|p{6cm}|}
+		\hline
+		\textbf{Hardware- option} & \textbf{Beschreibung} & \textbf{Gründe für die Nichtauswahl} \\
+		\hline 
+		Arduino Uno & Einfacher Mikrocontroller. & Keine integrierte IMU, was zusätzliche Sensoren erfordert. Keine BLE-Funktionalität für drahtlose Datenübertragung. \\
+		\hline
+		ESP32 & Mikrocontroller mit höherer Rechenleistung und integriertem Wi-Fi und BLE. & Keine integrierte IMU, was zusätzliche Sensoren erfordert. \\
+		\hline
+		Raspberry Pi Zero & Kompakter und kostengünstiger Einplatinencomputer. & Weniger Rechenleistung im Vergleich zum Raspberry Pi 4, was die Verarbeitung großer Datenmengen erschwert. \cite{gamess2022performance	}\\
+		\hline
+		BeagleBone Black & Leistungsfähiger Einplatinencomputer mit vielen Schnittstellen. & Höherer Stromverbrauch und höhere Kosten im Vergleich zum Raspberry Pi 4. Komplexere Einrichtung und weniger Community-Unterstützung. Weniger geeignet für allgemeine Zwecke im Vergleich zum Raspberry Pi. \cite{patil2016comparative} \\
+		\hline
+	\end{tabular}
+	\caption{Vergleich alternativer Hardware-Optionen}
+	\label{tab:hardware_vergleich}
+\end{table}
+\egroup
+
+Die Gründe, wie z.B. keine integrierte IMU oder zu wenig Rechenleistung für das Projekt zeigen, warum die Wahl auf den Arduino Nano 33 BLE Rev2 und den Raspberry Pi 4 fiel.
+
 Nachdem nun die Hardware-Auswahl erläutert wurde, wird im nächsten Abschnitt auf die verwendeten Sensoren eingegangen und deren Bedeutung für die Bewegungserkennung erläutert.
 
 \section{Sensoren zur Bewegungserkennung}
