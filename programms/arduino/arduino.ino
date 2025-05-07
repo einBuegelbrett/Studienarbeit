@@ -1,4 +1,5 @@
 #include <Arduino_BMI270_BMM150.h>
+#include "bluetoothHandler.h"
 
 void setup() {
     Serial.begin(115200);
@@ -9,6 +10,7 @@ void setup() {
         while (1);
     }
     Serial.println("IMU-Sensor bereit!");
+    setupBLE();
 }
 
 void loop() {
@@ -19,16 +21,15 @@ void loop() {
 
         float totalAcceleration = sqrt(x * x + y * y + z * z);
 
-        Serial.print("X: "); Serial.print(x);
-        Serial.print(" Y: "); Serial.print(y);
-        Serial.print(" Z: "); Serial.print(z);
-        Serial.print(" | Gesamt: "); Serial.println(totalAcceleration);
+        String imuData = "X: " + String(x, 2) +
+                         " Y: " + String(y, 2) +
+                         " Z: " + String(z, 2) +
+                         " | Gesamt: " + String(totalAcceleration, 2);
 
-        if (totalAcceleration > 2.5) {  // Schwellenwert anpassen
-            Serial.println("⚡ Schütteln erkannt! ⚡");
-            exit(0);
-        }
+        Serial.println(imuData);           // Debug über USB
+        sendSensorData(imuData);           // Senden über BLE
     }
 
     delay(1000);
 }
+
