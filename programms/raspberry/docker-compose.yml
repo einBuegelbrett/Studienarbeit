@@ -1,0 +1,26 @@
+services:
+  cassandra:
+    image: cassandra:latest
+    container_name: cassandra-service
+    ports:
+      - "9042:9042"
+    volumes:
+      - cassandra_data:/var/lib/cassandra
+    networks:
+      - studienarbeit-docker
+
+  cassandra-init:
+    build: cassandradb/init-service
+    container_name: init-cassandra
+    depends_on:
+      - cassandra
+    volumes:
+      - ./cassandradb:/app
+    networks:
+      - studienarbeit-docker
+
+networks:
+  studienarbeit-docker:
+
+volumes:
+  cassandra_data:

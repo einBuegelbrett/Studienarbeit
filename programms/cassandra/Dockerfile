@@ -1,5 +1,0 @@
-FROM cassandra:latest
-
-ENV CASSANDRA_AUTHENTICATOR=PasswordAuthenticator
-ENV CASSANDRA_USER=admin
-ENV CASSANDRA_PASSWORD=admin123
