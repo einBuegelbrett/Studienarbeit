@@ -15,20 +15,31 @@ void setup() {
 
 void loop() {
     float x, y, z;
+if (IMU.accelerationAvailable() && IMU.gyroscopeAvailable() && IMU.magneticFieldAvailable()) {
+    float ax, ay, az;
+    float gx, gy, gz;
+    float mx, my, mz;
 
-    if (IMU.accelerationAvailable()) {
-        IMU.readAcceleration(x, y, z);
+    IMU.readAcceleration(ax, ay, az);
+    IMU.readGyroscope(gx, gy, gz);
+    IMU.readMagneticField(mx, my, mz);
 
-        float totalAcceleration = sqrt(x * x + y * y + z * z);
+    float totalAcc = sqrt(ax * ax + ay * ay + az * az);
+    float totalGyro = sqrt(gx * gx + gy * gy + gz * gz);
+    float totalMag = sqrt(mx * mx + my * my + mz * mz);
 
-        String imuData = "X: " + String(x, 2) +
-                         " Y: " + String(y, 2) +
-                         " Z: " + String(z, 2) +
-                         " | Gesamt: " + String(totalAcceleration, 2);
+    float accRate = IMU.accelerationSampleRate();
+    float gyroRate = IMU.gyroscopeSampleRate();
+    float magRate = IMU.magneticFieldSampleRate();
 
-        Serial.println(imuData);           // Debug über USB
-        sendSensorData(imuData);           // Senden über BLE
-    }
+    String imuData = "ACC: X:" + String(ax, 2) + " Y:" + String(ay, 2) + " Z:" + String(az, 2) + " | G:" + String(totalAcc, 2) +
+                     " | GYRO: X:" + String(gx, 2) + " Y:" + String(gy, 2) + " Z:" + String(gz, 2) + " | G:" + String(totalGyro, 2) +
+                     " | MAG: X:" + String(mx, 2) + " Y:" + String(my, 2) + " Z:" + String(mz, 2) + " | G:" + String(totalMag, 2) +
+                     " | Rates: A:" + String(accRate, 1) + "Hz G:" + String(gyroRate, 1) + "Hz M:" + String(magRate, 1) + "Hz";
+
+    Serial.println(imuData);       // Debug-Ausgabe via USB
+    sendSensorData(imuData);       // Senden via BLE
+}
 
     delay(1000);
 }
