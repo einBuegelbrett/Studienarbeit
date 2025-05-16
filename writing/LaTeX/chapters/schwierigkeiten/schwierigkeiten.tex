@@ -11,3 +11,51 @@ Eine der Hauptschwierigkeiten bei der Erfassung von Bewegungsdaten mit dem Ardui
 
 \section{Messfrequenz und Datenerfassung}
 Eine zentrale Herausforderung ist die Festlegung der optimalen Messfrequenz. Eine zu niedrige Frequenz kann dazu führen, dass wichtige Bewegungsmuster nicht erfasst werden, während eine zu hohe Frequenz eine große Menge an Daten erzeugt, die schwer zu verarbeiten sind und die Systemleistung beeinträchtigen kann. Zusätzlich kann es durch Verzögerungen oder Signalstörungen zu Datenlücken kommen, die die Analyse verfälschen.
+
+\section{Datenübertragung (BLE vs. Kabel)}
+Eine weitere Schwierigkeit stellt die Datenübertragung dar. Bei unserer gewählten Hardware gibt es zwei Optionen, die am häufigsten verwendet werden. Entweder überträgt der Arduino die Daten drahtlos per Bluetooth oder durch eine direkte Verbindung mit einem physischen Kabel. Wie sich beide Verbindungen in Bezug auf verschiedene Kriterien unterscheiden, ist in Tabelle \ref{tab:ble_vs_kabel} zu sehen.
+
+\bgroup
+\def\arraystretch{1.5}
+\begin{table}[h]
+	\centering
+	\resizebox{\textwidth}{!}{%
+		\begin{tabular}{|l|l|l|}
+			\hline
+			\textbf{Kriterium} & \textbf{Bluetooth Low Energy (BLE)} & \textbf{Kabel} \\
+			\hline
+			Datenübertragungsrate & Niedrig bis mittel & Hoch \\
+			\hline
+			Latenz & Höher & Niedriger \\
+			\hline
+			Störungsanfälligkeit & Höher & Niedriger \\
+			\hline
+			Mobilität & Hoch & Niedrig \\
+			\hline
+			Stromverbrauch & Niedrig & Kein zusätzlicher Verbrauch \\
+			\hline
+			Komplexität der Implementierung & Hoch & Niedrig \\
+			\hline
+		\end{tabular}%
+	}
+	\caption{Vergleich von BLE und Kabel für die Datenübertragung}
+	\label{tab:ble_vs_kabel}
+\end{table}
+\egroup
+
+Zusammenfassend lässt sich sagen, dass Kabel in fast allen Bereichen besser ist: Die Datenübertragungsrate ist höher, es ist weniger störanfällig und viel einfacher zu implementieren, da keine initiale Verbindung aufgebaut werden muss. In einem Punkt ist jedoch eine Bluetooth-Verbindung dem Kabel überlegen: die Mobilität. Wie bei den vorherigen Schwierigkeiten erkannt wurde, stellt der Arduino aufgrund seines Gewichts eine physische Last dar und könnte die Bewegungen einschränken. Die Hinzufügung des Raspberry Pis würde diese Last noch weiter erhöhen. Dank der Bluetooth-Verbindung müssen wir den Raspberry nicht am Körper anbringen, können ihn aber in der Nähe lassen. Die maximale Reichweite von Bluetooth beträgt 60 Meter. \cite{eridani2021comparative} Das reicht für die spätere Anwendung aus. Die Schwierigkeit, die sich daraus ergibt, ist jedoch, dass wie in der Tabelle \ref{tab:ble_vs_kabel} zu sehen ist die höhere Störungsanfälligkeit zu beachten ist.
+
+\subsection{Mögliche Rekonstruktionsstrategien bei Datenlücken}
+Bei der Datenübertragung per Bleutooth können gelegentlich Datenlücken auftreten, die durch verschiedene Faktoren wie Störungen,  kurzeVerbindungsabbrüche oder Hardwarefehler verursacht werden. Um diese Lücken zu schließen und die Datenintegrität zu gewährleisten, gibt es verschiedene Rekonstruktionsstrategien. Ein Ansatz zur Lösung von Problemen mit unvollständigen Daten ist die Anwendung von Imputationsverfahren wie die Mittelwertsubstitution. \cite{noor2015comparison} Im Falle eines kurzen Verbindungsabbruchs und des daraus resultierenden Fehlens eines Wertes bietet sich die gerade genannte Mittelwertsubstitution. Es wird der Mittelwerts der unmittelbar vor und nach der Lücke liegenden Datenpunkte berechnet. Diese Methode ist besonders geeignet für Zeitreihendaten, bei denen die Werte in der Nähe der Lücke als repräsentativ für die fehlenden Daten angenommen werden können. So verläuft der Prozess dann ab:
+
+\begin{enumerate}
+\item \textbf{Identifikation der Lücke:} Zunächst wird die Position der Datenlücke identifiziert. Dies passiert durch eine Überprüfung der Daten auf fehlende Werte durch die Verwendung von Zeitstempeln erfolgen.
+\item \textbf{Auswahl der benachbarten Datenpunkte:} Die unmittelbar vor und nach der Lücke liegenden Datenpunkte werden ausgewählt. Wenn die Lücke beispielsweise zwischen den Datenpunkten \( x_{n} \) und \( x_{n+k} \) liegt, werden \( x_{n} \) und \( x_{n+k} \) verwendet.
+\item \textbf{Berechnung des Mittelwerts:} Der Mittelwert der ausgewählten Datenpunkte wird berechnet. Wenn \( x_{n} \) und \( x_{n+k} \) die benachbarten Datenpunkte sind, dann wird der Mittelwert \( \bar{x} \) wie folgt berechnet: 
+\[
+\bar{x} = \frac{x_{n} + x_{n+k}}{2}
+\]
+ \item \textbf{Einsetzen des Mittelwerts:} Der berechnete Mittelwert wird in die Datenlücke eingesetzt, um die fehlenden Daten zu rekonstruieren.
+\end{enumerate}
+
+Somit können wir den Vorteil der Bluetooth-Mobilität nutzen und die daraus resultierende Schwierigkeit fehlender Werte sehr leicht korrigieren.
