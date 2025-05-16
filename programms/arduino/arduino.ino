@@ -50,10 +50,9 @@ void loop() {
             float gyroRate = IMU.gyroscopeSampleRate();
             float magRate = IMU.magneticFieldSampleRate();
 
-            String imuData = "ACC: X:" + String(ax, 2) + " Y:" + String(ay, 2) + " Z:" + String(az, 2) + " | G:" + String(totalAcc, 2) +
-                             " | GYRO: X:" + String(gx, 2) + " Y:" + String(gy, 2) + " Z:" + String(gz, 2) + " | G:" + String(totalGyro, 2) +
-                             " | MAG: X:" + String(mx, 2) + " Y:" + String(my, 2) + " Z:" + String(mz, 2) + " | G:" + String(totalMag, 2) +
-                             " | Rates: A:" + String(accRate, 1) + "Hz G:" + String(gyroRate, 1) + "Hz M:" + String(magRate, 1) + "Hz";
+            String imuData = "Acc: X:" + String(ax, 2) + " Y:" + String(ay, 2) + " Z:" + String(az, 2) +
+                 " | Gyro: X:" + String(gx, 2) + " Y:" + String(gy, 2) + " Z:" + String(gz, 2) +
+                 " | Mag: X:" + String(mx, 2) + " Y:" + String(my, 2) + " Z:" + String(mz, 2);
 
             Serial.println(imuData); // Debug-Ausgabe
 
