@@ -16,7 +16,7 @@ for attempt in range(MAX_RETRIES):
 else:
     raise Exception("Verbindung zu Cassandra konnte nach mehreren initialen Versuchen nicht aufgebaut werden.")
 
-cql_file_path = 'database/database_bewegung.cql'  # Relativer Pfad
+cql_file_path = 'database/database_bewegung.cql'
 
 if not os.path.exists(cql_file_path):
     print(f"Fehler: Die CQL-Datei wurde nicht gefunden unter: {cql_file_path}")

@@ -28,6 +28,7 @@ void loop() {
     // Prüfen ob Messzeit abgelaufen ist
     if (messungAktiv && (currentTime - startTime >= duration)) {
         Serial.println("ENDZEIT ERREICHT");
+        sendSensorData("ENDZEIT");
         messungAktiv = false;  // weitere Messungen stoppen
         return;
     }
@@ -43,9 +44,9 @@ void loop() {
             IMU.readGyroscope(gx, gy, gz);
             IMU.readMagneticField(mx, my, mz);
 
-            String imuData = "Acc: X:" + String(ax, 2) + " Y:" + String(ay, 2) + " Z:" + String(az, 2) +
-                 " | Gyro: X:" + String(gx, 2) + " Y:" + String(gy, 2) + " Z:" + String(gz, 2) +
-                 " | Mag: X:" + String(mx, 2) + " Y:" + String(my, 2) + " Z:" + String(mz, 2);
+            String imuData = String(ax, 2) + ";" + String(ay, 2) + ";" + String(az, 2) + ";" + 
+                             String(gx, 2) + ";" + String(gy, 2) + ";" + String(gz, 2) + ";" +
+                             String(mx, 2) + ";" + String(my, 2) + ";" + String(mz, 2);
 
             Serial.println(imuData);
 

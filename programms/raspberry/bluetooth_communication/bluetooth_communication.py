@@ -11,7 +11,7 @@ CHARACTERISTIC_UUID = "00002a56-0000-1000-8000-00805f9b34fb"
 MAX_RETRIES = 10
 for attempt in range(MAX_RETRIES):
     try:
-        cluster = Cluster(['localhost'], port=9042, reconnection_policy=ExponentialReconnectionPolicy(base_delay=2, max_delay=120))
+        cluster = Cluster(['cassandra-service'], port=9042, reconnection_policy=ExponentialReconnectionPolicy(base_delay=2, max_delay=120))
         session = cluster.connect("bewegung")
         print("Verbindung zu Cassandra erfolgreich.")
         break
@@ -28,10 +28,13 @@ insert_stmt = session.prepare("""
 
 def parse_imu_data(raw_data):
     try:
-        parts = raw_data.split(" | ")
-        acc = [float(p.split(":")[1]) for p in parts[0].split()[1:]]
-        gyro = [float(p.split(":")[1]) for p in parts[2].split()[1:]]
-        mag = [float(p.split+(":")[1]) for p in parts[4].split()[1:]]
+        data = raw_data.strip().split(";")
+        
+        print(f"Gesplittete Daten: {data}")
+        
+        acc = [float(data[0]), float(data[1]), float(data[2])]
+        gyro = [float(data[3]), float(data[4]), float(data[5])]
+        mag = [float(data[6]), float(data[7]), float(data[8])]
 
         return {
             "acc": acc,
@@ -43,11 +46,10 @@ def parse_imu_data(raw_data):
         return None
 
 async def main():
-    max_versuche = 5  # Anzahl der Versuche
     arduino = None
 
-    for versuch in range(1, max_versuche + 1):
-        print(f"Versuch {versuch} von {max_versuche}...")
+    for versuch in range(1, 5 + 1):
+        print(f"Versuch {versuch} von {5}...")
         devices = await BleakScanner.discover()
         arduino = next((d for d in devices if d.name and "Bewegungstracker" in d.name), None)
 
@@ -67,6 +69,7 @@ async def main():
 
         def handle_notification(_, data):
             decoded = data.decode("utf-8").strip()
+            
             if "ENDZEIT" in decoded:
                 print("[INFO] Übertragung beendet.")
                 return
@@ -83,7 +86,6 @@ async def main():
                         *parsed["mag"]
                     )
                 )
-                print("Gespeichert:", decoded)
 
         await client.start_notify(CHARACTERISTIC_UUID, handle_notification)
 
@@ -93,5 +95,5 @@ async def main():
         await client.stop_notify(CHARACTERISTIC_UUID)
         print("Verbindung beendet.")
 
-if __name__ == "__main__":
+if _name_ == "_main_":
     asyncio.run(main())
