@@ -28,3 +28,7 @@ void sendSensorData(const String& data) {
         sensorCharacteristic.writeValue(data.c_str());
     }
 }
+
+bool isBLEConnected() {
+  return BLE.connected();
+}
