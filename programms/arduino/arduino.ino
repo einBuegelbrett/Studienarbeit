@@ -18,6 +18,7 @@ void setup() {
 
     Serial.println("IMU-Sensor bereit!");
     setupBLE();
+    delay(10000); // Wartezeit für die Verbindung
     startTime = millis();
 }
 
@@ -42,21 +43,12 @@ void loop() {
             IMU.readGyroscope(gx, gy, gz);
             IMU.readMagneticField(mx, my, mz);
 
-            float totalAcc = sqrt(ax * ax + ay * ay + az * az);
-            float totalGyro = sqrt(gx * gx + gy * gy + gz * gz);
-            float totalMag = sqrt(mx * mx + my * my + mz * mz);
-
-            float accRate = IMU.accelerationSampleRate();
-            float gyroRate = IMU.gyroscopeSampleRate();
-            float magRate = IMU.magneticFieldSampleRate();
-
             String imuData = "Acc: X:" + String(ax, 2) + " Y:" + String(ay, 2) + " Z:" + String(az, 2) +
                  " | Gyro: X:" + String(gx, 2) + " Y:" + String(gy, 2) + " Z:" + String(gz, 2) +
                  " | Mag: X:" + String(mx, 2) + " Y:" + String(my, 2) + " Z:" + String(mz, 2);
 
-            Serial.println(imuData); // Debug-Ausgabe
+            Serial.println(imuData);
 
-            // Nur senden, wenn verbunden
             if (isBLEConnected()) {
                 sendSensorData(imuData);
             } else {

@@ -26,9 +26,14 @@ services:
     container_name: bluetooth-reader
     depends_on:
       - cassandra
-    network_mode: "host"  
+    network_mode: "host" 
     privileged: true      
-
+    environment:
+      - DBUS_SYSTEM_BUS_ADDRESS=unix:path=/var/run/dbus/system_bus_socket
+    volumes:
+      - /dev:/dev
+      - /var/run/dbus:/var/run/dbus
+    
 networks:
   studienarbeit-docker:
 

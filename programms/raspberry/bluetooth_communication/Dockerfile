@@ -1,6 +1,5 @@
 FROM python:3.11-slim
 WORKDIR /app
-COPY requirements.txt .
-RUN pip install -r bleak
+RUN pip install bleak cassandra-driver	
 COPY . .
 CMD ["python", "bluetooth_reader.py"]

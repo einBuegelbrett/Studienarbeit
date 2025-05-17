@@ -2,13 +2,24 @@ import asyncio
 import uuid
 from datetime import datetime
 from cassandra.cluster import Cluster
-from cassandra.query import SimpleStatement
+from cassandra.policies import ExponentialReconnectionPolicy
+import time
 from bleak import BleakClient, BleakScanner
 
 CHARACTERISTIC_UUID = "00002a56-0000-1000-8000-00805f9b34fb"
 
-cluster = Cluster(['cassandra-service'], port=9042)
-session = cluster.connect("bewegung")
+MAX_RETRIES = 10
+for attempt in range(MAX_RETRIES):
+    try:
+        cluster = Cluster(['localhost'], port=9042, reconnection_policy=ExponentialReconnectionPolicy(base_delay=2, max_delay=120))
+        session = cluster.connect("bewegung")
+        print("Verbindung zu Cassandra erfolgreich.")
+        break
+    except Exception as e:
+        print(f"Versuch {attempt + 1} fehlgeschlagen (initial): {e}")
+        time.sleep(5)
+else:
+    raise Exception("Verbindung zu Cassandra konnte nach mehreren initialen Versuchen nicht aufgebaut werden.")
 
 insert_stmt = session.prepare("""
     INSERT INTO sensordaten (id, timestamp, acc_x, acc_y, acc_z, gyro_x, gyro_y, gyro_z, mag_x, mag_y, mag_z)
@@ -32,11 +43,23 @@ def parse_imu_data(raw_data):
         return None
 
 async def main():
-    devices = await BleakScanner.discover()
-    arduino = next((d for d in devices if "Arduino" in d.name), None)
+    max_versuche = 5  # Anzahl der Versuche
+    arduino = None
+
+    for versuch in range(1, max_versuche + 1):
+        print(f"Versuch {versuch} von {max_versuche}...")
+        devices = await BleakScanner.discover()
+        arduino = next((d for d in devices if d.name and "Bewegungstracker" in d.name), None)
+
+        if arduino:
+            print(f"Arduino gefunden: {arduino.name} ({arduino.address})")
+            break
+
+        print("Kein Arduino gefunden. Warte 5 Sekunden...")
+        await asyncio.sleep(5)
 
     if not arduino:
-        print("Kein Arduino gefunden.")
+        print("Arduino nach mehreren Versuchen nicht gefunden.")
         return
 
     async with BleakClient(arduino.address) as client:
@@ -54,7 +77,7 @@ async def main():
                     insert_stmt,
                     (
                         uuid.uuid4(),
-                        datetime.utcnow(),
+                        datetime.now(),
                         *parsed["acc"],
                         *parsed["gyro"],
                         *parsed["mag"]
