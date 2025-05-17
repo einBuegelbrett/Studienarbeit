@@ -19,6 +19,24 @@ services:
     networks:
       - studienarbeit-docker
 
+  bluetooth-reader:
+    build:
+      context: bluetooth-communication
+      dockerfile: Dockerfile
+    container_name: bluetooth-reader
+    depends_on:
+      - cassandra
+    networks:
+      - studienarbeit-docker
+    privileged: true
+    devices:
+      - /dev/hci0:/dev/hci0
+    environment:
+      - DBUS_SYSTEM_BUS_ADDRESS=unix:path=/var/run/dbus/system_bus_socket
+    volumes:
+      - /dev:/dev
+      - /var/run/dbus:/var/run/dbus
+    
 networks:
   studienarbeit-docker:
 

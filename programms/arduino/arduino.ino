@@ -18,6 +18,7 @@ void setup() {
 
     Serial.println("IMU-Sensor bereit!");
     setupBLE();
+    delay(10000); // Wartezeit für die Verbindung
     startTime = millis();
 }
 
@@ -27,6 +28,7 @@ void loop() {
     // Prüfen ob Messzeit abgelaufen ist
     if (messungAktiv && (currentTime - startTime >= duration)) {
         Serial.println("ENDZEIT ERREICHT");
+        sendSensorData("ENDZEIT");
         messungAktiv = false;  // weitere Messungen stoppen
         return;
     }
@@ -42,22 +44,12 @@ void loop() {
             IMU.readGyroscope(gx, gy, gz);
             IMU.readMagneticField(mx, my, mz);
 
-            float totalAcc = sqrt(ax * ax + ay * ay + az * az);
-            float totalGyro = sqrt(gx * gx + gy * gy + gz * gz);
-            float totalMag = sqrt(mx * mx + my * my + mz * mz);
+            String imuData = String(ax, 2) + ";" + String(ay, 2) + ";" + String(az, 2) + ";" + 
+                             String(gx, 2) + ";" + String(gy, 2) + ";" + String(gz, 2) + ";" +
+                             String(mx, 2) + ";" + String(my, 2) + ";" + String(mz, 2);
 
-            float accRate = IMU.accelerationSampleRate();
-            float gyroRate = IMU.gyroscopeSampleRate();
-            float magRate = IMU.magneticFieldSampleRate();
+            Serial.println(imuData);
 
-            String imuData = "ACC: X:" + String(ax, 2) + " Y:" + String(ay, 2) + " Z:" + String(az, 2) + " | G:" + String(totalAcc, 2) +
-                             " | GYRO: X:" + String(gx, 2) + " Y:" + String(gy, 2) + " Z:" + String(gz, 2) + " | G:" + String(totalGyro, 2) +
-                             " | MAG: X:" + String(mx, 2) + " Y:" + String(my, 2) + " Z:" + String(mz, 2) + " | G:" + String(totalMag, 2) +
-                             " | Rates: A:" + String(accRate, 1) + "Hz G:" + String(gyroRate, 1) + "Hz M:" + String(magRate, 1) + "Hz";
-
-            Serial.println(imuData); // Debug-Ausgabe
-
-            // Nur senden, wenn verbunden
             if (isBLEConnected()) {
                 sendSensorData(imuData);
             } else {
