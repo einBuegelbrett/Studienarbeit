@@ -1,6 +1,6 @@
 import asyncio
 import uuid
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from cassandra.cluster import Cluster
 from cassandra.policies import ExponentialReconnectionPolicy
 import time
@@ -30,16 +30,33 @@ insert_stmt = session.prepare("""
 
 def parse_imu_data(raw_data):
     try:
-        data = raw_data.strip().split(";")
-        acc = [float(data[0]), float(data[1]), float(data[2])]
-        gyro = [float(data[3]), float(data[4]), float(data[5])]
-        mag = [float(data[6]), float(data[7]), float(data[8])]
-        return {"acc": acc, "gyro": gyro, "mag": mag}
+        parts = raw_data.strip().split(";")
+        if len(parts) != 10:
+            print(f"[WARNUNG] Ungültige Datenlänge: {raw_data}")
+            return None
+
+        packet_number = int(parts[0])
+        acc = list(map(float, parts[1:4]))
+        gyro = list(map(float, parts[4:7]))
+        mag = list(map(float, parts[7:10]))
+
+        # Nur für Logs verwenden
+        print(f"[OK] Paket #{packet_number} empfangen")
+
+        return {
+            "acc": acc,
+            "gyro": gyro,
+            "mag": mag
+        }
+
     except Exception as e:
-        print("Parsing error:", e)
+        print(f"[FEHLER] Parsing fehlgeschlagen: {e} | Daten: {raw_data}")
         return None
 
 async def run_device_session(device):
+    global testlauf_counter
+    testlauf_counter += 1
+    print(f"==== Starte Testlauf {testlauf_counter} ====")
     try:
         async with BleakClient(device.address) as client:
             print(f"Verbunden mit: {device.name}")
@@ -49,7 +66,7 @@ async def run_device_session(device):
                 print(f"Empfangene Rohdaten: {repr(decoded)}")
 
                 if "ENDZEIT" in decoded:
-                    print("[INFO] Übertragung beendet.")
+                    print(f"[INFO] Übertragung von Testlauf {testlauf_counter} beendet.")
                     return
 
                 parsed = parse_imu_data(decoded)
@@ -58,7 +75,7 @@ async def run_device_session(device):
                         insert_stmt,
                         (
                             uuid.uuid4(),
-                            datetime.now(),
+                            datetime.now(timezone.utc),
                             *parsed["acc"],
                             *parsed["gyro"],
                             *parsed["mag"]

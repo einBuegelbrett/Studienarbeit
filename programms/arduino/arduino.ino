@@ -6,6 +6,7 @@ const unsigned long duration = 125000; // 125 Sekunden in Millisekunden
 const unsigned long interval = 500;    // Daten alle 500 ms
 unsigned long lastSendTime = 0;
 bool messungAktiv = false;
+int packetCounter = 0;
 
 void setup() {
     Serial.begin(115200);
@@ -58,16 +59,15 @@ void loop() {
             IMU.readGyroscope(gx, gy, gz);
             IMU.readMagneticField(mx, my, mz);
 
-            String imuData = String(ax, 2) + ";" + String(ay, 2) + ";" + String(az, 2) + ";" + 
-                             String(gx, 2) + ";" + String(gy, 2) + ";" + String(gz, 2) + ";" +
-                             String(mx, 2) + ";" + String(my, 2) + ";" + String(mz, 2);
-
-            Serial.println(imuData);
-
+           char imuData[120];
+           snprintf(imuData, sizeof(imuData), "%d;%.2f;%.2f;%.2f;%.2f;%.2f;%.2f;%.2f;%.2f;%.2f", packetCounter, ax, ay, az, gx, gy, gz, mx, my, mz);
             if (isBLEConnected()) {
                 sendSensorData(imuData);
+                packetCounter++;
+
             } else {
                 Serial.println("Nicht verbunden – Daten werden übersprungen.");
+                sendSensorData("Nicht verbunden – Daten werden übersprungen.");
             }
 
             lastSendTime = currentTime;

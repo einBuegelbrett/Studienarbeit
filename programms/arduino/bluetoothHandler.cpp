@@ -21,11 +21,11 @@ void setupBLE() {
     Serial.println("BLE aktiv – warte auf Verbindung...");
 }
 
-void sendSensorData(const String& data) {
-    BLEDevice central = BLE.central();  // Wer ist verbunden?
+void sendSensorData(const char* data) {
+    BLEDevice central = BLE.central();
 
     if (central && central.connected()) {
-        sensorCharacteristic.writeValue(data.c_str());
+        sensorCharacteristic.writeValue(data);
     }
 }
 
