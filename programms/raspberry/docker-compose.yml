@@ -21,7 +21,7 @@ services:
 
   bluetooth-reader:
     build:
-      context: bluetooth-communication
+      context: bluetooth_communication
       dockerfile: Dockerfile
     container_name: bluetooth-reader
     depends_on:

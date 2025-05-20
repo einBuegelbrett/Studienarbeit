@@ -1,7 +1,7 @@
 #include "bluetoothHandler.h"
 
 BLEService sensorService("180C"); // eigene UUID oder Standard
-BLECharacteristic sensorCharacteristic("2A56", BLERead | BLENotify, 50);
+BLECharacteristic sensorCharacteristic("2A56", BLERead | BLENotify, 120);
 
 void setupBLE() {
     if (!BLE.begin()) {

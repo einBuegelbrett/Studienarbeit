@@ -114,5 +114,5 @@ async def main_loop():
 
         await asyncio.sleep(5)
 
-if _name_ == "_main_":
+if __name__ == "_main_":
     asyncio.run(main_loop())

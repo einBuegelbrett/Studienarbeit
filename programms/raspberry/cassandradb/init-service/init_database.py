@@ -7,7 +7,7 @@ MAX_RETRIES = 10
 for attempt in range(MAX_RETRIES):
     try:
         cluster = Cluster(['cassandra-service'], port=9042, reconnection_policy=ExponentialReconnectionPolicy(base_delay=2, max_delay=120))
-        session = cluster.connect("bewegung")
+        session = cluster.connect()
         print("Verbindung zu Cassandra erfolgreich.")
         break
     except Exception as e:
