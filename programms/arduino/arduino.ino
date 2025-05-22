@@ -1,6 +1,12 @@
 #include <Arduino_BMI270_BMM150.h>
 #include "bluetoothHandler.h"
 
+unsigned long startTime;
+const unsigned long duration = 125000; // 125 Sekunden in Millisekunden
+const unsigned long interval = 500;    // Daten alle 500 ms
+unsigned long lastSendTime = 0;
+bool messungAktiv = true;
+
 void setup() {
     Serial.begin(115200);
     while (!Serial);
@@ -9,27 +15,48 @@ void setup() {
         Serial.println("IMU-Sensor nicht gefunden!");
         while (1);
     }
+
     Serial.println("IMU-Sensor bereit!");
     setupBLE();
+    delay(10000); // Wartezeit für die Verbindung
+    startTime = millis();
 }
 
 void loop() {
-    float x, y, z;
+    unsigned long currentTime = millis();
 
-    if (IMU.accelerationAvailable()) {
-        IMU.readAcceleration(x, y, z);
-
-        float totalAcceleration = sqrt(x * x + y * y + z * z);
-
-        String imuData = "X: " + String(x, 2) +
-                         " Y: " + String(y, 2) +
-                         " Z: " + String(z, 2) +
-                         " | Gesamt: " + String(totalAcceleration, 2);
-
-        Serial.println(imuData);           // Debug über USB
-        sendSensorData(imuData);           // Senden über BLE
+    // Prüfen ob Messzeit abgelaufen ist
+    if (messungAktiv && (currentTime - startTime >= duration)) {
+        Serial.println("ENDZEIT ERREICHT");
+        sendSensorData("ENDZEIT");
+        messungAktiv = false;  // weitere Messungen stoppen
+        return;
     }
 
-    delay(1000);
-}
+    // Nur weitermachen, wenn Messung noch aktiv
+    if (messungAktiv && (currentTime - lastSendTime >= interval)) {
+        if (IMU.accelerationAvailable() && IMU.gyroscopeAvailable() && IMU.magneticFieldAvailable()) {
+            float ax, ay, az;
+            float gx, gy, gz;
+            float mx, my, mz;
 
+            IMU.readAcceleration(ax, ay, az);
+            IMU.readGyroscope(gx, gy, gz);
+            IMU.readMagneticField(mx, my, mz);
+
+            String imuData = String(ax, 2) + ";" + String(ay, 2) + ";" + String(az, 2) + ";" + 
+                             String(gx, 2) + ";" + String(gy, 2) + ";" + String(gz, 2) + ";" +
+                             String(mx, 2) + ";" + String(my, 2) + ";" + String(mz, 2);
+
+            Serial.println(imuData);
+
+            if (isBLEConnected()) {
+                sendSensorData(imuData);
+            } else {
+                Serial.println("Nicht verbunden – Daten werden übersprungen.");
+            }
+
+            lastSendTime = currentTime;
+        }
+    }
+}

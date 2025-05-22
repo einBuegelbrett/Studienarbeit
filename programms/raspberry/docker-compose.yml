@@ -1,0 +1,44 @@
+services:
+  cassandra:
+    image: cassandra:latest
+    container_name: cassandra-service
+    ports:
+      - "9042:9042"
+    volumes:
+      - cassandra_data:/var/lib/cassandra
+    networks:
+      - studienarbeit-docker
+
+  cassandra-init:
+    build: cassandradb/init-service
+    container_name: init-cassandra
+    depends_on:
+      - cassandra
+    volumes:
+      - ./cassandradb:/app
+    networks:
+      - studienarbeit-docker
+
+  bluetooth-reader:
+    build:
+      context: bluetooth-communication
+      dockerfile: Dockerfile
+    container_name: bluetooth-reader
+    depends_on:
+      - cassandra
+    networks:
+      - studienarbeit-docker
+    privileged: true
+    devices:
+      - /dev/hci0:/dev/hci0
+    environment:
+      - DBUS_SYSTEM_BUS_ADDRESS=unix:path=/var/run/dbus/system_bus_socket
+    volumes:
+      - /dev:/dev
+      - /var/run/dbus:/var/run/dbus
+    
+networks:
+  studienarbeit-docker:
+
+volumes:
+  cassandra_data:

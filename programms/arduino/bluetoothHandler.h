@@ -6,5 +6,6 @@
 // Wir "versprechen", dass es diese Funktionen gibt:
 void setupBLE();
 void sendSensorData(const String& data);
+bool isBLEConnected();
 
 #endif
