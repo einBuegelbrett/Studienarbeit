@@ -3,11 +3,56 @@
 %Sollte vorerst passen, wird aber noch ausgebaut, mit möglichen Lösungen/unseren Lösungen, weitere Schwieriegkeiten was die Daten angeht
 Bei der späteren Erfassung könnte es später zu Schwierigkeiten kommen, diese sind mitunter die verschiedene Konditionen des menschlichen Körpers sowie der Umgebung als auch das anbringen der Hardware an dem menschlichen Körper.
 
-\section{Verschiedene Konditionen}
-Obwohl das Gehen eine typisch menschliche Art der Fortbewegung ist, ist jeder Bewegungsablauf individuell sehr unterschiedlich. Diese werden von persönlichen Faktoren wie Konstitution, Beweglichkeit, Kraft, Koordinationsfähigkeit der beteiligten Muskel, die Stimmung oder sogar Umweltfaktoren wie Bodenbeschaffenheit und Umgebung sowie das Bewegungsziel beeinflusst \cite{suppe2013fbl}. Falls mehrere Personen getestet werden, muss sichergestellt werden, dass die Variabilität der Versuchenden nicht zu einer fehlerhaften Klassifikation führt. Zudem stellt sich die Frage, wie viele Personen notwendig sind, um aussagekräftige Daten zu erhalten und wie man eine Standardisierung der Testbedingungen gewährleistet.
+\section{Datenübertragung (BLE vs. Kabel)}
+Eine Herausforderung in Systemen zur mobilen Bewegungserfassung besteht in der zuverlässigen Übertragung von Sensordaten vom Arduino zum Empfängergerät. Dafür stehen grundsätzlich zwei Übertragungsmethoden zur Verfügung: eine kabelgebundene Verbindung oder eine drahtlose Übertragung mittels Bluetooth Low Energy (BLE).
 
-\section{Hardware}
-Eine der Hauptschwierigkeiten bei der Erfassung von Bewegungsdaten mit dem Arduino besteht in der Platzierung und dem Gewicht der Energieversorgung. Da der Arduino für mobile Anwendungen eine externe Stromquelle wie eine Powerbank benötigt, kann das zusätzliche Gewicht die natürlichen Bewegungsabläufe beeinträchtigen. Besonders beim Rennen kann die Powerbank störend wirken und die Bewegungsfreiheit einschränken. Ein erhöhtes Gewicht kann die Bewegungsfähigkeit der versuchenden erheblich beeinträchtigen \cite{monfrini2023technological} und somit zu verfälschten Messdaten führen, da die Bewegungen nicht mehr natürlich und ungehindert ausgeführt werden. Es ist daher wichtig, eine leichte und ergonomische Lösung für die Energieversorgung zu finden, um die Genauigkeit der Bewegungserfassung zu gewährleisten.
+Die kabelgebundene Übertragung bietet den Vorteil einer hohen Datenrate und geringen Latenz, stellt jedoch bei bewegungsintensiven Anwendungen eine erhebliche Einschränkung dar. Ein festsitzendes Kabel muss physisch sicher mit beiden Geräten verbunden werden, was bei dynamischen Bewegungen wie Rennen zu Problemen führen kann. Eines dieser Probleme ist das der Kabel sich schon beim Anfang des Laufes lockert und dadurch die Verbindung nicht mehr die Sicherste ist. Desto weiteren durch die Verkabelung zwischen Arduino und Empfängergerät, müssen die beiden Geräte in einer direkten Nähe verstaut werden, was zu signalstörungen kommen kann durch die Berührung der beiden Hardwarekomponenten, sowie kann dadurch die Bewegung verzerrt werden da das Empfängergerät den Arduino bewegt und dieser nicht mehr nur die Bewegung des Menschen analysiert. Ein Weiterer Punkt ist das unerwartete Ziehen am Kabel was nicht nur den Arduino bewegen kann, sondern auch im schlimmeren Fällen, zu Signalverzerrungen führen kann aber auch zu kompletten Verbindungsabbrüchen bevor die gewollte Messfrequenz erreicht worden ist. Mit ein Längeren Kabel können die Probleme auf eine Art vermieden werden, doch hierbei besteht die Notwendigkeit, diese um den Körper zu führen, was wiederum die Bewegungsfreiheit einschränkt und die natürliche Bewegungsausführung stören kann. 
 
-\section{Messfrequenz und Datenerfassung}
-Eine zentrale Herausforderung ist die Festlegung der optimalen Messfrequenz. Eine zu niedrige Frequenz kann dazu führen, dass wichtige Bewegungsmuster nicht erfasst werden, während eine zu hohe Frequenz eine große Menge an Daten erzeugt, die schwer zu verarbeiten sind und die Systemleistung beeinträchtigen kann. Zusätzlich kann es durch Verzögerungen oder Signalstörungen zu Datenlücken kommen, die die Analyse verfälschen.
+Die Alternative ist eine drahtlose Übertragung mittels Bluetooth Low Energy (BLE). Diese bietet durch den Wegfall des physischen Kabels ein deutlich höheres Maß an Mobilität und reduziert die mechanische Belastung. Die Geräte müssen nicht unmittelbar nebeneinander platziert werden, was insbesondere für die Körpermontage von Vorteil ist. Die Reichweite von BLE, welche bis zu 60 Meter ist \cite{eridani2021comparative}, was ausreichend ist. Gleichzeitig jedoch zu beachten, ist dass der BLE störanfälliger ist, durch Außeneinwirkungen, eine geringere Übertragungsrate bietet und die Implementierung eine höhere technische Komplexität aufweist.
+
+Ein direkter Vergleich beider Übertragungsmethoden ist in Tabelle \ref{tab:ble_vs_kabel} dargestellt:
+
+\bgroup
+\def\arraystretch{1.5}
+\begin{table}[h]
+	\centering
+	\resizebox{\textwidth}{!}{%
+		\begin{tabular}{|l|l|l|}
+			\hline
+			\textbf{Kriterium} & \textbf{Bluetooth Low Energy (BLE)} & \textbf{Kabel} \
+			\hline
+			Datenübertragungsrate & Niedrig bis mittel & Hoch \
+			\hline
+			Latenz & Höher & Niedriger \
+			\hline
+			Störungsanfälligkeit & Höher & Niedriger \
+			\hline
+			Mobilität & Hoch & Niedrig \
+			\hline
+			Stromverbrauch & Niedrig & Kein zusätzlicher Verbrauch \
+			\hline
+			Komplexität der Implementierung & Hoch & Niedrig \
+			\hline
+		\end{tabular}%
+	}
+	\caption{Vergleich von BLE und Kabel für die Datenübertragung}
+	\label{tab:ble_vs_kabel}
+\end{table}
+\egroup
+
+Zusammenfassend lässt sich sagen, dass Kabel in fast allen Bereichen besser ist: Die Datenübertragungsrate ist höher, es ist weniger störanfällig und viel einfacher zu implementieren, da keine initiale Verbindung aufgebaut werden muss. In einem Punkt ist jedoch eine Bluetooth-Verbindung dem Kabel überlegen: die Mobilität. Wie bei den vorherigen Schwierigkeiten erkannt wurde, stellt der Arduino aufgrund seines Gewichts eine physische Last dar und könnte die Bewegungen einschränken. Die Hinzufügung des Raspberry Pis würde diese Last noch weiter erhöhen. Dank der Bluetooth-Verbindung müssen wir den Raspberry nicht am Körper anbringen, können ihn aber in der Nähe lassen. Die maximale Reichweite von Bluetooth beträgt 60 Meter. \cite{eridani2021comparative} Das reicht für die spätere Anwendung aus. Die Schwierigkeit, die sich daraus ergibt, ist jedoch, dass wie in der Tabelle \ref{tab:ble_vs_kabel} zu sehen ist die höhere Störungsanfälligkeit zu beachten ist.
+
+\subsection{Mögliche Rekonstruktionsstrategien bei Datenlücken}
+Bei der Datenübertragung per Bleutooth können gelegentlich Datenlücken auftreten, die durch verschiedene Faktoren wie Störungen,  kurze Verbindungsabbrüche oder Hardwarefehler verursacht werden. Um diese Lücken zu schließen und die Datenintegrität zu gewährleisten, gibt es verschiedene Rekonstruktionsstrategien. Ein Ansatz zur Lösung von Problemen mit unvollständigen Daten ist die Anwendung von Imputationsverfahren wie die Mittelwertsubstitution. \cite{noor2015comparison} Im Falle eines kurzen Verbindungsabbruchs und des daraus resultierenden Fehlens eines Wertes bietet sich die gerade genannte Mittelwertsubstitution. Es wird der Mittelwerts der unmittelbar vor und nach der Lücke liegenden Datenpunkte berechnet. Diese Methode ist besonders geeignet für Zeitreihendaten, bei denen die Werte in der Nähe der Lücke als repräsentativ für die fehlenden Daten angenommen werden können. So verläuft der Prozess dann ab:
+
+\begin{enumerate}
+\item \textbf{Identifikation der Lücke:} Zunächst wird die Position der Datenlücke identifiziert. Dies passiert durch eine Überprüfung der Daten auf fehlende Werte durch die Verwendung von Zeitstempeln erfolgen.
+\item \textbf{Auswahl der benachbarten Datenpunkte:} Die unmittelbar vor und nach der Lücke liegenden Datenpunkte werden ausgewählt. Wenn die Lücke beispielsweise zwischen den Datenpunkten \( x_{n} \) und \( x_{n+k} \) liegt, werden \( x_{n} \) und \( x_{n+k} \) verwendet.
+\item \textbf{Berechnung des Mittelwerts:} Der Mittelwert der ausgewählten Datenpunkte wird berechnet. Wenn \( x_{n} \) und \( x_{n+k} \) die benachbarten Datenpunkte sind, dann wird der Mittelwert \( \bar{x} \) wie folgt berechnet: 
+\[
+\bar{x} = \frac{x_{n} + x_{n+k}}{2}
+\]
+ \item \textbf{Einsetzen des Mittelwerts:} Der berechnete Mittelwert wird in die Datenlücke eingesetzt, um die fehlenden Daten zu rekonstruieren.
+\end{enumerate}
+
+Somit können wir den Vorteil der Bluetooth-Mobilität nutzen und die daraus resultierende Schwierigkeit fehlender Werte sehr leicht korrigieren.
