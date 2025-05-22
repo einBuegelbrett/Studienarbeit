@@ -5,7 +5,7 @@
 
 // Wir "versprechen", dass es diese Funktionen gibt:
 void setupBLE();
-void sendSensorData(const String& data);
+void sendSensorData(const char* data);
 bool isBLEConnected();
 
 #endif

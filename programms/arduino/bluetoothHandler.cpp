@@ -1,7 +1,7 @@
 #include "bluetoothHandler.h"
 
 BLEService sensorService("180C"); // eigene UUID oder Standard
-BLECharacteristic sensorCharacteristic("2A56", BLERead | BLENotify, 50);
+BLECharacteristic sensorCharacteristic("2A56", BLERead | BLENotify, 120);
 
 void setupBLE() {
     if (!BLE.begin()) {
@@ -21,11 +21,11 @@ void setupBLE() {
     Serial.println("BLE aktiv – warte auf Verbindung...");
 }
 
-void sendSensorData(const String& data) {
-    BLEDevice central = BLE.central();  // Wer ist verbunden?
+void sendSensorData(const char* data) {
+    BLEDevice central = BLE.central();
 
     if (central && central.connected()) {
-        sensorCharacteristic.writeValue(data.c_str());
+        sensorCharacteristic.writeValue(data);
     }
 }
 

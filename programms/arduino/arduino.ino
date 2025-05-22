@@ -5,11 +5,11 @@ unsigned long startTime;
 const unsigned long duration = 125000; // 125 Sekunden in Millisekunden
 const unsigned long interval = 500;    // Daten alle 500 ms
 unsigned long lastSendTime = 0;
-bool messungAktiv = true;
+bool messungAktiv = false;
+int packetCounter = 0;
 
 void setup() {
     Serial.begin(115200);
-    while (!Serial);
 
     if (!IMU.begin()) {
         Serial.println("IMU-Sensor nicht gefunden!");
@@ -18,8 +18,23 @@ void setup() {
 
     Serial.println("IMU-Sensor bereit!");
     setupBLE();
-    delay(10000); // Wartezeit für die Verbindung
+
+    // Warten bis Bluetooth verbunden ist
+    Serial.println("Warte auf Bluetooth-Verbindung...");
+    while (!isBLEConnected()) {
+        delay(500);
+    }
+
+    Serial.println("Bluetooth verbunden – Messung startet");
+        // Eingebaute LED 2x blinken als Startsignal
+    for (int i = 0; i < 10; i++) {
+        digitalWrite(LED_BUILTIN, HIGH);
+        delay(200);
+        digitalWrite(LED_BUILTIN, LOW);
+        delay(200);
+    }
     startTime = millis();
+    messungAktiv = true;
 }
 
 void loop() {
@@ -35,6 +50,10 @@ void loop() {
 
     // Nur weitermachen, wenn Messung noch aktiv
     if (messungAktiv && (currentTime - lastSendTime >= interval)) {
+        digitalWrite(LED_BUILTIN, HIGH); // LED einschalten um zu zeigen, dass Daten gesendet werden
+        delay(100);
+        digitalWrite(LED_BUILTIN, LOW);
+        delay(100);
         if (IMU.accelerationAvailable() && IMU.gyroscopeAvailable() && IMU.magneticFieldAvailable()) {
             float ax, ay, az;
             float gx, gy, gz;
@@ -44,18 +63,15 @@ void loop() {
             IMU.readGyroscope(gx, gy, gz);
             IMU.readMagneticField(mx, my, mz);
 
-            String imuData = String(ax, 2) + ";" + String(ay, 2) + ";" + String(az, 2) + ";" + 
-                             String(gx, 2) + ";" + String(gy, 2) + ";" + String(gz, 2) + ";" +
-                             String(mx, 2) + ";" + String(my, 2) + ";" + String(mz, 2);
-
-            Serial.println(imuData);
-
+           char imuData[120];
+           snprintf(imuData, sizeof(imuData), "%d;%.2f;%.2f;%.2f;%.2f;%.2f;%.2f;%.2f;%.2f;%.2f", packetCounter, ax, ay, az, gx, gy, gz, mx, my, mz);
             if (isBLEConnected()) {
                 sendSensorData(imuData);
+                packetCounter++;
+
             } else {
                 Serial.println("Nicht verbunden – Daten werden übersprungen.");
             }
-
             lastSendTime = currentTime;
         }
     }
