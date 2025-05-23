@@ -16,24 +16,24 @@ Ein direkter Vergleich beider Übertragungsmethoden ist in Tabelle \ref{tab:ble_
 \def\arraystretch{1.5}
 \begin{table}[h]
 	\centering
-	\resizebox{\textwidth}{!}{%
+	\resizebox{\textwidth}{!}{
 		\begin{tabular}{|l|l|l|}
 			\hline
-			\textbf{Kriterium} & \textbf{Bluetooth Low Energy (BLE)} & \textbf{Kabel} \
+			\textbf{Kriterium} & \textbf{Bluetooth Low Energy (BLE)} & \textbf{Kabel} \\
 			\hline
-			Datenübertragungsrate & Niedrig bis mittel & Hoch \
+			Datenübertragungsrate & Niedrig bis mittel & Hoch \\
 			\hline
-			Latenz & Höher & Niedriger \
+			Latenz & Höher & Niedriger \\
 			\hline
-			Störungsanfälligkeit & Höher & Niedriger \
+			Störungsanfälligkeit & Höher & Niedriger \\
 			\hline
-			Mobilität & Hoch & Niedrig \
+			Mobilität & Hoch & Niedrig \\
 			\hline
-			Stromverbrauch & Niedrig & Kein zusätzlicher Verbrauch \
+			Stromverbrauch & Niedrig & Kein zusätzlicher Verbrauch \\
 			\hline
-			Komplexität der Implementierung & Hoch & Niedrig \
+			Komplexität der Implementierung & Hoch & Niedrig \\
 			\hline
-		\end{tabular}%
+		\end{tabular}
 	}
 	\caption{Vergleich von BLE und Kabel für die Datenübertragung}
 	\label{tab:ble_vs_kabel}
@@ -41,6 +41,15 @@ Ein direkter Vergleich beider Übertragungsmethoden ist in Tabelle \ref{tab:ble_
 \egroup
 
 Zusammenfassend lässt sich sagen, dass Kabel in fast allen Bereichen besser ist: Die Datenübertragungsrate ist höher, es ist weniger störanfällig und viel einfacher zu implementieren, da keine initiale Verbindung aufgebaut werden muss. In einem Punkt ist jedoch eine Bluetooth-Verbindung dem Kabel überlegen: die Mobilität. Wie bei den vorherigen Schwierigkeiten erkannt wurde, stellt der Arduino aufgrund seines Gewichts eine physische Last dar und könnte die Bewegungen einschränken. Die Hinzufügung des Raspberry Pis würde diese Last noch weiter erhöhen. Dank der Bluetooth-Verbindung müssen wir den Raspberry nicht am Körper anbringen, können ihn aber in der Nähe lassen. Die maximale Reichweite von Bluetooth beträgt 60 Meter. \cite{eridani2021comparative} Das reicht für die spätere Anwendung aus. Die Schwierigkeit, die sich daraus ergibt, ist jedoch, dass wie in der Tabelle \ref{tab:ble_vs_kabel} zu sehen ist die höhere Störungsanfälligkeit zu beachten ist.
+
+\section{Energieversorgung}
+Die Energieversorgung ist ein entscheidender Faktor, sowohl für die Stromversorgung der Sensoren als auch für die Mobilität der Testperson. Eine zuverlässige Energiequelle ist essenziell, damit die Sensoren kontinuierlich Daten erfassen können. Ein erhöhtes Gewicht, wie es durch eine Powerbank entsteht, kann jedoch die Bewegungsfähigkeit der Testpersonen erheblich beeinträchtigen \cite{monfrini2023technological}. Dadurch werden die Messdaten verfälscht, da die Bewegungen nicht mehr natürlich und ungehindert ausgeführt werden können. Im Folgenden werden zwei Aspekte der Energieversorgung diskutiert: die Positionierung und das Gewicht der Powerbank.
+
+\subsection{Powerbank-Positionierung}
+Für die Mobilität und den Komfort der Testperson ist die Positionierung der Powerbank zur Versorgung des Sensors von großer Bedeutung. Das Problem bei Powerbanks ist, dass sie, wenn sie nicht gut platziert sind, der Testperson im Weg stehen können. Eine optimale Position sollte die Bewegungsfreiheit nicht einschränken und gleichzeitig einen einfachen Zugang zur Powerbank ermöglichen, sodass der Sensor leicht ausgeschaltet werden kann. Mögliche Positionen, um diese Einschränkung zu vermeiden, sind die Taille, der Rücken oder die Oberschenkel, da diese Körperteile am stabilsten sind. Am vorteilhaftesten ist eine Positionierung an der Taille, da sie sich in der Nähe des Körperschwerpunkts befindet und die Bewegungen des gesamten Körpers somit weniger beeinträchtigt als an einem anderen Ort, an dem das zusätzliche Gewicht zu Ungleichheiten führt. Hinzu kommt, dass die Powerbank an der Taille platziert wird, wo sich ohnehin der Arduino befindet. Beide können zusammen in einer Bauchtasche verstaut werden, die an der Taille befestigt wird. Damit die Tasche nicht zur Beeinträchtigung wird, wird darauf geachtet, dass sie gut sitzt. Die Testperson wird außerdem darauf hingewiesen, dass sie aufpassen soll, mit ihren Armen nicht dranzukommen.
+
+\subsection{Powerbank-Gewicht}
+Das Gewicht der Powerbank ist entscheidend, denn eine schwere Powerbank erhöht das Gesamtgewicht und führt dazu, dass sich die Testperson schneller ermüdet. Das ist beispielsweise beim Rennen ungünstig. Daher wurde für das Projekt eine kleine Powerbank mit geringem Gewicht ausgewählt, die dennoch die benötigte Kapazität und Leistungsfähigkeit bietet.
 
 \subsection{Mögliche Rekonstruktionsstrategien bei Datenlücken}
 Bei der Datenübertragung per Bleutooth können gelegentlich Datenlücken auftreten, die durch verschiedene Faktoren wie Störungen,  kurze Verbindungsabbrüche oder Hardwarefehler verursacht werden. Um diese Lücken zu schließen und die Datenintegrität zu gewährleisten, gibt es verschiedene Rekonstruktionsstrategien. Ein Ansatz zur Lösung von Problemen mit unvollständigen Daten ist die Anwendung von Imputationsverfahren wie die Mittelwertsubstitution. \cite{noor2015comparison} Im Falle eines kurzen Verbindungsabbruchs und des daraus resultierenden Fehlens eines Wertes bietet sich die gerade genannte Mittelwertsubstitution. Es wird der Mittelwerts der unmittelbar vor und nach der Lücke liegenden Datenpunkte berechnet. Diese Methode ist besonders geeignet für Zeitreihendaten, bei denen die Werte in der Nähe der Lücke als repräsentativ für die fehlenden Daten angenommen werden können. So verläuft der Prozess dann ab:
@@ -78,9 +87,6 @@ Bei der Erfassung und Analyse von Bewegungsdaten spielen Umwelteinflüsse eine e
 \end{itemize}
 
 Um die Genauigkeit und Zuverlässigkeit der Bewegungsanalyse zu gewährleisten und die oben genannten Umwelteinflüsse zu minimieren, ist es entscheidend, standardisierte Testbedingungen zu schaffen. Eine effektive Lösung besteht darin, die Tests in einem kontrollierten Umfeld durchzuführen, wie bereits bei der Vermeidung von Verzerrungen erwähnt. Beispielsweise kann ein Laufband in einem klimatisierten Raum verwendet werden, um konstante Bedingungen zu gewährleisten. Der Raum sollte gleichmäßig gekühlt sein, um Temperaturschwankungen zu vermeiden. Elektromagnetische Störungen sollten durch Abschirmungen minimiert werden. Um den Einfluss des Bewegungsziels zu kontrollieren, sollten den Testpersonen klare und einheitliche Anweisungen gegeben werden. Im Testraum sollten Markierungen platziert werden, um sicherzustellen, dass alle Testpersonen dieselben Bewegungsziele verfolgen. Durch diese Maßnahmen können konsistente und vergleichbare Daten gesammelt werden, die für die Entwicklung und Optimierung von Bewegungserkennungssystemen von großer Bedeutung sind.
-
-\section{Hardware}
-Eine der Hauptschwierigkeiten bei der Erfassung von Bewegungsdaten mit dem Arduino besteht in der Platzierung und dem Gewicht der Energieversorgung. Da der Arduino für mobile Anwendungen eine externe Stromquelle wie eine Powerbank benötigt, kann das zusätzliche Gewicht die natürlichen Bewegungsabläufe beeinträchtigen. Besonders beim Rennen kann die Powerbank störend wirken und die Bewegungsfreiheit einschränken. Ein erhöhtes Gewicht kann die Bewegungsfähigkeit der versuchenden erheblich beeinträchtigen \cite{monfrini2023technological} und somit zu verfälschten Messdaten führen, da die Bewegungen nicht mehr natürlich und ungehindert ausgeführt werden. Es ist daher wichtig, eine leichte und ergonomische Lösung für die Energieversorgung zu finden, um die Genauigkeit der Bewegungserfassung zu gewährleisten.
 
 \section{Messfrequenz und Datenerfassung}
 Eine zentrale Herausforderung ist die Festlegung der optimalen Messfrequenz. Eine zu niedrige Frequenz kann dazu führen, dass wichtige Bewegungsmuster nicht erfasst werden, während eine zu hohe Frequenz eine große Menge an Daten erzeugt, die schwer zu verarbeiten sind und die Systemleistung beeinträchtigen kann. Zusätzlich kann es durch Verzögerungen oder Signalstörungen zu Datenlücken kommen, die die Analyse verfälschen.
