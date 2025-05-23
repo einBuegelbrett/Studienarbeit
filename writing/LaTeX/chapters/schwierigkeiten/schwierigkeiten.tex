@@ -80,17 +80,87 @@ Um die Genauigkeit und Zuverlässigkeit der gesammelten Daten zu gewährleisten,
 Ein weiterer wichtiger Aspekt ist die Frage, wie viel Variation erforderlich ist, um aussagekräftige Ergebnisse zu erzielen. Eine zu geringe Variation könnte dazu führen, dass wichtige Unterschiede zwischen den Testpersonen nicht erfasst werden. Eine zu große Variation könnte hingegen die Vergleichbarkeit der Ergebnisse beeinträchtigen. Um genügend Variation einzubringen, wurde entschieden, einen gleichen Anteil an Frauen und Männern unterschiedlicher Größe als Testsubjekte zu wählen. Dazu wird eine Pilotstudie durchgeführt, um die optimale Variation zu bestimmen. Auf Basis dieser Daten können dann die endgültigen Testbedingungen festgelegt werden, die eine ausreichende Variation gewährleisten, ohne die Vergleichbarkeit der Ergebnisse zu gefährden.
 
 \section{Umwelteinflüsse}
-Bei der Erfassung und Analyse von Bewegungsdaten spielen Umwelteinflüsse eine entscheidende Rolle. Verschiedene Umweltfaktoren können die Genauigkeit und Zuverlässigkeit der gesammelten Daten beeinflussen. Im Folgenden werden einige der wichtigsten Umwelteinflüsse erläutert und abschließend eine Lösung präsentiert.
+Bei der Erfassung und Analyse von Bewegungsdaten spielen Umwelteinflüsse eine zentrale Rolle. Äußere Bedingungen können sowohl die Qualität als auch die Vergleichbarkeit der Sensordaten beeinflussen. Zu den wichtigsten Einflussfaktoren gehören
 
 \begin{itemize}
-	\item \textbf{Bodenbeschaffenheit}: Die Beschaffenheit des Bodens, auf dem sich die Testperson bewegt, kann erhebliche Auswirkungen auf die Bewegungsmuster haben. Unterschiedliche Oberflächen wie Asphalt, Gras, Sand oder unebener Untergrund können die Art und Weise, wie eine Person geht oder läuft, beeinflussen. Beispielsweise erfordert das Gehen auf Sand mehr Muskelkraft und führt zu anderen Bewegungsmustern als das Gehen auf einer festen, ebenen Oberfläche.
-	\item \textbf{Umgebung}: Die Umgebung, in der die Tests durchgeführt werden, kann ebenfalls einen Einfluss haben. Enge Räume, Hindernisse oder belebte Umgebungen können die Bewegungsfreiheit einschränken und zu unnatürlichen Bewegungsmustern führen. Es ist daher wichtig, eine kontrollierte und standardisierte Testumgebung zu schaffen, um vergleichbare Ergebnisse zu erzielen.
+	\item \textbf{Bodenbeschaffenheit}: Die Art des Untergrunds, auf dem sich die Testperson bewegt, beeinflusst maßgeblich die Bewegungsdynamik. Ein weicher, nachgiebiger Boden wie Sand oder Waldboden erfordert eine höhere Muskelaktivität zur Stabilisierung, während harte Untergründe wie Asphalt ein anderes Kraftverhalten begünstigen.
+	\item \textbf{Umgebung}: Die Umgebung, in der die Tests durchgeführt werden, kann ebenfalls einen Einfluss haben. Enge Räume, Hindernisse oder belebte Umgebungen können die Bewegungsfreiheit einschränken und zu unnatürlichen Bewegungsmustern führen.
 	\item \textbf{Bewegungsziel}: Das Ziel der Bewegung kann ebenfalls eine Rolle spielen. Beispielsweise kann das Gehen zu einem bestimmten Ziel schneller und direkter sein als das Gehen ohne spezifisches Ziel. Dies kann zu unterschiedlichen Bewegungsmustern führen, die bei der Analyse berücksichtigt werden müssen.
 	\item \textbf{Temperatur}: Die Umgebungstemperatur kann die Muskelaktivität und die allgemeine Leistungsfähigkeit der Testperson beeinflussen. Extreme Temperaturen, sowohl Hitze als auch Kälte, können zu Ermüdung, Muskelsteifheit oder anderen physiologischen Veränderungen führen, die sich auf die Bewegungsmuster auswirken.
 	\item \textbf{Elektromagnetische Störungen}: Elektromagnetische Störungen können die Signalqualität der Sensoren beeinträchtigen. Diese Störungen können von verschiedenen Quellen wie elektronischen Geräten, Stromleitungen oder Funkwellen ausgehen. Um genaue und zuverlässige Daten zu gewährleisten, ist es wichtig, elektromagnetische Störungen zu minimieren.
 \end{itemize}
 
-Um die Genauigkeit und Zuverlässigkeit der Bewegungsanalyse zu gewährleisten und die oben genannten Umwelteinflüsse zu minimieren, ist es entscheidend, standardisierte Testbedingungen zu schaffen. Eine effektive Lösung besteht darin, die Tests in einem kontrollierten Umfeld durchzuführen, wie bereits bei der Vermeidung von Verzerrungen erwähnt. Beispielsweise kann ein Laufband in einem klimatisierten Raum verwendet werden, um konstante Bedingungen zu gewährleisten. Der Raum sollte gleichmäßig gekühlt sein, um Temperaturschwankungen zu vermeiden. Elektromagnetische Störungen sollten durch Abschirmungen minimiert werden. Um den Einfluss des Bewegungsziels zu kontrollieren, sollten den Testpersonen klare und einheitliche Anweisungen gegeben werden. Im Testraum sollten Markierungen platziert werden, um sicherzustellen, dass alle Testpersonen dieselben Bewegungsziele verfolgen. Durch diese Maßnahmen können konsistente und vergleichbare Daten gesammelt werden, die für die Entwicklung und Optimierung von Bewegungserkennungssystemen von großer Bedeutung sind.
+Um den Einfluss dieser Umweltfaktoren zu minimieren und vergleichbare Datensätze zu erhalten, ist die Schaffung standardisierter Testbedingungen, wie in Abschnitt 4.3 beschrieben, unverzichtbar. In diesem Zusammenhang wurden konkrete Maßnahmen festgelegt. Die Tests finden ausschließlich auf befestigten, möglichst geraden Straßen statt, die jedoch auch gezielte Richtungswechsel enthalten, um die Funktion des Gyrosensors zu erfassen. Die Testläufe sollen möglichst am späten Abend oder in ruhigen Zeitfenstern durchgeführt werden, um störende Umwelteinflüsse wie Verkehr und Menschenmengen zu vermeiden. Zudem werden alle Testpersonen im Voraus über den Ablauf informiert, um eine einheitliche Durchführung zu gewährleisten. So lässt sich trotz des Verzichts auf ein vollständig kontrolliertes Innenraumsetting eine ausreichend standardisierte Umgebung schaffen, die zuverlässige und vergleichbare Ergebnisse ermöglicht.
 
-\section{Messfrequenz und Datenerfassung}
-Eine zentrale Herausforderung ist die Festlegung der optimalen Messfrequenz. Eine zu niedrige Frequenz kann dazu führen, dass wichtige Bewegungsmuster nicht erfasst werden, während eine zu hohe Frequenz eine große Menge an Daten erzeugt, die schwer zu verarbeiten sind und die Systemleistung beeinträchtigen kann. Zusätzlich kann es durch Verzögerungen oder Signalstörungen zu Datenlücken kommen, die die Analyse verfälschen.
+\section{Messungsqualität}
+\subsection{Samplingrate und Datenqualität}
+
+Die Wahl der Samplingrate stellt eine zentrale Herausforderung dar. Eine niedrigere Samplingrate, beispielsweise 500\,ms (2\,Hz), reduziert die Wahrscheinlichkeit von Datenverlusten, da weniger Daten pro Zeiteinheit übertragen werden müssen. Dies entlastet die drahtlose Übertragung via Bluetooth Low Energy (BLE) und verringert das Risiko von Paketverlusten durch Übertragungsengpässe.
+
+Allerdings kann eine zu niedrige Samplingrate die Genauigkeit bei der Erfassung dynamischer Bewegungen erheblich beeinträchtigen. Studien zeigen, dass höhere Samplingraten, etwa 200 ms (5 Hz) oder schneller, die Detektion und Klassifikation von Aktivitäten mit schnellen Bewegungswechseln, wie beispielsweise Rennen, deutlich verbessern können \cite{turn0search0}. Eine feinere zeitliche Auflösung ermöglicht es, auch kurzzeitige und schnelle Bewegungsmuster präzise zu erfassen, was insgesamt zu einer besseren Analyse und Klassifikation der Aktivität führt \cite{niazi2017statistical}.
+
+Die Herausforderung liegt somit in der Abwägung: Höhere Samplingraten liefern zwar detailliertere Daten, erhöhen jedoch auch die Wahrscheinlichkeit von Paketverlusten aufgrund technischer Limitierungen wie der begrenzten Datenrate von BLE (vgl. Abschnitt 4.1). Um solchen Verlusten entgegenzuwirken, müssten beispielsweise Puffermechanismen eingesetzt werden, was jedoch die Systemkomplexität erhöht und zusätzliche Ressourcen erfordert. Alternativ könnte eine höhere Samplingrate gewählt werden, was jedoch zu Einbußen in der Genauigkeit führen kann.
+
+\subsection{Dauer der Datenerhebung pro Aktivitätsklasse}
+
+Ein weiterer Aspekt ist die Festlegung der Dauer der Datenerhebung je Aktivitätsklasse. Eine zu kurze Erhebungsdauer, etwa eine Minute, kann, insbesondere bei höherer Samplingrate, dazu führen, dass nicht ausreichend Daten gesammelt werden, um robuste Klassifikationen zu ermöglichen.
+
+Auf der anderen Seite kann eine zu lange Erhebungsdauer, beispielsweise fünf Minuten, bei anstrengenden Aktivitäten wie Rennen zur Ermüdung der Testpersonen führen. Dies beeinträchtigt die Datenqualität, da sich die Bewegungsmuster ungewollt verändern können, etwa durch den Übergang von konstantem Rennen zu einem Wechsel zwischen Rennen und Gehen \cite{long2013walking}.\\
+
+Die Festlegung der Erhebungsdauer erfordert daher eine sorgfältige Abwägung zwischen der benötigten Datenmenge und der physischen Belastung der Teilnehmenden, um sowohl eine ausreichende Datenbasis als auch natürliche Bewegungsabläufe sicherzustellen.
+
+\section{Datenspeicherung}
+Die Speicherung großer Sensordatensätze stellt mehrere Herausforderungen dar, insbesondere bei Skalierbarkeit, Persistenz und Zuverlässigkeit der Speicherung. Durch die viele Datenmengen Anforderung die dieses Projekt mit sich bringt.\\
+Dabei ergeben sich unter anderem folgende Probleme:
+\begin{itemize}
+	\item \textbf{Datenvolumen und Schreibgeschwindigkeit:} Bei Samplingraten von 200--500 ms entstehen schnell große Datenmengen. Die Datenbank muss also eine hohe Schreibgeschwindigkeit mit sich bringen, ohne dass es zu Datenverlust kommt.
+	\item \textbf{Replikation und Ausfallsicherheit:} Um Datenverluste durch Systemabstürze oder Übertragungsfehler zu vermeiden, sollte die Speicherung redundant erfolgen.
+\end{itemize}
+
+\subsection{Vergleich möglicher Datenbanksysteme}
+
+Die Wahl des Datenbanksystems stellt eine zentrale Entscheidung dar, da sie maßgeblich über Performance und Zuverlässigkeit der Datenspeicherung entscheidet. In der folgenden Tabelle werden drei verbreitete Datenbanksysteme gegenübergestellt, um ihre Eignung für das Projekt zu bewerten:
+
+\bgroup
+\def\arraystretch{1.5}
+\begin{table}[h]
+	\centering
+	\resizebox{\textwidth}{!}{
+		\begin{tabular}{|l|c|c|c|}
+			\hline
+			\textbf{Kriterium} & \textbf{MySQL (relational)} & \textbf{Redis (In-Memory)} & \textbf{Cassandra (NoSQL)} \\
+			\hline
+			Datenmodell & Relational & Key-Value & Wide Column \\
+			\hline
+			Schreibgeschwindigkeit & Mittel & Sehr hoch & Hoch \\
+			\hline
+			Lesezugriff & Schnell (Index-basiert) & Sehr schnell & Gut bei großen Datenmengen \\
+			\hline
+			Persistenz & Ja & Eingeschränkt & Ja \\
+			\hline
+			Skalierbarkeit & Vertikal & Eingeschränkt & Horizontal (gut) \\
+			\hline
+			Replikation & Möglich, komplex & Eingeschränkt & Integriert, automatisch \\
+			\hline
+			Eignung für große Datenmengen & Eingeschränkt & Nein (primär Cache) & Sehr gut \\
+			\hline
+			Komplexität im Betrieb & Niedrig & Niedrig & Mittel \\
+			\hline
+		\end{tabular}
+	}
+	\caption{Vergleich ausgewählter Datenbanksysteme}
+	\label{tab:db-vergleich}
+\end{table}
+\egroup
+
+\subsection{Entscheidung für Cassandra}
+
+Auf Basis der genannten Anforderungen erwies sich \textbf{Apache Cassandra} als geeignetste Option. Die Datenbank ist speziell für hohe Schreiblasten und horizontale Skalierbarkeit ausgelegt, was sie ideal für kontinuierlich eingehende Sensordaten macht. Darüber hinaus unterstützt Cassandra eingebaute Replikationsmechanismen, die eine erhöhte Ausfallsicherheit gewährleisten. Damit konnte ein zentrales Risiko – der Verlust von Daten durch Paketabbrüche oder Systemausfälle – reduziert werden. Die Wahl nicht Redis zu nutzen kam schlussendlich zum Punkt zurück das die Datenpersistenz nur Eingeschränkt möglich ist was leider bei verschiedenen Testpersonen nicht machbar ist, wodurch eine Persistentere Lösung effektiver ist, auch wenn man dafür ein wenig Schreibgeschwindigkeit einbüßen muss.
+
+\section{Datenaufbereitung}
+%TODO
+HIER GIBT ES NOCH NICHTS
+
+\chapter{Umsetzung - Erstellung des Prototyps}
+%TODO
+HIER GIBT ES NOCH NICHTS
