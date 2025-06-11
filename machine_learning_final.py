@@ -28,6 +28,8 @@ for file in all_files:
     data.append(features)
 
     label = file.split("_")[-1].replace(".csv", "")
+    if label == "joggen":
+        label = "laufen"
     labels.append(label)
 
 X = pd.DataFrame(data, columns=feature_names)
@@ -138,15 +140,16 @@ plt.savefig("time_series_pretty.png")
 plt.show()
 
 # Boxplot der Feature-Werte für jede Klasse separat
-plt.figure(figsize=(14, 8))
+plt.figure(figsize=(14, 16))  # Erhöhe die Höhe des gesamten Plots
 for i, label in enumerate(le.classes_):
     plt.subplot(3, 1, i + 1)
     sns.boxplot(data=X[y_encoded == i], orient="h", palette="Set2")
     plt.title(f"{label} - Feature Values", fontsize=14)
     plt.xlabel("Values", fontsize=12)
-    plt.yticks(ticks=np.arange(len(X.columns)), labels=X.columns, fontsize=8)
+    plt.yticks(ticks=np.arange(len(X.columns)), labels=X.columns, fontsize=6)  # Reduziere die Fontgröße der y-Achsen-Beschriftungen
     plt.tight_layout()
 
+plt.subplots_adjust(hspace=0.5)  # Erhöhe den vertikalen Abstand zwischen den Subplots
 plt.savefig("boxplots_features_by_class_separate.png")
 plt.show()
 
