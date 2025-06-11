@@ -2,7 +2,7 @@ import pandas as pd
 from datetime import datetime, timedelta
 
 # Daten laden
-df = pd.read_csv('/path/to/csv/my_table.csv', sep=';')
+df = pd.read_csv('/home/sven/Dokumente/dhbw/studienarbeit/Studienarbeit/rennen5.csv', sep=',')
 
 df['timestamp'] = pd.to_datetime(df['timestamp'])
 
@@ -10,13 +10,13 @@ df['timestamp'] = pd.to_datetime(df['timestamp'])
 df = df.sort_values('timestamp').reset_index(drop=True)
 
 # Labels definieren 
-labels = ['gehen', 'joggen', 'gehen', 'gehen', 'joggen', 'rennen', 'gehen']
+labels = ['rennen']
 num_segments = len(labels)
 
 # Länge jedes Abschnitts (nach Anzahl Zeilen)
 segment_length = len(df) // num_segments
 
-packet_counter = 1
+packet_counter = 333
 
 # Jeden Abschnitt verarbeiten
 for i in range(num_segments):
@@ -56,7 +56,7 @@ for i in range(num_segments):
 
             # CSV speichern
             packet_df.to_csv(
-                f'/path/to/daten/packet_{packet_counter}_{segment_label}.csv', index=False
+                f'/home/sven/Dokumente/dhbw/studienarbeit/Studienarbeit/daten/packet_{packet_counter}_{segment_label}.csv', index=False
             )
             packet_counter += 1
         

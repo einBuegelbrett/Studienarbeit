@@ -1,0 +1,104 @@
+\chapter{Ergebnis}
+In diesem Teil werden die Ergebnisse näher erforscht.
+
+\section{Datenverteilung und Modellvalidierung}
+Unsere Klssen sind mit diesen Mengen vertretten, also das ist die folgende anzahl an Packete pro Klasse:
+
+\begin{itemize}
+	\item \textbf{gehen}: 148
+	\item \textbf{joggen}: 98
+	\item \textbf{rennen}: 98
+\end{itemize}
+
+\subsection{Klassenhäufigkeit}
+Die Klasse "gehen\dq\, kommt etwa doppelt so häufig vor wie die beiden anderen. Das kann den Klassifikator beeinflussen, da ihm mehr Daten für die Klasse "gehen\dq\, vorliegen. Beim Random Forest bedeutet dies, dass mehr Entscheidungsbäume auf die Klasse "gehen\dq\, spezialisiert sein könnten, was zu einer besseren Klassifikation dieser Klasse führen kann. Allerdings könnte dies auch zu einer Verzerrung führen, durch die die anderen Klassen weniger gut erkannt werden. Um dies auszugleichen, wurde beim Classifier die Option "class\_weight=‘balanced‘\dq\, gewählt, um sicherzustellen, dass jede Klasse gleichmäßig berücksichtigt wird. Diese Methode reduziert die Verzerrung durch ungleiche Klassenhäufigkeiten und verbessert die Leistung des Modells für alle Klassen. Bei der späteren Konfusionsmatrix sind jedoch kleine Nebenwirkungen erkennbar.
+
+\subsection{Overfitting}
+Die Größe von 344 Paketen ist für unseren Fall ausreichend. Trotzdem sollte auf Overfitting geachtet werden. Dieses tritt auf, wenn ein Modell zu stark an die Trainingsdaten angepasst wird und dabei auch das Rauschen und die Besonderheiten der Trainingsdaten lernt, anstatt allgemeingültige Muster zu erkennen. Dies führt dazu, dass das Modell auf den Trainingsdaten eine hohe Genauigkeit aufweist, auf neuen, unbekannten Daten jedoch schlecht generalisiert. \cite{dietterich1995overfitting} Um das Problem zu lösen, wurde eine fünffache stratifizierte Kreuzvalidierung durchgeführt, um die Generalisierungsfähigkeit des Modells zu überprüfen. Dazu wurde der Datensatz in fünf Teile aufgeteilt und das Modell mehrfach trainiert und validiert, um sicherzustellen, dass es auf verschiedenen Teilmengen der Daten gut funktioniert. Die erzielten Cross-Validation-Accuracy-Scores sind: [0,98550725; 0,94202899; 0,94202899; 0,95652174; 0,91176471]. Die durchschnittliche Genauigkeit beträgt somit 0,95 mit einer Standardabweichung von 0,02.
+Diese Ergebnisse zeigen, dass das Modell stabil und zuverlässig ist, da die Genauigkeit über die verschiedenen Folds hinweg konsistent hoch bleibt und die Standardabweichung gering ist.
+
+\section{Analyse mit Grafiken}
+Nun werden die Ergebnisse mithilfe von Grafiken analysiert.
+
+\subsection{Analyse der Konfusionsmatrix}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\linewidth]{confusion}
+	\caption{Konfusions Matrix  (eigene Abbildung)}
+	\label{fig:confusion}
+\end{figure}
+
+Die in Abbildung \ref{fig:confusion} dargestellte Konfusionsmatrix gibt Aufschluss darüber, wie gut das trainierte Modell die drei Bewegungsarten "Gehen\dq, "Laufen\dq\, und "Rennen\dq\, unterscheiden kann. Auf der vertikalen Achse sind die tatsächlichen Klassen (Ground Truth) und auf der horizontalen Achse die vom Modell vorhergesagten Klassen dargestellt.
+
+Das Modell erkennt die Aktivität "Gehen\dq\, mit sehr hoher Genauigkeit: Von insgesamt 148 tatsächlichen "Gehen\dq-Instanzen wurden 146 korrekt klassifiziert, nur je eine Instanz wurde fälschlicherweise als "Laufen\dq\, bzw. "Rennen\dq\, vorhergesagt. Auch "Laufen\dq\, wurde weitgehend korrekt erkannt. Von 98 tatsächlichen Instanzen wurden 91 korrekt klassifiziert, während 2 als "Gehen“\dq\, und 5 als "Rennen\dq\, fehlklassifiziert wurden. Die Aktivität "Rennen\dq\, zeigt die vergleichsweise schwächste Leistung: Von 98 tatsächlichen Instanzen wurden 89 korrekt klassifiziert, 5 wurden als "Laufen\dq\, und 4 als "Gehen\dq\, fehlklassifiziert.
+
+Diese Ergebnisse deuten darauf hin, dass das Modell besonders zuverlässig zwischen den Bewegungen "Gehen\dq\, und "Laufen\dq\, unterscheiden kann. Die vergleichsweise höhere Fehlerrate bei der Klassifikation von "Rennen\dq\, lässt sich damit erklären, dass die sensorischen Merkmale von langsamem "Rennen\dq\, und schnellem "Laufen\dq\, in bestimmten Fällen überlappen, was die Trennbarkeit erschwert. Die 4 Fehlklassifizierungen von "Gehen\dq\, anstatt "Rennen\dq\, lassen sich damit erklären, dass bei der Paketgenerierung die Daten nicht durch fünf teilbar waren, wodurch einige Pakete viel zu wenige Daten hatten und somit fälschlicherweise als "Gehen\dq\, klassifiziert wurden, da diese Klasse die meisten Daten aufweist.
+
+Insgesamt zeigt die Matrix jedoch ein robustes Klassifikationsverhalten, insbesondere bei der Unterscheidung von \textit{Gehen} und den anderen beiden Klassen. 
+
+\subsection{Analyse der Feature-Wichtigkeit}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\linewidth]{feature_importances}
+	\caption{Feature Importances (eigene Abbildung)}
+	\label{fig:feature_importances}
+\end{figure}
+
+Die in Abbildung  dargestellten Feature Importances geben Aufschluss darüber, welche Eingabegrößen für das Modell am bedeutendsten waren, um zwischen den Bewegungsarten 
+
+Die in Abbildung \ref{fig:feature_importances} dargestellten Feature Importances zeigen, welche Eingabegrößen für das Modell am wichtigsten waren, um zwischen den Bewegungsarten "Gehen\dq, "Laufen\dq\, und "Rennen\dq\, zu unterscheiden. Die Wichtigkeit wurde dabei durch das trainierte Random-Forest-Modell anhand der Beitragshäufigkeit zur Reduktion der Gini-Impurity bestimmt.
+
+Es ist zu bemerken, dass die Standardabweichung der Beschleunigung in x-Richtung (\texttt{std\_acc\_x}) den mit Abstand größten Einfluss auf die Klassifikation hatte, gefolgt vom Maximalwert (\texttt{max\_acc\_x}) und dem Minimalwert (\texttt{min\_acc\_x}) der Beschleunigung in x-Richtung. Aufgrund dieser Dominanz der Merkmale entlang der x-Achse, die in vielen Sensoranordnungen mit der Vorwärtsbewegung korrespondiert, lässt sich schließen, dass die Bewegungsdynamik in Längsrichtung besonders charakteristisch für die Unterscheidung der Bewegungsformen ist.
+
+Auch Merkmale aus den Gyroskop-Daten, insbesondere \texttt{std\_gyro\_y} und \texttt{min\_gyro\_y}, sind relevant. Dies deutet darauf hin, dass Rotationsbewegungen durch die Hüftbewegung ergänzende Informationen für die Klassifikation liefern.
+
+Die mittlere Beschleunigung und die mittleren Magnituden der Sensoren waren hingegen vergleichsweise irrelevant. Dies legt nahe, dass die absolute Intensität der Bewegung weniger entscheidend ist als ihre Variation und ihre Extremwerte.
+
+Zusammenfassend zeigt sich, dass vor allem die Schwankungsbreite und die Extremwerte der Beschleunigung entlang der x-Achse sowie bestimmte Rotationsmerkmale (Gyroskop) die wesentlichen Unterscheidungsmerkmale darstellen. Diese Erkenntnis kann in zukünftigen Arbeiten genutzt werden, um durch Feature-Selektion die Modellkomplexität zu reduzieren, ohne die Genauigkeit wesentlich zu beeinträchtigen.
+
+\subsection{Analyse der Intensität}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\linewidth]{time_series_intensity}
+	\caption{Zeitreihenplots der standardisierten Werte der Top 10 Features für Gehen, Laufen und Rennen (eigene Abbildung)}
+	\label{fig:time_series_intensity}
+\end{figure}
+
+Die Zeitreihenplots in Abbildung \ref{fig:time_series_intensity} zeigen die standardisierten Werte der zehn wichtigsten Features für die Aktivitäten Gehen, Laufen und Rennen. Mithilfe dieser Plots lässt sich die Intensität und Variabilität der Bewegungen während der verschiedenen Aktivitäten ablesen.
+
+\subsubsection{Gehen}
+Die standardisierten Werte für die Aktivität Gehen liegen meist zwischen -0,5 und 1,0. Die Variabilität der Werte ist moderat mit einigen Spitzenwerten, insbesondere bei den Features \texttt{min\_acc\_z} und \texttt{std\_gyro\_y}. Dies deutet darauf hin, dass die Intensität beim Gehen relativ niedrig und stabil ist, es jedoch gelegentlich zu stärkeren Bewegungen oder Veränderungen kommt.
+
+\subsubsection{Laufen}
+Die standardisierten Werte für die Aktivität Laufen liegen meist zwischen -2 und 2. Die Variabilität dieser Werte ist größer als beim Gehen. Deutliche Spitzenwerte sind bei den Features \texttt{std\_acc\_y} und \texttt{std\_gyro\_y}  zu beobachten. Dies deutet darauf hin, dass die Intensität beim Laufen höher ist als beim Gehen, mit größeren Schwankungen und häufigeren stärkeren Bewegungen.
+
+\subsubsection{Rennen}
+Die standardisierten Werte für die Aktivität Rennen liegen ebenfalls meist zwischen -2 und 2, ähnlich wie beim Laufen. Die Variabilität der Werte ist jedoch tendenziell etwas ausgeprägter mit häufigeren und stärkeren Spitzenwerten bei den Features \texttt{std\_acc\_y} und \texttt{std\_gyro\_y}. Dies deutet darauf hin, dass die Intensität beim Rennen ähnlich hoch wie beim Laufen ist, aber möglicherweise etwas höher und dynamischer, mit häufigeren und stärkeren Bewegungen.
+
+\subsubsection{Zusammenfassung und Vergleich}
+Zusammenfassend lässt sich sagen, dass die Intensität und Variabilität der Bewegungen beim Gehen, Laufen und Rennen zunehmen. Gehen ist durch eine niedrige und stabile Intensität gekennzeichnet, während Laufen und Rennen eine höhere und dynamischere Intensität zeigen. Die Variabilität und die Häufigkeit der Spitzenwerte nehmen in dieser Reihenfolge ebenfalls zu.
+
+\subsubsection{Fazit}
+Die Intensität in den Zeitreihenplots gibt Aufschluss über die Stärke und Dynamik der Bewegungen bei den Aktivitäten Gehen, Laufen und Rennen. Diese Informationen können nützlich sein, um die körperliche Aktivität und Dynamik bei verschiedenen Aktivitäten zu verstehen und zu vergleichen.
+
+\subsection{Analyse der Boxplots}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\linewidth]{boxplots}
+	\caption{Boxplots der Feature-Werte für die Aktivitäten Gehen, Laufen und Rennen (eigene Abbildung)}
+	\label{fig:boxplots}
+\end{figure}
+
+Die in Abbildung \ref{fig:boxplots} dargestellten Boxplots zeigen die Verteilung der Feature-Werte für die Aktivitäten Gehen, Laufen und Rennen. Mithilfe dieser Visualisierung lassen sich die Unterschiede in der Variabilität und den zentralen Tendenzen der Daten für jede Aktivität gut erkennen.
+
+\subsubsection{Gehen}
+Der Boxplot zur Aktivität "Gehen\dq\, zeigt, dass die meisten Featurewerte eng um den Median gruppiert sind. Dies deutet auf eine geringe Variabilität hin. Die Werte liegen hauptsächlich zwischen -0,5 und 0,5, wobei einige Ausreißer bis zu 1,5 reichen. Dies deutet darauf hin, dass die Bewegungen beim Gehen relativ stabil und konsistent sind, mit gelegentlichen Abweichungen.
+
+\subsubsection{Laufen}
+Der Boxplot für die Aktivität "Laufen\dq\, zeigt eine größere Variabilität der Feature-Werte als der Boxplot für die Aktivität "Gehen\dq. Die Werte sind über einen breiteren Bereich von etwa -6 bis 4 verteilt und konzentrieren sich um den Median. Es gibt zahlreiche Ausreißer, die auf eine höhere Dynamik und Variabilität der Bewegungen beim Laufen hindeuten. Diese größere Variabilität ist ein Indikator für die erhöhte Intensität und Komplexität der Bewegungen beim Laufen.
+
+\subsubsection{Rennen}
+Der Boxplot für die Aktivität „Rennen” zeigt die größte Variabilität der Feature-Werte unter den drei Aktivitäten. Die Werte sind über einen breiten Bereich von etwa -4 bis 3 verteilt und konzentrieren sich um den Median. Wie beim Laufen gibt es zahlreiche Ausreißer, die auf eine hohe Dynamik und Variabilität der Bewegungen beim Rennen hindeuten. Die Variabilität ist jedoch tendenziell etwas ausgeprägter als beim Laufen, was auf eine noch höhere Intensität und Komplexität der Bewegungen hindeutet.
+
+\subsection{Fazit}
+Die Boxplots verdeutlichen, dass die Variabilität der Feature-Werte beim Übergang vom Gehen zum Laufen und schließlich zum Rennen zunimmt. Gehen ist durch eine geringe Variabilität und stabile Bewegungen gekennzeichnet, Laufen und Rennen hingegen durch eine höhere Variabilität und dynamischere Bewegungen. Diese Unterschiede in der Variabilität sowie die zunehmenden zentralen Tendenzen der Daten sind wichtige Indikatoren für die Intensität und Komplexität der Bewegungen während der verschiedenen Aktivitäten. 
