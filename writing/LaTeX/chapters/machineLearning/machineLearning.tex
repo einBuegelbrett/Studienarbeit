@@ -2,41 +2,77 @@
 In diesem Teil werden die benötigte Datenreinigung, verschiedene Machine-Learning-Algorithmen und schließlich das Ergebnis präsentiert.
 
 \section{Datenreinigung}
-Die gemessenen Rohdaten sind in Tabelle \ref{tab:trainingsdaten} dargestellt. 
+Bevor die Rohdaten dem überwachten Machine-Learning-Algorithmus übergeben werden können, müssen sie zunächst aufbereitet und gelabelt werden. Dies umfasst die Bereinigung der Rohdaten, die Umwandlung der Zeitstempel, die Sortierung der Daten, das Labeling, die Aufteilung in 5-Sekunden-Pakete und die Feature-Extraktion. 
 
-\bgroup
-\def\arraystretch{1.5}
-	\begin{table}[h]
-		\centering
-		\resizebox{\textwidth}{!}{
-		\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
-			\hline
-			id & acc\_x & acc\_y & acc\_z & gyro\_x & gyro\_y & gyro\_z & mag\_x & mag\_y & mag\_z & timestamp \\
-			\hline
-			68... & -0.62 & -0.05 & 0.13 & -38.39 & 23346 & 36434 & 91 & 93 & 243 & 2025-05-20 12:22:03.646+0000 \\
-			\hline
-			ed... & -1.87 & 41275 & 0.21 & 24.23 & -21489999 & -33.69 & 10 & 71 & 212 & 2025-05-20 12:24:44.838+0000 \\
-			\hline
-			4e... & -0.66 & -0.55 & 0.02 & 40.95 & -13.37 & 0.43 & 75 & 104 & 260 & 2025-05-20 12:22:04.183+0000 \\
-			\hline
-			22... & -2.65 & -0.47 & -0.1 & -43.21 & 175.17 & 107.79 & -52 & 111 & 300 & 2025-05-20 12:23:17.673+0000 \\
-			\hline
-			1d... & -1.09 & -0.53 & 0.01 & -60.91 & -20.14 & -26.37 & 57 & 78 & 261 & 2025-05-20 12:20:25.462+0000 \\
-			\hline
-		\end{tabular}
-		}
-		\caption{gemessene Daten}
-		\label{tab:trainingsdaten}
-	\end{table}
-\egroup
+\subsection{Bereinigung der Rohdaten}
+Die Rohdaten enthalten verschiedene Attribute, darunter Beschleunigungsdaten (acc\_x, acc\_y, acc\_z), Gyroskopdaten (gyro\_x, gyro\_y, gyro\_z), Magnetometerdaten (mag\_x, mag\_y, mag\_z), eine ID und einen Zeitstempel. Ein wichtiger Schritt in der Datenreinigung ist das Entfernen der ID, da diese für das Training des Modells nicht relevant ist. Dies wird durch den folgenden Code erreicht:
 
-Bevor diese Daten dem überwachten Machine-Learning-Algorithmus übergeben werden können, müssen sie zunächst aufbereitet und gelabelt werden. Dies umfasst die Bereinigung der Rohdaten, die Aufteilung in geeignete Zeitfenster und die Zuordnung von Labels zu den jeweiligen Aktivitäten. 
+\begin{lstlisting}[language=Python]
+	df = df.drop(columns=['id'])
+\end{lstlisting}
+
+\subsection{Umwandlung der Zeitstempel}
+Die Zeitstempel müssen in ein geeignetes Format umgewandelt werden, um die Daten in 5-Sekunden-Pakete aufteilen zu können später. Dies wird durch die Umwandlung der Zeitstempel in ein Datetime-Format erreicht:
+
+\begin{lstlisting}[language=Python]
+	df['timestamp'] = pd.to_datetime(df['timestamp'])
+\end{lstlisting}
+
+\subsection{Sortierung der Daten}
+Die Daten werden nach den Zeitstempeln sortiert, um sicherzustellen, dass sie in chronologischer Reihenfolge vorliegen:
+
+\begin{lstlisting}[language=Python]
+	df = df.sort_values('timestamp').reset_index(drop=True)
+\end{lstlisting}
 
 \subsection{Labeling}
-Labels sind essenziell, da sie dem überwachten Lernalgorithmus die Unterscheidung und Klassifizierung der verschiedenen Aktivitäten ermöglichen. Da die Daten unsortiert in der Datenbank gespeichert werden, muss während der Datenerfassung erfasst werden, zu welchen Zeiten welche Aktivität durchgeführt wurde. Mithilfe der Zeitstempel kann anschließend ermittelt werden, welche Aktivität zu dieser Zeit ausgeführt wurde. Die gewählten Labels sind die Aktivitäten, die am Ende klassifiziert werden sollen, also "Gehen\dq, "Joggen\dq\, und "Rennen\dq. Die Daten werden mithilfe eines Python-Skripts verarbeitet. Dabei werden alle zu einem Durchlauf gehörenden Daten in einer separaten CSV-Datei gespeichert. Dadurch entstehen für jede Aktivität, wie beispielsweise "Gehen”, mehrere CSV-Dateien, die jeweils einen vollständigen Lauf enthalten. Dies entspricht Schritt 1, wie in Abbildung \ref{fig:pakete} zu sehen ist.
+Labels sind essenziell, da sie dem überwachten Lernalgorithmus die Unterscheidung und Klassifizierung der verschiedenen Aktivitäten ermöglichen. Da die Daten unsortiert in der Datenbank gespeichert werden, muss während der Erfassung erfasst werden, zu welchen Zeiten welche Aktivität durchgeführt wurde. Dies war anhand des Zeitstempels möglich. Die gewählten Labels sind die Aktivitäten, die am Ende klassifiziert werden sollen, also "Gehen\dq, "Joggen\dq\, und "Rennen\dq. Für das Labeling werden alle zu einem Durchlauf gehörenden Daten in einer separaten CSV-Datei gespeichert. Dadurch entstehen für jeden Durchlauf, beispielsweise "Gehen”, mehrere CSV-Dateien, die jeweils einen vollständigen Durchlauf enthalten. Dies entspricht Schritt 1, wie in Abbildung \ref{fig:pakete} zu sehen ist.
 
 \subsection{Aufteilung in 5 Sekunden Pakete}
-Das Ziel besteht darin, ein System zu entwickeln, das die aktuelle Bewegung einer Person erkennt. Rennt die Person beispielsweise, soll das System „Rennen” ausgeben. Die Herausforderung besteht darin, das System entsprechend zu trainieren. Zwar werden für eine Aktivität wie "Rennen\dq\, 2-minütige Daten aufgenommen, jedoch soll das System nicht erst nach 2 Minuten eine Antwort herausgeben, sondern sofort. Das System soll die Bewegung der Person möglichst schnell erkennen. Deswegen wurde überlegt, das System nicht auf die vollen zwei Minuten zu trainieren, sondern kleinere Pakete dieser zwei Minuten zu erstellen. Um die Paketgröße zu bestimmen, wurde Folgendes getan: Würde man nur Daten aus einer Sekunde nehmen, gäbe es nur zwei Datenpunkte pro Paket, da der Arduino alle 0,5 Sekunden Daten sendet.  Bei nur zwei Datenpunkten kann das System nur schwer eine Bewegung oder ein Muster erkennen. Deswegen wurden fünf Sekunden gewählt. Bei fünf Sekunden sind es zehn Datenpunkte, was ausreicht, um ein Muster zu erkennen. Zugleich ist es kurz genug, um zu sagen, was die Person im Moment gerade macht. Im Endsystem kann das System also 5 Sekunden lang Daten messen und diese dann dem Machine-Learning-Algorithmus schicken, der sie bearbeitet und dem User die Bewegung mitteilt, die diese gerade ausführt. In Abbildung \ref{fig:pakete} ist durch den roten Strich zu erkennen, wie die ersten fünf Sekunden der ersten gelabelten CSV-Datei entnommen wurden, um daraus ein gelabeltes Paket (Schritt 3) zu generieren.
+Das Ziel besteht darin, ein System zu entwickeln, das die aktuelle Bewegung einer Person erkennt. Rennt die Person beispielsweise, soll das System „Rennen” ausgeben. Die Herausforderung besteht darin, das System entsprechend zu trainieren. Zwar werden für eine Aktivität wie "Rennen\dq\, 2-minütige Daten aufgenommen, jedoch soll das System nicht erst nach 2 Minuten eine Antwort herausgeben, sondern sofort. Das System soll die Bewegung der Person möglichst schnell erkennen. Deswegen wurde überlegt, das System nicht auf die vollen zwei Minuten zu trainieren, sondern kleinere Pakete dieser zwei Minuten zu erstellen. 
+
+Um die Paketgröße zu bestimmen, wurde Folgendes getan: Würde man nur Daten aus einer Sekunde nehmen, gäbe es nur zwei Datenpunkte pro Paket, da der Arduino alle 0,5 Sekunden Daten sendet.  Bei nur zwei Datenpunkten kann das System nur schwer eine Bewegung oder ein Muster erkennen. Deswegen wurden fünf Sekunden gewählt. Bei fünf Sekunden sind es zehn Datenpunkte, was ausreicht, um ein Muster zu erkennen. Zugleich ist es kurz genug, um zu sagen, was die Person im Moment gerade macht.
+
+Um die Paketgröße zu bestimmen, wurde Folgendes getan: Würde man nur Daten aus einer Sekunde nehmen, gäbe es nur zwei Datenpunkte pro Paket, da der Arduino alle 0,5 Sekunden Daten sendet. Bei nur zwei Datenpunkten kann das System nur schwer eine Bewegung oder ein Muster erkennen, da zwei Punkte nicht ausreichen, um eine klare Richtung oder ein Muster zu identifizieren. Bei fünf Sekunden sind es zehn Datenpunkte, was ausreicht, um ein Muster zu erkennen. Zugleich ist es kurz genug, um zu sagen, was die Person im Moment gerade macht. Dies ist in Abbildung \ref{fig:datenpunkte_vergleich} dargestellt, wo zwei Linien gezeigt werden. Die eine Linie hat zwei Datenpunkte, die sehr unterschiedlich sind und keine klare Richtung erkennen lassen. Die andere Linie hat zehn Datenpunkte, die zwar unterschiedlich sind, aber eine erkennbare Richtung aufweisen.
+
+\begin{figure}[h]
+	\centering
+	\begin{tikzpicture}
+		\begin{axis}[
+			xlabel=Zeit,
+			ylabel=Wert,
+			xmin=0, xmax=10,
+			ymin=0, ymax=10,
+			legend pos=north west,
+			ymajorgrids=true,
+			grid style=dashed,
+			]
+			\addplot[
+			color=blue,
+			mark=*,
+			mark options={scale=1.5},
+			]
+			coordinates {
+				(1,2)(2,6)
+			};
+			\addlegendentry{2 Datenpunkte}
+			
+			\addplot[
+			color=red,
+			mark=*,
+			mark options={scale=1.5},
+			]
+			coordinates {
+				(1,2)(2,3)(3,4)(4,3)(5,4)(6,5)(7,4)(8,5)(9,6)(10,5)
+			};
+			\addlegendentry{10 Datenpunkte}
+		\end{axis}
+	\end{tikzpicture}
+	\caption{Vergleich von 2 und 10 Datenpunkten}
+	\label{fig:datenpunkte_vergleich}
+\end{figure}
+
+ Im Endsystem kann das System also 5 Sekunden lang Daten messen und diese dann dem Machine-Learning-Algorithmus schicken, der sie bearbeitet und dem User die Bewegung mitteilt, die diese gerade ausführt. In Abbildung \ref{fig:pakete} ist durch den roten Strich zu erkennen, wie die ersten fünf Sekunden der ersten gelabelten CSV-Datei entnommen wurden, um daraus ein gelabeltes Paket (Schritt 3) zu generieren.
 
 \begin{figure}[h]
 	\centering
@@ -44,6 +80,12 @@ Das Ziel besteht darin, ein System zu entwickeln, das die aktuelle Bewegung eine
 	\caption{Schritte zur Paketaufteilung  (eigene Abbildung)}
 	\label{fig:pakete}
 \end{figure}
+
+\subsection{Feature-Extraktion}
+Nach der Aufteilung der Daten in 5-Sekunden-Pakete werden die Features extrahiert. Dies umfasst die Berechnung von Mittelwert, Standardabweichung, Minimum und Maximum für jede der Sensor-Dimensionen. 
+
+\subsection{Zusammenfassung}
+Diese Schritte sind entscheidend, um sicherzustellen, dass die Daten im richtigen Format vorliegen und für das Training des Machine-Learning-Modells genutzt werden können.
 
 \section{Wahl des Machine Learning Modells}
 Für die Klassifizierung der Bewegungsdaten wurden verschiedene Machine Learning Modelle evaluiert. Die Wahl des geeigneten Modells hängt von mehreren Faktoren ab, darunter die Genauigkeit, die Trainingszeit und die Eignung für Echtzeitanwendungen.
@@ -90,7 +132,11 @@ In Tabelle 3 ist noch einmal zu sehen, wie die verschiedenen Modelle hinsichtlic
 \end{table}
 \egroup
 
-Für dieses Projekt wird ein Modell benötigt, das eine hohe Genauigkeit aufweist und nicht zu Overfitting neigt. Decision Trees sind hierfür weniger geeignet, da sie bei begrenzten Trainingsdaten zu Overfitting neigen. Neuronale Netzwerke scheiden ebenfalls aus, da die verfügbare Menge an Trainingsdaten nicht ausreicht. Die Trainingszeit ist weniger kritisch, da das Training nur einmal durchgeführt wird. Entscheidend ist jedoch eine hohe Echtzeitfähigkeit, da alle fünf Sekunden neue Daten verarbeitet werden müssen. Daher eignen sich SVM und neuronale Netzwerke eher weniger. Am besten zu diesen Kriterien passt das Random-Forest-Modell, da es eine gute Balance zwischen Genauigkeit und Rechenaufwand bietet. Es ist robust gegenüber Overfitting und kann gut mit den vorliegenden Bewegungsdaten umgehen.
+Für dieses Projekt ist es entscheidend, ein Modell zu wählen, das eine hohe Genauigkeit aufweist und nicht zu Overfitting neigt. Der Hintergrund hierfür liegt in der Natur der zu verarbeitenden Daten und der Anwendung selbst. Die Bewegungsdaten, die alle fünf Sekunden neu erfasst und verarbeitet werden müssen, erfordern ein Modell, das zuverlässig und präzise arbeitet. Overfitting wäre hier besonders problematisch, da es dazu führen würde, dass das Modell zwar auf den Trainingsdaten gut funktioniert, aber bei neuen, unbekannten Daten versagt. Dies würde die Echtzeitfähigkeit und die Zuverlässigkeit des Systems erheblich beeinträchtigen.
+
+Decision Trees sind für dieses Projekt weniger geeignet, da sie bei begrenzten Trainingsdaten zu Overfitting neigen. Auch Neuronale Netzwerke scheiden aus, da die verfügbare Menge an Trainingsdaten nicht ausreicht, um ein solches Modell effektiv zu trainieren. Die Trainingszeit ist zwar weniger kritisch, da das Training nur einmal durchgeführt wird, jedoch ist die Echtzeitfähigkeit entscheidend. Support Vector Machines (SVM) sind aufgrund ihrer Rechenintensivität ebenfalls weniger geeignet.
+
+Am besten zu diesen Kriterien passt das Random-Forest-Modell, da es eine gute Balance zwischen Genauigkeit und Rechenaufwand bietet. Es ist robust gegenüber Overfitting und kann gut mit den vorliegenden Bewegungsdaten umgehen. Random Forest kombiniert mehrere Decision Trees und reduziert dadurch das Risiko von Overfitting, während es gleichzeitig eine hohe Genauigkeit und Echtzeitfähigkeit gewährleistet.
 
 \section{Implementierung und Ergebnis}
 In diesem Abschnitt werden die Implementierung und das Ergebnis des Lernverfahrens präsentiert.
