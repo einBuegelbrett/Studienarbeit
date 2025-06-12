@@ -49,7 +49,7 @@ Das Ziel besteht darin, ein System zu entwickeln, das die aktuelle Bewegung eine
 Für die Klassifizierung der Bewegungsdaten wurden verschiedene Machine Learning Modelle evaluiert. Die Wahl des geeigneten Modells hängt von mehreren Faktoren ab, darunter die Genauigkeit, die Trainingszeit und die Eignung für Echtzeitanwendungen.
 
 \subsection{Evaluierte Modelle}
-Im Folgenden werden die meistgenutzten überwachten Machine-Learning-Modelle betrachtet und ihre jeweiligen Vor- und Nachteile analysiert, um das passende Modell zu finden.
+Im Folgenden werden die meistgenutzten überwachten Machine-Learning-Modelle betrachtet und ihre jeweiligen Vor- und Nachteile analysiert, um das passende Modell zu finden. Ein wichtiger Aspekt bei der Bewertung dieser Modelle ist das Problem des Overfittings, das auftritt, wenn ein Modell zu stark an die Trainingsdaten angepasst wird und dabei auch das Rauschen und die Besonderheiten der Trainingsdaten lernt, anstatt allgemeingültige Muster zu erkennen. Dies führt dazu, dass das Modell auf den Trainingsdaten eine hohe Genauigkeit aufweist, auf neuen, unbekannten Daten jedoch schlecht generalisiert \cite{dietterich1995overfitting}.
 
 \subsubsection{Decision Trees}
 Decision Trees sind einfache und interpretierbare Modelle, die gut für Klassifizierungsaufgaben geeignet sind. Sie können jedoch zu Overfitting neigen und sind möglicherweise nicht die beste Wahl für komplexe Datensätze. \cite{kingsford2008decision}
