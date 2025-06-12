@@ -1,4 +1,5 @@
 \chapter{Schwierigkeiten}
+In diesem Kapitel werden die Schwierigkeiten des Projekts erläutert und mögliche Lösungswege erörtert.
 
 \section{Datenübertragung (BLE vs. Kabel)}
 \label{sec:datenübertragung}
@@ -97,6 +98,8 @@ Um den Einfluss dieser Umweltfaktoren zu minimieren und vergleichbare Datensätz
 \section{Messungsqualität}
 \label{sec:messungsqualität}
 
+Hier wird erläutert, wie eine gute Messqualität erreicht werden kann und welche Herausforderungen es zu bewältigen gilt, um dieses Ziel zu erreichen.
+
 \subsection{Samplingrate und Datenqualität}
 
 Die Wahl der Samplingrate stellt eine zentrale Herausforderung dar. Eine niedrigere Samplingrate, beispielsweise 500\,ms (2\,Hz), reduziert die Wahrscheinlichkeit von Datenverlusten, da weniger Daten pro Zeiteinheit übertragen werden müssen. Dies entlastet die drahtlose Übertragung via BLE und verringert das Risiko von Paketverlusten durch Übertragungsengpässe.
@@ -153,7 +156,7 @@ Die Wahl des Datenbanksystems stellt eine zentrale Entscheidung dar, da sie maß
 			\hline
 		\end{tabular}
 	}
-	\caption{Vergleich ausgewählter Datenbanksysteme}
+	\caption{Vergleich ausgewählter Datenbanksysteme \cite{ravi2024mysql, da2015redis, kabakus2017performance, lakshman2010cassandra, hewitt2010cassandra}}
 	\label{tab:db-vergleich}
 \end{table}
 \egroup
