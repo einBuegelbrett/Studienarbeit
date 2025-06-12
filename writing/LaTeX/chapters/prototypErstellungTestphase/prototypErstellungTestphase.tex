@@ -1,1 +1,245 @@
-\chapter{Prototyp-Erstellung und Testphase}
+\chapter{Prototyp-Erstellung}
+Auf Grundlage der in Kapitel 4 ermittelten technischen Herausforderungen wurde ein funktionaler, tragbarer Prototyp entwickelt, der sowohl Mobilität als auch Datenqualität vereint. Das Ziel bestand darin, die im vorherigen Kapitel identifizierten Probleme durch ein eng abgestimmtes Konzept aus Hardware- und Softwarekomponenten zu lösen. Dabei spielten theoretische Überlegungen, etwa zur Datenübertragungsstabilität oder Fehlervorhersage, eine ebenso wichtige Rolle wie die konkrete technische Umsetzung.
+
+Der Fokus lag auf der Entwicklung eines Systems, das einerseits höchste Datengenauigkeit liefert und andererseits durch drahtlose Anbindung flexibel einsetzbar ist. Diese Anforderungen wurden in Kapitel 4 diskutiert; insbesondere erhöhte BLE-Stabilität und Strategien gegen Datenverluste waren entscheidend. Das folgende Kapitel beschreibt schrittweise den Aufbau des Prototyps, die Datenerhebung und den Gewichtseinfluss, und gibt einen Ausblick auf erfolgreich bewältigte Herausforderungen.
+
+\section{Optimierung der Abtastrate}
+\label{samplingrateAbs}
+Eine zentrale Herausforderung bestand darin, eine geeignete Samplingrate zu wählen, die sowohl eine ausreichende Bewegungserkennung erlaubt als auch innerhalb der technischen Grenzen von BLE stabil übertragbar ist. In Abschnitt~4.5 wurde bereits aufgezeigt, dass gerade bei höheren Samplingraten, etwa 100ms oder 200ms, das erzeugte Datenvolumen stark ansteigt. Dies erhöht nicht nur das Risiko von Datenverlusten durch Übertragungsengpässe, sondern belastet auch die Datenspeicherung, insbesondere bei Systemen mit eingeschränkter Persistenz oder Schreibgeschwindigkeit (vgl.~Abschnitt~4.6).
+
+Neben den technischen Faktoren musste aber auch die Belastung der Testpersonen berücksichtigt werden. Gerade bei anstrengenderen Aktivitäten wie Rennen oder schnellem Gehen lässt sich nicht jede Erhebungsdauer problemlos durchhalten. In der Pilotenphase zeigte sich, dass längere Messzeiten, insbesondere über 90 Sekunden, häufig zu Ermüdung und Aktivitätswechseln führten, etwa dem Übergang von Rennen zu Gehen. Solche Übergänge verzerren die Klassifizierbarkeit der Daten erheblich.
+
+Um diese unterschiedlichen Anforderungen zu adressieren, wurde eine systematische Testreihe durchgeführt. Dabei wurden verschiedene Samplingraten und Erhebungszeiträume kombiniert und hinsichtlich Stabilität, Datenvollständigkeit und Praxistauglichkeit bewertet.
+Typischerweise genügen Samplingraten zwischen 20Hz und 100Hz, je nach Bewegungskomplexität. Für einfache Aktivitätserkennung zeigen Studien, dass auch 2Hz bis 10Hz brauchbare Ergebnisse liefern können, sofern geeignete Zeitfenster (1–5s) verwendet \cite{jsss-13-187-2024}
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{c c c c}
+		\hline
+		\textbf{Intervall} & \textbf{Dauer} & \textbf{Pakete} & \textbf{Verlustrate} \\
+		\hline
+		100\,ms & 60\,s  & 600  & 12\,\% \\
+		100\,ms & 90\,s  & 900  & 15\,\% \\
+		100\,ms & 125\,s & 1250 & 18\,\% \\
+		\hline
+		200\,ms & 60\,s  & 300  & 7\,\% \\
+		200\,ms & 90\,s  & 450  & 8\,\% \\
+		200\,ms & 125\,s & 625  & 9\,\% \\
+		\hline
+		500\,ms & 60\,s  & 120  & 1.4\,\% \\
+		500\,ms & 90\,s  & 180  & 1.8\,\% \\
+		500\,ms & 125\,s & 250  & 2.1\,\% \\
+		\hline
+	\end{tabular}
+	\caption{Ergebnisse der Testläufe mit verschiedenen Samplingraten und Messzeiten}
+	\label{tab:samplingTests}
+\end{table}
+
+Die Tabelle zeigt deutlich: Während 100ms zwar eine hohe Datenauflösung bietet, führte diese in der Praxis regelmäßig zu Paketverlusten, vermutlich durch die Einschränkung vom BLE (vgl. Abschnitt \ref{sec:messungsqualität}).\\
+Auch bei 200ms treten ähnliche Probleme auf: Zwar reduziert sich die Verlustquote leicht, aber sie bleibt oberhalb der vertretbaren Toleranz.\\
+Bei 500ms wurde dann ein deutlicher Rückgang an Paketverlusten festgestellt (im Mittel unter fünf Pakete pro Lauf), allerdings um den Preis einer geringeren Datenrate. Hier entstand die Schwierigkeit, dass bestimmte feingranulare Bewegungsmuster möglicherweise nicht vollständig erfasst werden.\\
+
+Eine Konstante bei allen 3 Samplingrate waren die längeren Dauern. Diese haben nämlich auch ein praktisches Problem eingebracht: Die Testperson, der Pilotenphase, war physisch nicht in der Lage, die Aktivität konstant durchzuführen. Dies führte zu Übergangszuständen in der Bewegung und damit zu weniger klaren Klassifizierungen.
+
+Am Ende fiel die Entscheidung bewusst auf die Kombination aus 500ms Intervall und 125s Dauer. Ausschlaggebend war hierbei vor allem die niedrige Verlustquote. Das ML-Modell soll später in der Lage sein, die Bewegung anhand eines 5-Sekunden-Fensters zuverlässig zu klassifizieren \cite{jsss-13-187-2024}. Wenn innerhalb dieses Zeitfensters jedoch ein oder mehrere Datenpakete fehlen, könnte das zu Fehlklassifikationen führen, was unsere Hypothese direkt beeinträchtigt.\\
+
+Die längere Messdauer (125s) erwies sich ebenso als vorteilhaft: Bei geringer Samplingrate fallen Bewegungsübergänge (z.B. Rhythmusänderungen) weniger stark auf, durch die geringere Datenmenge. Damit blieb die Klasse „Rennen“ in ihrer Reinform besser erhalten, was für die spätere Trainingsqualität des ML-Modells entscheidend ist.
+
+\section{Aufbau des Systems}
+
+Das Gesamtsystem besteht aus einem Sensor-Array auf einem Arduino Nano 33 BLE Rev2, das über Bluetooth Low Energy (BLE) drahtlos mit einem Raspberry Pi kommuniziert. Die Sensordaten werden anschließend in einer verteilten Datenbank (Apache Cassandra) gespeichert, um hohe Schreiblasten und Zuverlässigkeit zu gewährleisten. Durch diese Architektur lassen sich die Daten mobil erfassen und langfristig archivieren.
+
+\section{Datenaufnahme}
+
+Die sensornahe Datenerhebung erfolgt vollständig auf einem Arduino Nano 33 BLE Rev2. Das Programm ist so aufgebaut, dass es nach dem Hochfahren zunächst sicherstellt, dass alle Systemkomponenten (Sensor und Bluetooth) einsatzbereit sind, und anschließend über einen festgelegten Zeitraum hinweg Bewegungsdaten aufzeichnet und via Bluetooth Low Energy (BLE) überträgt. Dieses Verhalten ist hart kodiert und läuft automatisiert ab – ohne weitere Interaktion.
+
+\subsection{Ablauf der Messung}
+
+Zunächst wird geprüft, ob der verbaute Inertialsensor erfolgreich initialisiert werden kann. Ist dies nicht der Fall, wird der Vorgang abgebrochen und ein Fehler ausgegeben. Solche IMU-Datensätze (Inertial Measurement Unit) sind in der Literatur als dreiachsige Zeitreihen beschrieben, die sich besonders gut für Segmentierung und Featureextraktion eignen \cite{app13158684}.
+Anschließend wird die BLE-Verbindung vorbereitet und aktiv beworben. Der Arduino wartet nun passiv, bis eine Verbindung vom Raspberry Pi hergestellt wurde:
+
+
+	\begin{lstlisting}[language=C++, caption={Verbindungsaufbau des Arduinos}, label=fig:ArduinoInitialiser]
+    Serial.begin(115200);
+	if (!IMU.begin()) {
+		Serial.println("IMU-Sensor nicht gefunden!");
+		while (1);
+	}
+	Serial.println("IMU-Sensor bereit!");
+	setupBLE();
+	// Warten bis Bluetooth verbunden ist
+	Serial.println("Warte auf Bluetooth-Verbindung...");
+	while (!isBLEConnected()) {
+		delay(500);
+	}
+	\end{lstlisting}
+
+
+Sobald die Verbindung erfolgreich aufgebaut wurde, wird die eingebaute LED zehnmal blinkend aktiviert, um visuell zu signalisieren, dass die Messung startet. Nachdem ersten Blinken beginnt die Datenerfassung. Diese ist zeitlich auf 125s begrenzt:
+
+	\begin{lstlisting}[language=C++, caption={LED-Startsignal}, label=fig:ledStartSignal]
+	const unsigned long duration = 125000; // 125 Sekunden
+	...
+	    for (int i = 0; i < 10; i++) {
+		digitalWrite(LED_BUILTIN, HIGH);
+		delay(200);
+		digitalWrite(LED_BUILTIN, LOW);
+		delay(200);
+	}
+	\end{lstlisting}
+
+Die Sensorwerte (Beschleunigung, Gyroskop, Magnetfeld) werden alle 500 Millisekunden gelesen, formatiert und versendet. Diese werden für 125s geliefert, die Samplingrate sollte ausreichen, wie in der Pilotphase von Abschnitt \ref{samplingrateAbs} festzustellen. Neben der Dauer wird bei jeder Erfolgreichen Datenerfassung nochmal ein kurzes LED-Signal ausgeben (vgl. Listing.~\ref{fig:ledStartSignal}).
+
+
+	\begin{lstlisting}[language=C++, caption={Erfassung von Sensorwerte}, label=fig:sensorvalues]
+    char imuData[120];
+	IMU.readAcceleration(ax, ay, az);
+	IMU.readGyroscope(gx, gy, gz);
+	IMU.readMagneticField(mx, my, mz);
+	
+	snprintf(imuData, sizeof(imuData), "%d;%.2f;%.2f;%.2f;%.2f;%.2f;%.2f;%.2f;%.2f;%.2f", packetCounter, ax, ay, az, gx, gy, gz, mx, my, mz);
+	
+	sendSensorData(imuData);
+	\end{lstlisting}
+
+Neben der eigentlichen Datenerfassung werden auch Sonderereignisse geloggt. Eine dieser Sondermeldungen ist die Paketnummer (vgl. Listing.~\ref{fig:sensorvalues}) zu sehen, diese hilft bei der Identifizierung von fehlenden Paketen, wie wenn die Pakete im Log erst bei Sieben Starten oder früher enden. Weitere „Systemmeldungen“ werden über dieselbe BLE-Charakteristik übertragen wie normale Sensorwerte, jedoch in speziell markiertem Format (z.\,B. \texttt{ENDZEIT} oder \texttt{SENSORFEHLER}) und als Seperate Nachricht gesendet, im Gegensatz zu den Paketnummern, welche gesendet werden mit den Sensordaten.
+
+\subsection{Formatkontrolle}
+
+Während der Entwicklung zeigte sich, dass nicht nur die Sensorwerte an sich kritisch sind, sondern auch deren Formatierung. Bereits bei kleinsten Abweichungen – z.\,B. durch einen „Ausreißer“ mit besonders vielen Dezimalstellen – konnte es zu BLE-Übertragungsfehlern kommen. Um diese potenziellen Fehlerquellen frühzeitig zu erkennen, wurden Sicherheitsmechanismen integriert:
+
+\begin{itemize}
+	\item Alle Sensordaten werden auf plausible Wertebereiche geprüft (z.\,B. max. Beschleunigung $< 16g$).
+	\item Magnetfeldwerte werden vor dem Senden explizit auf drei Vorkommastellen begrenzt.
+	\item Tritt ein Wert außerhalb der erwarteten Spezifikation auf, wird ein \texttt{SENSORFEHLER} mit Angabe des problematischen Werts an das Log-System gesendet.
+\end{itemize}
+
+Dadurch konnte verhindert werden, dass fehlerhafte oder zu lange Datenstrings generiert wurden, die das BLE-Übertragungslimit überschreiten.
+
+\subsection{Probleme durch BLE-Byte-Limitationen}
+
+Trotz dieser Vorsichtsmaßnahmen traten anfangs Datenverluste auf, die sich durch abgeschnittene Sensorzeilen am Empfänger äußerten. Beispielsweise fehlten einzelne Magnetfeldwerte oder das Paket endete mitten in einer Fließkommazahl. Die Ursache hierfür war eine unterschätzte technische Begrenzung: die maximale Datenlänge einer BLE-Übertragung.
+
+BLE verwendet standardmäßig eine Attribute Protocol Maximum Transmission Unit (ATT MTU) von 23 Bytes (davon 3 Bytes Overhead), also etwa 20 Bytes effektive Nutzlast pro Paket \cite{tosi2017performance, arduinoBLEdoc}. Längere Datenmengen müssen daher auf mehrere Pakete fragmentiert werden. Durch ATT-MTU-Negotiation kann die MTU-Vergrößert werden (z.B. bis 247 Bytes bei BLE 4.2), wodurch größere Datenblöcke pro GATT-Operation möglich sind \cite{arduinoBLEdoc, murugalakshmi2023evolution}. Ohne diese Anpassung entsteht Overhead durch Fragmentierung, was Latenz und möglichen Paketverlust verursachen kann. Die BLE-Spezifikation legt den 20-Byte-Grenzwert fest, sodass selbst bei Daten-Längen über diesem Wert mehrere ATT-Pakete geschickt werden müssen \cite{tosi2017performance}. Dies hätte nicht nur die Formatierung erschwert, da die Sensordaten immer variable Werte aufweisen und die Byte-Länge immer zu einem anderen Zeitpunkt erreicht wird. Zudem hätte dies eine Menge Probleme beim Empfang der Daten auf dem Raspberry Pi sowie bei der Speicherung der Datenbank verursacht. Durch die Anpassung der \texttt{BLECharacteristic}-Länge kann dies übergangen werden (vgl. Listing.~\ref{fig:byteLimit}), wie bereits oben erwähnt. Das heißt, eine Sensormessung, die größer als 20 Byte ist, wird in mehreren Paketen verschickt. 
+
+	\begin{lstlisting}[language=C++, caption={Ble Byte Limit Erhöhung}, label=fig:byteLimit]
+	BLECharacteristic sensorCharacteristic
+	("2A56", BLERead | BLENotify, 120);
+	\end{lstlisting}
+
+Diese Konfiguration erlaubte stabilere Übertragungen, solange die generierten Zeichenketten innerhalb dieses Rahmens blieben. Hier zeigte sich erneut die enge Verbindung zwischen Formatierungslogik und Hardware-Limit: Die Sensorwerte mussten so gestaltet sein, dass das resultierende ASCII-Paket inkl. Semikolons, Vorzeichen und Nachkommastellen stets im Rahmen der Byte Limitierung war.
+
+In Verbindung mit den beschriebenen Prüfmechanismen und der gezielten Limitierung auf zwei Nachkommastellen konnte so eine stabile BLE-Kommunikation realisiert werden. Dieser Aspekt verdeutlicht, dass viele der real auftretenden „BLE-Probleme“ nicht am Übertragungsprotokoll selbst, sondern an der konkreten Implementierung im System lagen. Insbesondere an der engen Kopplung zwischen Codierung, Speichergröße und Signalübertragung.
+
+\section{Raspberry Pi Aufbau}
+
+Während der Arduino für die sensornahe Datenerhebung zuständig ist, übernimmt der Raspberry Pi alle Aufgaben rund um Datenverarbeitung, Übertragung und Speicherung. Das System besteht aus drei entkoppelten, containerisierten Komponenten: einer Cassandra-Datenbank, einem Initialisierungsdienst zur Schemadefinition und einem BLE-Datenempfänger. Ziel dieser Trennung war eine modulare, ausfallsichere und wartbare Architektur, die sich sowohl lokal als auch in skalierbaren Umgebungen nutzen lässt.
+
+\subsection{Aufbau der Cassandra-Datenbank}
+
+Die Wahl fiel auf \textbf{Apache Cassandra}, da dieses verteilte NoSQL-System speziell für hohe Schreiblasten, horizontale Skalierung und eingebaute Replikation ausgelegt ist wie bereits in Abschnitt \ref{sec:database} diskutiert. Die Datenbank wurde über eine \texttt{.cql}-Datei initialisiert, welche beim Containerstart automatisch ausgeführt wird.
+
+Zunächst wird ein Keyspace mit einfacher Replikation erstellt, die eigentliche Datentabelle \texttt{sensordaten} erfasst neben einem eindeutigen Identifier und dem UTC-Zeitstempel die Messwerte des Arduino:
+
+\begin{lstlisting}[language=SQL, caption={Sensordaten Tabelle}, label=fig:sensordataTable]
+	CREATE TABLE IF NOT EXISTS sensordaten (
+	id UUID PRIMARY KEY,
+	timestamp TIMESTAMP,
+	acc_x float, acc_y float, acc_z float,
+	gyro_x float, gyro_y float, gyro_z float,
+	mag_x float, mag_y float, mag_z float
+	);
+\end{lstlisting}
+
+Die Wahl eines UUID-Primärschlüssels erlaubt die eindeutige Zuordnung jedes Pakets, unabhängig von Quellgerät oder Zeit. Die Normalisierung der Sensorachsen nach Typ (Beschleunigung, Gyroskop, Magnetfeld) unterstützt spätere Auswertungen, etwa zur Bewegungserkennung oder Achsensymmetrie.
+
+\subsection{Containerisierung mit Docker}
+
+Die gesamte Infrastruktur wurde über Docker umgesetzt, wobei \texttt{docker-compose} zur Verwaltung der Services genutzt wurde. Dabei wurden gezielt spezifische Einstellungen verwendet, um Probleme im praktischen Betrieb zu vermeiden.
+
+\paragraph{Persistente Speicherung:}
+
+Der Cassandra-Container speichert seine Daten im Verzeichnis \texttt{/var/lib/cassandra} (vgl. Listing.~\ref{fig:persistentVolume}). Um Datenverluste bei Container-Neustarts zu vermeiden, wurde ein benanntes Volume gemountet:
+
+\begin{lstlisting}[language=SQL, caption={Persistente Speicherung durch Volumes}, label=fig:persistentVolume]
+	volumes:
+	cassandra_data:/var/lib/cassandra
+\end{lstlisting}
+
+Damit bleiben sowohl Keyspace als auch gespeicherte Messdaten über die Lebensdauer des Containers hinaus erhalten.
+
+\paragraph{Zugriff auf Bluetooth-Hardware:}
+
+Um eine Bluetooth-Kommunikation innerhalb eines Docker-Containers zu ermöglichen, müssen spezifische Systemressourcen des Host-Betriebssystems an den Container weitergereicht werden. Die verwendete Lösung basiert auf Empfehlungen aus der Docker-Dokumentation sowie erprobten Beispielen aus der Praxis \cite{huffert2021bluetoothdocker}.
+
+Konkret wurde der Container, in dem der BLE-Empfänger läuft, im \texttt{privileged}-Modus gestartet, um Zugriff auf die Host-Bluetooth-Schnittstelle (\texttt{/dev/hci0}) zu gewähren \cite{dockerbluetoothaccess}. Zusätzlich wurden systemnahe Ressourcen wie der systemweite D-Bus eingebunden und explizit als Volume gemountet. Auch die Umgebungsvariable \texttt{DBUS\_SYSTEM\_BUS\_ADDRESS} wurde gesetzt \cite{huffert2021bluetoothdocker}, um sicherzustellen, dass Bluetooth-Dienste korrekt mit dem Systembus kommunizieren können:
+\begin{lstlisting}[language=SQL, caption={BLE Zugriff über Container}, label=fig:bleViaContainer]
+	privileged: true
+	devices:
+	- /dev/hci0:/dev/hci0
+	environment:
+	- DBUS_SYSTEM_BUS_ADDRESS=unix:path=/var/run/dbus/system_bus_socket
+	volumes:
+	- /dev:/dev
+	- /var/run/dbus:/var/run/dbus
+\end{lstlisting}
+
+Diese Konfiguration ist notwendig, da Bibliotheken wie \texttt{bleak} auf das Host-Bluetooth-Interface und den D-Bus zugreifen müssen, um BLE-Verbindungen aufzubauen und aufrechtzuerhalten. Ohne die Weiterleitung dieser Ressourcen sind BLE-Operationen im Container nicht funktionsfähig. Die manuelle Weitergabe ausgewählter Ressourcen ist zudem sicherer als ein pauschaler \texttt{--net=host}-Modus und entspricht den Empfehlungen für containerisierten Zugriff auf Host-Hardware \cite{huffert2021bluetoothdocker, dockerbluetoothaccess}
+
+\subsection{Ablauf der Containerinitialisierung}
+
+Die Startreihenfolge der Services war bewusst gewählt:
+
+\begin{enumerate}
+	\item Zuerst startet \texttt{cassandra}, um die Datenbank verfügbar zu machen.
+	\item Danach folgt \texttt{cassandra-init}, das die Datenstruktur einrichtet.
+	\item Erst wenn beides erfolgreich abgeschlossen ist, wird \texttt{bluetooth-reader} aktiviert.
+\end{enumerate}
+
+Die Abhängigkeiten wurden in \texttt{docker-compose.yml} über \texttt{depends\_on} abgebildet. Dies verhindert Startfehler, wenn etwa die Datenbank noch nicht erreichbar ist.
+
+\subsection{Bluetooth-Verbindung und Datenimport}
+
+Die Logik zum Einlesen und Speichern der Sensordaten ist in einem asynchronen Python-Skript umgesetzt, das den BLE-Dienst abruft, mit dem Arduino verbindet, die Daten parst und in Cassandra einträgt.
+
+\paragraph{Scan und Verbindung:}
+
+Der Raspberry Pi scannt fortlaufend nach Geräten mit einem definierten Namen und verbindet sich automatisch.
+
+\begin{lstlisting}[language=Python, caption={Verbindungsaufbau mit Arduino}, label=fig:connectionArduino]
+	devices = await BleakScanner.discover()
+	arduino = next((d for d in devices if "Bewegungstracker" in d.name), None)
+	client = BleakClient(arduino.address)
+	await client.start_notify(characteristic_uuid, handler)
+\end{lstlisting}
+
+Die Suche nach dem Arduino erfolgt aber nur für drei Minuten, falls innerhalb von drei Minuten keine Bluetooth-Verbindung hergestellt worden ist, hört das Python-Skript auf. Als Sicherheitsmechanismus, so muss der Raspberry Pi nicht jeder Zeit alles einmal laufen lassen, gleichzeitig gehen so aber die Docker Logs nicht verloren um die Später nachzulesen.
+
+\paragraph{Fehlertoleranter Datenparser:}
+
+Der Parser filtert unvollständige Datenpakete automatisch heraus und erlaubt damit eine robuste Verarbeitung. Hierbei wird auch die Paketnummer rausgefiltert, das die nur in den Logs erscheinen, aber nicht mehr in der Datenbank miteingespeichert wird.\\
+
+\begin{lstlisting}[language=Python, caption={Datenparser der Sensorwerte}, label=fig:parserSensorvalues]
+	parts = raw_data.strip().split(";")
+	if len(parts) != 10:
+	return None
+	acc = list(map(float, parts[1:4]))
+	gyro = list(map(float, parts[4:7]))
+	mag = list(map(float, parts[7:10]))
+\end{lstlisting}
+
+\paragraph{Datenpersistenz:}
+
+Nach erfolgreicher Prüfung wird der Datensatz sofort mit UTC-Zeitstempel gespeichert:
+
+\begin{lstlisting}[language=Python, caption={Speicherung der Sensordaten}, label=fig:sensorvaluesSavings]
+session.execute(
+insert_stmt,(
+	uuid.uuid4(),
+	datetime.now(timezone.utc),
+	*acc, *gyro, *mag ))
+\end{lstlisting}
+
+\subsection{Stabilität und Bewertung}
+
+Die Architektur erwies sich in mehreren Testzyklen als stabil. Der Containeraufbau bot eine klare Trennung der Verantwortlichkeiten, was nicht nur die Fehlersuche erleichterte, sondern auch die Wiederverwendbarkeit verbesserte. Insbesondere die explizite Steuerung der Bluetooth-Geräte im Container war essenziell, um Systemressourcen wie DBus und \texttt{/dev/hci0} (vgl. Listing.~\ref{fig:bleViaContainer}) korrekt zugänglich zu machen.

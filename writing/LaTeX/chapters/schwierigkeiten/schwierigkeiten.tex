@@ -93,6 +93,8 @@ Bei der Erfassung und Analyse von Bewegungsdaten spielen Umwelteinflüsse eine z
 Um den Einfluss dieser Umweltfaktoren zu minimieren und vergleichbare Datensätze zu erhalten, ist die Schaffung standardisierter Testbedingungen, wie in Abschnitt 4.3 beschrieben, unverzichtbar. In diesem Zusammenhang wurden konkrete Maßnahmen festgelegt. Die Tests finden ausschließlich auf befestigten, möglichst geraden Straßen statt, die jedoch auch gezielte Richtungswechsel enthalten, um die Funktion des Gyrosensors zu erfassen. Die Testläufe sollen möglichst am späten Abend oder in ruhigen Zeitfenstern durchgeführt werden, um störende Umwelteinflüsse wie Verkehr und Menschenmengen zu vermeiden. Zudem werden alle Testpersonen im Voraus über den Ablauf informiert, um eine einheitliche Durchführung zu gewährleisten. So lässt sich trotz des Verzichts auf ein vollständig kontrolliertes Innenraumsetting eine ausreichend standardisierte Umgebung schaffen, die zuverlässige und vergleichbare Ergebnisse ermöglicht.
 
 \section{Messungsqualität}
+\label{sec:messungsqualität}
+
 \subsection{Samplingrate und Datenqualität}
 
 Die Wahl der Samplingrate stellt eine zentrale Herausforderung dar. Eine niedrigere Samplingrate, beispielsweise 500\,ms (2\,Hz), reduziert die Wahrscheinlichkeit von Datenverlusten, da weniger Daten pro Zeiteinheit übertragen werden müssen. Dies entlastet die drahtlose Übertragung via Bluetooth Low Energy (BLE) und verringert das Risiko von Paketverlusten durch Übertragungsengpässe.
@@ -110,6 +112,7 @@ Auf der anderen Seite kann eine zu lange Erhebungsdauer, beispielsweise fünf Mi
 Die Festlegung der Erhebungsdauer erfordert daher eine sorgfältige Abwägung zwischen der benötigten Datenmenge und der physischen Belastung der Teilnehmenden, um sowohl eine ausreichende Datenbasis als auch natürliche Bewegungsabläufe sicherzustellen.
 
 \section{Datenspeicherung}
+\label{sec:database}
 Die Speicherung großer Sensordatensätze stellt mehrere Herausforderungen dar, insbesondere bei Skalierbarkeit, Persistenz und Zuverlässigkeit der Speicherung. Durch die viele Datenmengen Anforderung die dieses Projekt mit sich bringt.\\
 Dabei ergeben sich unter anderem folgende Probleme:
 \begin{itemize}
@@ -155,12 +158,5 @@ Die Wahl des Datenbanksystems stellt eine zentrale Entscheidung dar, da sie maß
 
 \subsection{Entscheidung für Cassandra}
 
-Auf Basis der genannten Anforderungen erwies sich \textbf{Apache Cassandra} als geeignetste Option. Die Datenbank ist speziell für hohe Schreiblasten und horizontale Skalierbarkeit ausgelegt, was sie ideal für kontinuierlich eingehende Sensordaten macht. Darüber hinaus unterstützt Cassandra eingebaute Replikationsmechanismen, die eine erhöhte Ausfallsicherheit gewährleisten. Damit konnte ein zentrales Risiko – der Verlust von Daten durch Paketabbrüche oder Systemausfälle – reduziert werden. Die Wahl nicht Redis zu nutzen kam schlussendlich zum Punkt zurück das die Datenpersistenz nur Eingeschränkt möglich ist was leider bei verschiedenen Testpersonen nicht machbar ist, wodurch eine Persistentere Lösung effektiver ist, auch wenn man dafür ein wenig Schreibgeschwindigkeit einbüßen muss.
+Auf Basis der genannten Anforderungen erwies sich \textbf{Apache Cassandra} als geeignetste Option. Die Datenbank ist speziell für hohe Schreiblasten und horizontale Skalierbarkeit ausgelegt \cite{cassandraHighLast}. Diese macht sie ideal für kontinuierlich eingehende Sensordaten macht. Darüber hinaus unterstützt Cassandra eingebaute Replikationsmechanismen, die eine erhöhte Ausfallsicherheit gewährleisten \cite{apacheCassandraBasics, cassandraHighLast}. Damit konnte ein zentrales Risiko – der Verlust von Daten durch Paketabbrüche oder Systemausfälle – reduziert werden \cite{apacheCassandraBasics}. Die Wahl nicht Redis zu nutzen kam schlussendlich zum Punkt zurück das die Datenpersistenz nur Eingeschränkt möglich ist was leider bei verschiedenen Testpersonen es komplexer macht die Daten zu sammeln, wodurch eine Persistentere Lösung effektiver ist, selbst wenn Redis durch seine sehr schnelle Schreibfähigkeit und in-memory Fähigkeit glänzt\cite{chen2016towards}.
 
-\section{Datenaufbereitung}
-%TODO
-HIER GIBT ES NOCH NICHTS
-
-\chapter{Umsetzung - Erstellung des Prototyps}
-%TODO
-HIER GIBT ES NOCH NICHTS

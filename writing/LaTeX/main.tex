@@ -39,6 +39,7 @@
 \usepackage{fancyhdr} % Kopf- und Fußzeile
 \usepackage[export]{adjustbox} % Bilder alignment
 \usepackage{stfloats} % Tabular at bottom
+\usepackage{float}
 %\usepackage[table]{xcolor} %Tabellen farben
 \usepackage{tabularx} % Anpassbarere tabellen
 \usepackage{easyReview} % Review anmerkungen
@@ -193,6 +194,7 @@
 
 %----------------Setup für Verlinkungen-----------------
 \usepackage{hyperref}
+\usepackage{cleveref}
 \hypersetup{
 	colorlinks,
 	citecolor=black,
@@ -343,6 +345,12 @@ Diese Arbeit wurde bisher in gleicher oder ähnlicher Form oder auszugsweise noc
 \listoftables
 
 \newpage
+\chapter*{Listingsverzeichnis}
+\addcontentsline{toc}{chapter}{\protect\numberline{}Listingsverzeichnis}
+
+\lstlistoflistings
+
+\newpage
 \chapter*{Abkürzungsverzeichnis}
 \addcontentsline{toc}{chapter}{\protect\numberline{}Abkürzungsverzeichnis}
 \markboth{Abkürzungsverzeichnis}{Abkürzungsverzeichnis} %Benötigt, damit das im header steht
@@ -386,15 +394,6 @@ Diese Arbeit wurde bisher in gleicher oder ähnlicher Form oder auszugsweise noc
 \include{chapters/schwierigkeiten/schwierigkeiten.tex}
 \pagebreak
 
-%********************************
-%Datenverarbeitung und Machine Learning
-%********************************
-\include{chapters/datenverarbeitungMachineLearning/datenverarbeitungMachineLearning.tex}
-\pagebreak
-
-%********************************
-%Prototyp-Erstellung und Testphase
-%********************************
 \include{chapters/prototypErstellungTestphase/prototypErstellungTestphase.tex}
 \pagebreak
 
@@ -429,6 +428,5 @@ Diese Arbeit wurde bisher in gleicher oder ähnlicher Form oder auszugsweise noc
 \renewcommand{\refname}{Literaturverzeichnis}
 \bibliographystyle{ieeetr}
 \bibliography{./sources}
-
 
 \end{document}
