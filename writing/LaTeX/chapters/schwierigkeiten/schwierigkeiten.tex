@@ -1,5 +1,5 @@
 \chapter{Schwierigkeiten}
-
+\label{schweirigkeiten}
 \section{Datenübertragung (BLE vs. Kabel)}
 \label{sec:datenübertragung}
 Eine Herausforderung in Systemen zur mobilen Bewegungserfassung besteht in der zuverlässigen Übertragung von Sensordaten vom Arduino zum Empfängergerät. Dafür stehen grundsätzlich zwei Übertragungsmethoden zur Verfügung: eine kabelgebundene Verbindung oder eine drahtlose Übertragung mittels BLE.
@@ -33,7 +33,7 @@ Ein direkter Vergleich beider Übertragungsmethoden ist in Tabelle \ref{tab:ble_
 			\hline
 		\end{tabular}
 	}
-	\caption{Vergleich von BLE und Kabel für die Datenübertragung}
+	\caption{Vergleich von BLE und Kabel}
 	\label{tab:ble_vs_kabel}
 \end{table}
 \egroup
@@ -64,10 +64,10 @@ Somit können wir den Vorteil der Bluetooth-Mobilität nutzen und die daraus res
 \section{Energieversorgung}
 Die Energieversorgung ist ein entscheidender Faktor, dass die Sensoren aber auch der Raspberry Pi mit Strom versorgt werden um kontinuierlich Daten zu erfassen und abzuspeichern. Des weiteren sind praktische Faktoren wie Gewicht und Positionierung eine entscheidende Rolle für die Funktionsfähigkeit. Im Folgenden werden zwei Aspekte betrachtet: die Positionierung und das Verhältnis von Gewicht zu Kapazität.
 
-\subsection{Powerbank-Positionierung}
+\subsection{Positionierung der Stromversorgung}
 Für die Mobilität ist die Positionierung der Powerbank von großer Bedeutung. Das Problem hierbei entsteht, wenn die Powerbank nicht gut platziert ist, dass sie der Testperson im Weg stehen können. Eine optimale Position sollte die Bewegungsfreiheit nicht einschränken und gleichzeitig einen einfachen Zugang zur Powerbank ermöglichen, sodass der Sensor leicht ausgeschaltet werden können um direkt eine neue Datenerfassung zu starten. Mögliche Positionen, um diese Einschränkung zu vermeiden, sind die Taille oder die Oberschenkel, da diese Körperteile auch am stabilsten sind. Die beste Positionierung wäre die Taille, da wie bereits in Abschnitt 2.3 erwähnt, dieser Bereich nahe am Körperschwerpunkt liegt und somit die Bewegungen der Testperson am wenigsten beeinträchtigt. Zudem befindet sich dort bereits der Arduino, wodurch beide zusammen in einer Bauchtasche mit dem Raspberry Pi verstaut werden können, die an der Taille befestigt wird. Damit die Tasche nicht zur Beeinträchtigung wird, wird darauf geachtet, dass sie fest sitzt. Die Testperson wird außerdem darauf hingewiesen, dass sie aufpassen soll, mit ihren Armen nicht dranzukommen.
 
-\subsection{Powerbank-Gewicht}
+\subsection{Abwägung zwischen Gewicht und Kapazität}
 Das Gewicht der Powerbank hat direkten Einfluss auf die Qualität der Bewegungsdaten da ein erhöhtes Gewicht, wie es durch eine Powerbank entsteht, die Bewegungsfähigkeit der Testpersonen erheblich beeinträchtigen kann \cite{monfrini2023technological}. Gleichzeitig muss die Kapazität der Powerbank ausreichen, um sowohl den Arduino als auch den Raspberry Pi über die gesamte Dauer des Testes sowohl drüber hinaus noch bis zur Datenauslagerung zuverlässig mit Strom zu versorgen. Hier ergibt sich ein Zielkonflikt: Größere Kapazität bedeutet meist auch höheres Gewicht. Kleinere, leichtere Powerbanks liefern hingegen eventuell nicht genügend Strom.
 
 \section{Einfluss von Testpersonen}
@@ -82,6 +82,7 @@ Um die Genauigkeit und Zuverlässigkeit der gesammelten Daten zu gewährleisten,
 Ein weiterer wichtiger Aspekt ist die Frage, wie viel Variation erforderlich ist, um aussagekräftige Ergebnisse zu erzielen. Eine zu geringe Variation könnte dazu führen, dass wichtige Unterschiede zwischen den Testpersonen nicht erfasst werden. Eine zu große Variation könnte hingegen die Vergleichbarkeit der Ergebnisse beeinträchtigen. Um genügend Variation einzubringen, wurde entschieden, einen gleichen Anteil an Frauen und Männern unterschiedlicher Größe als Testsubjekte zu wählen. Dazu wird eine Pilotstudie durchgeführt, um die optimale Variation zu bestimmen. Auf Basis dieser Daten können dann die endgültigen Testbedingungen festgelegt werden, die eine ausreichende Variation gewährleisten, ohne die Vergleichbarkeit der Ergebnisse zu gefährden.
 
 \section{Umwelteinflüsse}
+\label{sec:umwelt}
 Bei der Erfassung und Analyse von Bewegungsdaten spielen Umwelteinflüsse eine zentrale Rolle. Äußere Bedingungen können sowohl die Qualität als auch die Vergleichbarkeit der Sensordaten beeinflussen. Zu den wichtigsten Einflussfaktoren gehören
 
 \begin{itemize}

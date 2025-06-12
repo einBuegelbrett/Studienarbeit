@@ -43,6 +43,7 @@
 %\usepackage[table]{xcolor} %Tabellen farben
 \usepackage{tabularx} % Anpassbarere tabellen
 \usepackage{easyReview} % Review anmerkungen
+\usepackage{amsmath}
 
 \usepackage[utf8]{inputenc} % this is needed for umlauts
 \usepackage[ngerman]{babel} % this is needed for umlauts
@@ -207,7 +208,6 @@
 %-------------Kopf-/Fußzeile für Titlepage--------------
 \fancypagestyle{titlepage}
 {
-	\fancyhead[L]{\includegraphics[scale=0.09]{firmenlogo}}
 	\fancyhead[R]{\includegraphics[scale=0.25]{dhbw}}
 	\renewcommand{\headrulewidth}{0pt}
 	\fancyfoot[C]{}
@@ -283,7 +283,6 @@
 \fancyhead{}
 
 
-\fancyhead[L]{\includegraphics[scale=0.09]{firmenlogo}}
 \fancyhead[C]{\nouppercase\leftmark}
 \fancyhead[R]{\includegraphics[scale=0.25]{dhbw}}
 
@@ -297,7 +296,7 @@
 \newpage
 \chapter*{Abstract}
 \addcontentsline{toc}{chapter}{\protect\numberline{}Abstract}
-Diese Arbeit beschäftigt sich mit der Erkennung menschlicher Bewegungen mithilfe von Sensorik und maschinellem Lernen. Ziel ist die Entwicklung eines Systems, das Bewegungsarten wie Gehen, Joggen und Rennen zuverlässig klassifizieren kann. Dazu werden ein Arduino Nano 33 BLE REV2 mit integrierter IMU sowie ein Raspberry Pi 4 zur Datenverarbeitung verwendet. Die Sensoren erfassen Beschleunigungs-, Rotations- und Magnetfeldwerte, die über Bluetooth an den Rechner übertragen werden. Die Daten werden aufbereitet, in Zeitpakete segmentiert und mittels Random-Forest-Modell klassifiziert. Trotz Herausforderungen wie Energieversorgung, Sensorplatzierung oder individueller Bewegungsmuster konnte das entwickelte System eine hohe Genauigkeit von 95\% bei der Klassifikation erzielen. Die Ergebnisse zeigen, dass die Kombination aus geeigneter Hardware und maschinellem Lernen ein effektives Mittel zur Bewegungsanalyse darstellt.
+Diese Arbeit beschäftigt sich mit der Erkennung menschlicher Bewegungen mithilfe von Sensorik und maschinellem Lernen. Ziel ist die Entwicklung eines Systems, das Bewegungsarten wie Gehen, Laufen und Rennen zuverlässig klassifizieren kann. Dazu werden ein Arduino Nano 33 BLE REV2 mit integrierter IMU sowie ein Raspberry Pi 4 zur Datenverarbeitung verwendet. Die Sensoren erfassen Beschleunigungs-, Rotations- und Magnetfeldwerte, die über Bluetooth an den Rechner übertragen werden. Die Daten werden aufbereitet, in Zeitpakete segmentiert und mittels Random-Forest-Modell klassifiziert. Trotz Herausforderungen wie Energieversorgung, Sensorplatzierung oder individueller Bewegungsmuster konnte das entwickelte System eine hohe Genauigkeit von 95\% bei der Klassifikation erzielen. Die Ergebnisse zeigen, dass die Kombination aus geeigneter Hardware und maschinellem Lernen ein effektives Mittel zur Bewegungsanalyse darstellt.
 \newpage
 
 %------------------Inhaltsverzeichnis-------------------
@@ -344,9 +343,6 @@ Diese Arbeit wurde bisher in gleicher oder ähnlicher Form oder auszugsweise noc
 \markboth{Tabellenverzeichnis}{Tabellenverzeichnis}
 
 \listoftables
-
-\newpage
-\lstlistoflistings
 
 \newpage
 \chapter*{Abkürzungsverzeichnis}
@@ -405,6 +401,8 @@ Diese Arbeit wurde bisher in gleicher oder ähnlicher Form oder auszugsweise noc
 \include{chapters/prototypErstellungTestphase/prototypErstellungTestphase.tex}
 \pagebreak
 
+\include{chapters/Testphase/testphase.tex}
+
 %********************************
 %Machine Learning
 %********************************
@@ -434,7 +432,7 @@ Diese Arbeit wurde bisher in gleicher oder ähnlicher Form oder auszugsweise noc
 
 %Quellenverzeichnis
 \renewcommand{\refname}{Literaturverzeichnis}
-\bibliographystyle{ieeetr}
+\bibliographystyle{IEEEtran}
 \bibliography{./sources}
 
 \end{document}

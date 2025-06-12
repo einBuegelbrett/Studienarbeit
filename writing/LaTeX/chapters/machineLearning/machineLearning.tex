@@ -26,7 +26,7 @@ Die Daten werden nach den Zeitstempeln sortiert, um sicherzustellen, dass sie in
 \end{lstlisting}
 
 \subsection{Labeling}
-Labels sind essenziell, da sie dem überwachten Lernalgorithmus die Unterscheidung und Klassifizierung der verschiedenen Aktivitäten ermöglichen. Da die Daten unsortiert in der Datenbank gespeichert werden, muss während der Erfassung erfasst werden, zu welchen Zeiten welche Aktivität durchgeführt wurde. Dies war anhand des Zeitstempels möglich. Die gewählten Labels sind die Aktivitäten, die am Ende klassifiziert werden sollen, also "Gehen\dq, "Joggen\dq\, und "Rennen\dq. Für das Labeling werden alle zu einem Durchlauf gehörenden Daten in einer separaten \ac{CSV}-Datei gespeichert. Dadurch entstehen für jeden Durchlauf, beispielsweise "Gehen”, mehrere CSV-Dateien, die jeweils einen vollständigen Durchlauf enthalten. Dies entspricht Schritt 1, wie in Abbildung \ref{fig:pakete} zu sehen ist.
+Labels sind essenziell, da sie dem überwachten Lernalgorithmus die Unterscheidung und Klassifizierung der verschiedenen Aktivitäten ermöglichen. Da die Daten unsortiert in der Datenbank gespeichert werden, muss während der Erfassung erfasst werden, zu welchen Zeiten welche Aktivität durchgeführt wurde. Dies war anhand des Zeitstempels möglich. Die gewählten Labels sind die Aktivitäten, die am Ende klassifiziert werden sollen, also "Gehen\dq, "Laufen\dq\, und "Rennen\dq. Für das Labeling werden alle zu einem Durchlauf gehörenden Daten in einer separaten \ac{CSV}-Datei gespeichert. Dadurch entstehen für jeden Durchlauf, beispielsweise "Gehen”, mehrere CSV-Dateien, die jeweils einen vollständigen Durchlauf enthalten. Dies entspricht Schritt 1, wie in Abbildung \ref{fig:pakete} zu sehen ist.
 
 \subsection{Aufteilung in 5 Sekunden Pakete}
 Das Ziel besteht darin, ein System zu entwickeln, das die aktuelle Bewegung einer Person erkennt. Rennt die Person beispielsweise, soll das System "Rennen” ausgeben. Die Herausforderung besteht darin, das System entsprechend zu trainieren. Zwar werden für eine Aktivität wie "Rennen\dq\, 2-minütige Daten aufgenommen, jedoch soll das System nicht erst nach 2 Minuten eine Antwort herausgeben, sondern sofort. Das System soll die Bewegung der Person möglichst schnell erkennen. Deswegen wurde überlegt, das System nicht auf die vollen zwei Minuten zu trainieren, sondern kleinere Pakete dieser zwei Minuten zu erstellen. 
@@ -68,7 +68,7 @@ Um die Paketgröße zu bestimmen, wurde Folgendes getan: Würde man nur Daten au
 			\addlegendentry{10 Datenpunkte}
 		\end{axis}
 	\end{tikzpicture}
-	\caption{Vergleich von 2 und 10 Datenpunkten (eigene Abbildung)}
+	\caption{Vergleich von Datenpunkten (eigene Abbildung)}
 	\label{fig:datenpunkte_vergleich}
 \end{figure}
 
@@ -77,7 +77,7 @@ Um die Paketgröße zu bestimmen, wurde Folgendes getan: Würde man nur Daten au
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=\linewidth]{pakete}
-	\caption{Schritte zur Paketaufteilung  (eigene Abbildung)}
+	\caption{Paketaufteilung  (eigene Abbildung)}
 	\label{fig:pakete}
 \end{figure}
 
@@ -127,7 +127,7 @@ In Tabelle 3 ist noch einmal zu sehen, wie die verschiedenen Modelle hinsichtlic
 			\hline
 		\end{tabular}
 	}
-	\caption{Vergleich der evaluierten Machine Learning Modelle}
+	\caption{Vergleich der evaluierten ML-Modelle}
 	\label{tab:modellvergleich}
 \end{table}
 \egroup
@@ -163,7 +163,7 @@ Nachdem das Modell trainiert wurde, kann ein Klassifikationsbericht erstellt wer
 \end{itemize}
 
 \subsection{Diskussion der Ergebnisse}
-Die in Abbildung ref{tab:klassifikationsreport} dargestellten Ergebnisse des Klassifikationsreports zeigen, dass das Modell besonders gut dazu in der Lage ist, die Aktivitäten "Gehen\dq\, und "Joggen\dq\, zu klassifizieren. Die Aktivität "Rennen\dq\, wurde ebenfalls gut erkannt, allerdings etwas schlechter als die Aktivitäten "Gehen\dq\, und "Joggen\dq. Die hohe Genauigkeit (accuracy) von 0,95 sowie die hohen Werte für den makro- und gewichteten Durchschnitt (Macro avg und Weighted avg) von jeweils 0,95 bzw. 0,94 zeigen, dass das Modell insgesamt eine sehr gute Leistung erbringt. Für zukünftige Arbeiten könnte man sich darauf konzentrieren, noch mehr Daten von verschiedenen Testpersonen zur Aktivität "Rennen\dq\, zu sammeln, um die Leistung des Modells zu verbessern. Unsere Datenmenge sollte jedoch ausreichen, um sagen zu können, dass es sich um gute Ergebnisse handelt, da „Rennen” wahrscheinlich als schnelles "Joggen\dq\, klassifiziert wird und somit schwer zu unterscheiden ist. 
+Die in Abbildung ref{tab:klassifikationsreport} dargestellten Ergebnisse des Klassifikationsreports zeigen, dass das Modell besonders gut dazu in der Lage ist, die Aktivitäten "Gehen\dq\, und "Laufen\dq\, zu klassifizieren. Die Aktivität "Rennen\dq\, wurde ebenfalls gut erkannt, allerdings etwas schlechter als die Aktivitäten "Gehen\dq\, und "Laufen\dq. Die hohe Genauigkeit (accuracy) von 0,95 sowie die hohen Werte für den makro- und gewichteten Durchschnitt (Macro avg und Weighted avg) von jeweils 0,95 bzw. 0,94 zeigen, dass das Modell insgesamt eine sehr gute Leistung erbringt. Für zukünftige Arbeiten könnte man sich darauf konzentrieren, noch mehr Daten von verschiedenen Testpersonen zur Aktivität "Rennen\dq\, zu sammeln, um die Leistung des Modells zu verbessern. Unsere Datenmenge sollte jedoch ausreichen, um sagen zu können, dass es sich um gute Ergebnisse handelt, da „Rennen” wahrscheinlich als schnelles "Laufen\dq\, klassifiziert wird und somit schwer zu unterscheiden ist. 
 
 \bgroup
 \def\arraystretch{1.5}
@@ -175,7 +175,7 @@ Die in Abbildung ref{tab:klassifikationsreport} dargestellten Ergebnisse des Kla
 			\hline
 			gehen & 0.96 & 0.99 & 0.97 & 148 \\
 			\hline
-			joggen & 0.94 & 0.93 & 0.93 & 98 \\
+			laufen & 0.94 & 0.93 & 0.93 & 98 \\
 			\hline
 			rennen & 0.94 & 0.91 & 0.92 & 98 \\
 			\hline

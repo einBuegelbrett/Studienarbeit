@@ -1,11 +1,12 @@
 \chapter{Prototyp-Erstellung}
-Auf Grundlage der in Kapitel 4 ermittelten technischen Herausforderungen wurde ein funktionaler, tragbarer Prototyp entwickelt, der sowohl Mobilität als auch Datenqualität vereint. Das Ziel bestand darin, die im vorherigen Kapitel identifizierten Probleme durch ein eng abgestimmtes Konzept aus Hardware- und Softwarekomponenten zu lösen. Dabei spielten theoretische Überlegungen, etwa zur Datenübertragungsstabilität oder Fehlervorhersage, eine ebenso wichtige Rolle wie die konkrete technische Umsetzung.
+\label{proto}
+Auf Grundlage der in Kapitel \ref{schweirigkeiten} ermittelten technischen Herausforderungen wurde ein funktionaler, tragbarer Prototyp entwickelt, der sowohl Mobilität als auch Datenqualität vereint. Das Ziel bestand darin, die im vorherigen Kapitel identifizierten Probleme durch ein eng abgestimmtes Konzept aus Hardware- und Softwarekomponenten zu lösen. Dabei spielten theoretische Überlegungen, etwa zur Datenübertragungsstabilität oder Fehlervorhersage, eine ebenso wichtige Rolle wie die konkrete technische Umsetzung.
 
-Der Fokus lag auf der Entwicklung eines Systems, das einerseits höchste Datengenauigkeit liefert und andererseits durch drahtlose Anbindung flexibel einsetzbar ist. Diese Anforderungen wurden in Kapitel 4 diskutiert; insbesondere erhöhte BLE-Stabilität und Strategien gegen Datenverluste waren entscheidend. Das folgende Kapitel beschreibt schrittweise den Aufbau des Prototyps, die Datenerhebung und den Gewichtseinfluss, und gibt einen Ausblick auf erfolgreich bewältigte Herausforderungen.
+Der Fokus lag auf der Entwicklung eines Systems, das einerseits höchste Datengenauigkeit liefert und andererseits durch drahtlose Anbindung flexibel einsetzbar ist. Diese Anforderungen wurden in Kapitel \ref{schweirigkeiten} diskutiert; insbesondere erhöhte BLE-Stabilität und Strategien gegen Datenverluste waren entscheidend. Das folgende Kapitel beschreibt schrittweise den Aufbau des Prototyps, die Datenerhebung und den Gewichtseinfluss, und gibt einen Ausblick auf erfolgreich bewältigte Herausforderungen.
 
 \section{Optimierung der Abtastrate}
 \label{samplingrateAbs}
-Eine zentrale Herausforderung bestand darin, eine geeignete Samplingrate zu wählen, die sowohl eine ausreichende Bewegungserkennung erlaubt als auch innerhalb der technischen Grenzen von BLE stabil übertragbar ist. In Abschnitt~4.5 wurde bereits aufgezeigt, dass gerade bei höheren Samplingraten, etwa 100ms oder 200ms, das erzeugte Datenvolumen stark ansteigt. Dies erhöht nicht nur das Risiko von Datenverlusten durch Übertragungsengpässe, sondern belastet auch die Datenspeicherung, insbesondere bei Systemen mit eingeschränkter Persistenz oder Schreibgeschwindigkeit (vgl.~Abschnitt~4.6).
+Eine zentrale Herausforderung bestand darin, eine geeignete Samplingrate zu wählen, die sowohl eine ausreichende Bewegungserkennung erlaubt als auch innerhalb der technischen Grenzen von BLE stabil übertragbar ist. In Abschnitt~4.5 wurde bereits aufgezeigt, dass gerade bei höheren Samplingraten, etwa 100ms oder 200ms, das erzeugte Datenvolumen stark ansteigt. Dies erhöht nicht nur das Risiko von Datenverlusten durch Übertragungsengpässe, sondern belastet auch die Datenspeicherung, insbesondere bei Systemen mit eingeschränkter Persistenz oder Schreibgeschwindigkeit (vgl.Abschnitt \ref{sec:database}).
 
 Neben den technischen Faktoren musste aber auch die Belastung der Testpersonen berücksichtigt werden. Gerade bei anstrengenderen Aktivitäten wie Rennen oder schnellem Gehen lässt sich nicht jede Erhebungsdauer problemlos durchhalten. In der Pilotenphase zeigte sich, dass längere Messzeiten, insbesondere über 90 Sekunden, häufig zu Ermüdung und Aktivitätswechseln führten, etwa dem Übergang von Rennen zu Gehen. Solche Übergänge verzerren die Klassifizierbarkeit der Daten erheblich.
 
@@ -31,7 +32,7 @@ Typischerweise genügen Samplingraten zwischen 20Hz und 100Hz, je nach Bewegungs
 		500\,ms & 125\,s & 250  & 2.1\,\% \\
 		\hline
 	\end{tabular}
-	\caption{Ergebnisse der Testläufe mit verschiedenen Samplingraten und Messzeiten}
+	\caption{Vergleich verschiedener Samplingraten und Messzeiten}
 	\label{tab:samplingTests}
 \end{table}
 

@@ -1,0 +1,102 @@
+\section{Testphase}
+\label{sec:testphase}
+Im Rahmen dieser Testphase wurde der in Kapitel \ref{proto} entwickelte Prototyp zur Bewegungserkennung erstmals systematisch unter realen Bedingungen eingesetzt. Ziel war es, durch strukturierte Tests eine belastbare Datenbasis zu schaffen, um die prototypische Klassifikation unterschiedlicher Bewegungsmuster zu validieren. Hierbei werden auch die Herausforderungen und Schwierigkeiten von den Kapitel \ref{sec:testperson}  \dq Einfluss von Testpersonen\dq\, und \ref{sec:umwelt} \dq Umwelteinflüsse\dq\, um die Verzerrung durch individuelle Bewegungsstile sowie externe Störfaktoren zu minimieren, wurde ein Satz an Regeln und Rahmenbedingungen definiert, die während aller Testdurchläufe konsequent angewendet wurden. Diese dienen als methodisches Fundament zur Erzeugung vergleichbarer, analysierbarer und verwertbarer Datensätze.
+
+Zugleich wird mit der Variation zwischen Testpersonen – etwa hinsichtlich Geschlecht, Körpergröße und Trainingszustand – eine ausreichende Diversität sichergestellt, um sowohl realistische als auch generalisierbare Ergebnisse zu erzielen. Die Ergebnisse dieser Phase bilden die Datengrundlage für die spätere Evaluierung des Systems.
+
+\subsection{Standardisierte Testbedingungen}
+\label{sec:standardregeln}
+
+Um valide und vergleichbare Bewegungsdaten zu generieren, wurden folgende einheitliche Bedingungen für sämtliche Testdurchläufe definiert:
+
+\begin{itemize}
+	\item \textbf{Testumgebung:} Alle Bewegungsabläufe fanden ausschließlich auf befestigten, geradlinigen Wegen statt. Gezielt eingeplante Richtungswechsel dienten der Erfassung von Rotationsdaten über das Gyroskopmodul. Unebene Flächen und Hindernisse wurden vermieden.
+	
+	\item \textbf{Zeitliche Durchführung:} Die Tests wurden am späten Abend durchgeführt, um akustische, visuelle und soziale Störfaktoren zu minimieren.
+	
+	\item \textbf{Sensorplatzierung:} Der Sensor und der Raspberry Pi wurden gemeinsam mit der Powerbank in einer körpernah getragenen Bauchtasche an der Taille positioniert  nahe dem Körperschwerpunkt (Siehe Abb. \ref{fig:sensor}).
+	
+	\item \textbf{Vorabinformation:} Jede Testperson erhielt vorab eine standardisierte Einweisung zu Ablauf, Bewegungsarten sowie Verhaltensregeln wie gleichmäßiger Bewegungsausführung und Vermeidung abrupten Tempos.
+	
+	\item \textbf{Temperatur:} Die Umgebungstemperatur betrug konstant ca. 18\textdegree C. Dadurch konnten Temperatureinflüsse auf Muskelaktivität und Gangdynamik minimiert werden.
+	
+	\item \textbf{Begleitperson:} Eine Kontrollperson begleitete jeden Test auf einem Fahrrad in ausreichendem Abstand (≥ 10\,m), überwachte den Ablauf, stoppte die Zeit und stellte sicher, dass keine unbeabsichtigten Manipulationen (z.\,B. Kontakt zur Tasche) erfolgten.
+\end{itemize}
+
+Diese klaren Rahmenbedingungen erlauben eine kontrollierte Auswertung der Bewegungsdaten unter weitgehend konstanten äußeren Bedingungen.
+
+\subsection{Testpersonen und Gruppierung}
+\label{sec:testpersonen}
+
+Für eine aussagekräftige Evaluierung wurde eine heterogene Gruppe von sechs Probanden gewählt. Dabei wurde auf eine möglichst breite Streuung hinsichtlich Körpergröße, Gewicht und Aktivitätsniveau geachtet. Ziel war es, einerseits systematische Verzerrungen durch homogene Gruppen zu vermeiden und andererseits eine ausreichende Variation sicherzustellen, wie in Abschnitt~\ref{sec:testperson} beschrieben. Die folgende Tabelle zeigt die demographischen Merkmale der Teilnehmenden:
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|l|c|c|c|}
+		\hline
+		\textbf{Geschlecht} & \textbf{Größe (m)} & \textbf{Gewicht (kg)} & \textbf{Aktivitätsprofil} \\
+		\hline
+		Männlich & 1{,}78 & 77 & Kein sportlicher Hintergrund \\
+		Männlich & 1{,}85 & 84 & Fitness, moderates Ausdauertraining \\
+		Männlich & 1{,}84 & 81 & Semiprofessioneller Fußballspieler \\
+		Weiblich & 1{,}65 & 55 & Kein sportlicher Hintergrund \\
+		Weiblich & 1{,}59 & 47 & Gelegentlich Fitness, nicht aktiv \\
+		Weiblich & 1{,}73 & 72 & Hobbysport (Boxen) \\
+		\hline
+	\end{tabular}
+	\caption{Eigenschaften der Testpersonen}
+	\label{tab:testpersonen}
+\end{table}
+
+ Zur besseren Übersicht wurden zwei Gruppen gebildet:
+\newpage
+\begin{itemize}
+	\item \textbf{Gruppe A (wenig aktiv)}: 3 Personen ohne oder mit sehr geringer sportlicher Aktivität (2× weiblich, 1× männlich)
+	\item \textbf{Gruppe B (moderat bis sportlich)}: 3 Personen mit regelmäßigem sportlichem Hintergrund (2× männlich, 1× weiblich)
+\end{itemize}
+
+Die Mittelwerte der beiden Gruppen lauten:
+
+\begin{itemize}
+	\item \textbf{Gruppe A:} Ø~1{,}67\,m, Ø~59{,}7\,kg
+	\item \textbf{Gruppe B:} Ø~1{,}81\,m, Ø~79\,kg
+\end{itemize}
+
+\subsection{Einfluss zusätzlicher Masse}
+\label{sec:gewichtseinfluss}
+
+Ein zentraler Aspekt dieser Untersuchung war der Einfluss zusätzlicher Masse, auf das natürliche Bewegungsverhalten. Die Gesamtmasse betrug etwa $m = 0{,}6\,\text{kg}$ und wurde, wie in Abschnitt \ref{sec:standardregeln} beschrieben, in einer Tasche an der Taille getragen.
+
+Zur physikalischen Abschätzung des Einflusses kann das Konzept der Arbeit $W$ herangezogen werden. Bei jedem Schritt wird die zusätzliche Masse vertikal um eine bestimmte Hubhöhe $h$ bewegt, was sich als zusätzliche mechanische Energie berechnen lässt:
+
+
+\begin{equation}
+	W = m \cdot g \cdot h
+\end{equation}
+
+Dabei ist $g \approx 9{,}81\,\text{m/s}^2$ die Erdbeschleunigung. Für eine angenommene Hubhöhe von ca. $h = 0{,}03\,\text{m}$ (typisch für den Körperschwerpunkt beim Gehen laut \cite{winter2009biomechanics}) ergibt sich:
+
+\begin{equation*}
+	W = 0{,}6\,\text{kg} \cdot 9{,}81\,\text{m/s}^2 \cdot 0{,}03\,\text{m} = 0{,}1766\,\text{J}
+\end{equation*}
+
+Pro Schritt bedeutet dies eine Mehrarbeit von ca. $0{,18}\,\text{J}$.
+In den Testläufen, die eine Dauer von \textbf{125 Sekunden} hatten, ergibt sich folgendes Bild für die drei getesteten Bewegungsarten:
+
+\begin{itemize}
+	\item \textbf{Gehen}: $120\,\text{Schritte/min} \cdot 125/60 = 250$ Schritte $\Rightarrow 250 \cdot 0.18 = \mathbf{45\,\text{J}}$
+	\item \textbf{Laufen}: $160\,\text{Schritte/min} \cdot 125/60 \approx 333$ Schritte $\Rightarrow 333 \cdot 0.18 \approx \mathbf{60\,\text{J}}$
+	\item \textbf{Rennen}: $190\,\text{Schritte/min} \cdot 125/60 \approx 396$ Schritte $\Rightarrow 396 \cdot 0.18 \approx \mathbf{71\,\text{J}}$
+\end{itemize}
+\newpage
+Zum Vergleich: Der durchschnittliche Energieumsatz beträgt beim Gehen etwa $4$–$5\,\text{kJ/min}$, beim Laufen ca. $10$–$13\,\text{kJ/min}$ und beim Rennen etwa $16$–$20\,\text{kJ/min}$ \cite{margaria1976biomechanics}. Die durch das Gerät verursachte Zusatzbelastung liegt damit bei:
+
+\begin{itemize}
+	\item \textbf{Gehen}: ca. 0,4-0,5\%
+	\item \textbf{Laufen}: ca. 0,2-0.3\%
+	\item \textbf{Rennen}: ca. 0,17-0,2\%
+\end{itemize}
+
+Insgesamt zeigt die Analyse, dass das zusätzlich mitgeführte Gewicht von ca. 0,6kg zwar eine messbare energetische Mehrbelastung erzeugt, diese mit unter 0,5\% des Gesamtenergieumsatzes jedoch als gering einzustufen ist und somit die natürliche Bewegungsausführung der Testpersonen nicht wesentlich beeinflusst.
+
+
