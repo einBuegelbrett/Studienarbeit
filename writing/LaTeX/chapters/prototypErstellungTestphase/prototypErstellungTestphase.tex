@@ -53,7 +53,7 @@ Das Gesamtsystem besteht aus einem Sensor-Array auf einem Arduino Nano 33 BLE Re
 
 Die sensornahe Datenerhebung erfolgt vollständig auf einem Arduino Nano 33 BLE Rev2. Das Programm ist so aufgebaut, dass es nach dem Hochfahren zunächst sicherstellt, dass alle Systemkomponenten (Sensor und Bluetooth) einsatzbereit sind, und anschließend über einen festgelegten Zeitraum hinweg Bewegungsdaten aufzeichnet und via Bluetooth Low Energy (BLE) überträgt. Dieses Verhalten ist hart kodiert und läuft automatisiert ab – ohne weitere Interaktion.
 
-\subsection*{Ablauf der Messung}
+\subsection{Ablauf der Messung}
 
 Zunächst wird geprüft, ob der verbaute Inertialsensor erfolgreich initialisiert werden kann. Ist dies nicht der Fall, wird der Vorgang abgebrochen und ein Fehler ausgegeben. Solche IMU-Datensätze (Inertial Measurement Unit) sind in der Literatur als dreiachsige Zeitreihen beschrieben, die sich besonders gut für Segmentierung und Featureextraktion eignen \cite{app13158684}.
 Anschließend wird die BLE-Verbindung vorbereitet und aktiv beworben. Der Arduino wartet nun passiv, bis eine Verbindung vom Raspberry Pi hergestellt wurde:
@@ -104,7 +104,7 @@ Die Sensorwerte (Beschleunigung, Gyroskop, Magnetfeld) werden alle 500 Milliseku
 
 Neben der eigentlichen Datenerfassung werden auch Sonderereignisse geloggt. Eine dieser Sondermeldungen ist die Paketnummer (vgl. Listing.~\ref{fig:sensorvalues}) zu sehen, diese hilft bei der Identifizierung von fehlenden Paketen, wie wenn die Pakete im Log erst bei Sieben Starten oder früher enden. Weitere „Systemmeldungen“ werden über dieselbe BLE-Charakteristik übertragen wie normale Sensorwerte, jedoch in speziell markiertem Format (z.\,B. \texttt{ENDZEIT} oder \texttt{SENSORFEHLER}) und als Seperate Nachricht gesendet, im Gegensatz zu den Paketnummern, welche gesendet werden mit den Sensordaten.
 
-\subsection*{Formatkontrolle}
+\subsection{Formatkontrolle}
 
 Während der Entwicklung zeigte sich, dass nicht nur die Sensorwerte an sich kritisch sind, sondern auch deren Formatierung. Bereits bei kleinsten Abweichungen – z.\,B. durch einen „Ausreißer“ mit besonders vielen Dezimalstellen – konnte es zu BLE-Übertragungsfehlern kommen. Um diese potenziellen Fehlerquellen frühzeitig zu erkennen, wurden Sicherheitsmechanismen integriert:
 
@@ -116,7 +116,7 @@ Während der Entwicklung zeigte sich, dass nicht nur die Sensorwerte an sich kri
 
 Dadurch konnte verhindert werden, dass fehlerhafte oder zu lange Datenstrings generiert wurden, die das BLE-Übertragungslimit überschreiten.
 
-\subsection*{Probleme durch BLE-Byte-Limitationen}
+\subsection{Probleme durch BLE-Byte-Limitationen}
 
 Trotz dieser Vorsichtsmaßnahmen traten anfangs Datenverluste auf, die sich durch abgeschnittene Sensorzeilen am Empfänger äußerten. Beispielsweise fehlten einzelne Magnetfeldwerte oder das Paket endete mitten in einer Fließkommazahl. Die Ursache hierfür war eine unterschätzte technische Begrenzung: die maximale Datenlänge einer BLE-Übertragung.
 
@@ -135,7 +135,7 @@ In Verbindung mit den beschriebenen Prüfmechanismen und der gezielten Limitieru
 
 Während der Arduino für die sensornahe Datenerhebung zuständig ist, übernimmt der Raspberry Pi alle Aufgaben rund um Datenverarbeitung, Übertragung und Speicherung. Das System besteht aus drei entkoppelten, containerisierten Komponenten: einer Cassandra-Datenbank, einem Initialisierungsdienst zur Schemadefinition und einem BLE-Datenempfänger. Ziel dieser Trennung war eine modulare, ausfallsichere und wartbare Architektur, die sich sowohl lokal als auch in skalierbaren Umgebungen nutzen lässt.
 
-\subsection*{Aufbau der Cassandra-Datenbank}
+\subsection{Aufbau der Cassandra-Datenbank}
 
 Die Wahl fiel auf \textbf{Apache Cassandra}, da dieses verteilte NoSQL-System speziell für hohe Schreiblasten, horizontale Skalierung und eingebaute Replikation ausgelegt ist wie bereits in Abschnitt \ref{sec:database} diskutiert. Die Datenbank wurde über eine \texttt{.cql}-Datei initialisiert, welche beim Containerstart automatisch ausgeführt wird.
 
@@ -153,7 +153,7 @@ Zunächst wird ein Keyspace mit einfacher Replikation erstellt, die eigentliche 
 
 Die Wahl eines UUID-Primärschlüssels erlaubt die eindeutige Zuordnung jedes Pakets, unabhängig von Quellgerät oder Zeit. Die Normalisierung der Sensorachsen nach Typ (Beschleunigung, Gyroskop, Magnetfeld) unterstützt spätere Auswertungen, etwa zur Bewegungserkennung oder Achsensymmetrie.
 
-\subsection*{Containerisierung mit Docker}
+\subsection{Containerisierung mit Docker}
 
 Die gesamte Infrastruktur wurde über Docker umgesetzt, wobei \texttt{docker-compose} zur Verwaltung der Services genutzt wurde. Dabei wurden gezielt spezifische Einstellungen verwendet, um Probleme im praktischen Betrieb zu vermeiden.
 
@@ -186,7 +186,7 @@ Konkret wurde der Container, in dem der BLE-Empfänger läuft, im \texttt{privil
 
 Diese Konfiguration ist notwendig, da Bibliotheken wie \texttt{bleak} auf das Host-Bluetooth-Interface und den D-Bus zugreifen müssen, um BLE-Verbindungen aufzubauen und aufrechtzuerhalten. Ohne die Weiterleitung dieser Ressourcen sind BLE-Operationen im Container nicht funktionsfähig. Die manuelle Weitergabe ausgewählter Ressourcen ist zudem sicherer als ein pauschaler \texttt{--net=host}-Modus und entspricht den Empfehlungen für containerisierten Zugriff auf Host-Hardware \cite{huffert2021bluetoothdocker, dockerbluetoothaccess}
 
-\subsection*{Ablauf der Containerinitialisierung}
+\subsection{Ablauf der Containerinitialisierung}
 
 Die Startreihenfolge der Services war bewusst gewählt:
 
@@ -198,7 +198,7 @@ Die Startreihenfolge der Services war bewusst gewählt:
 
 Die Abhängigkeiten wurden in \texttt{docker-compose.yml} über \texttt{depends\_on} abgebildet. Dies verhindert Startfehler, wenn etwa die Datenbank noch nicht erreichbar ist.
 
-\subsection*{Bluetooth-Verbindung und Datenimport}
+\subsection{Bluetooth-Verbindung und Datenimport}
 
 Die Logik zum Einlesen und Speichern der Sensordaten ist in einem asynchronen Python-Skript umgesetzt, das den BLE-Dienst abruft, mit dem Arduino verbindet, die Daten parst und in Cassandra einträgt.
 
@@ -240,6 +240,6 @@ insert_stmt,(
 	*acc, *gyro, *mag ))
 \end{lstlisting}
 
-\subsection*{Stabilität und Bewertung}
+\subsection{Stabilität und Bewertung}
 
 Die Architektur erwies sich in mehreren Testzyklen als stabil. Der Containeraufbau bot eine klare Trennung der Verantwortlichkeiten, was nicht nur die Fehlersuche erleichterte, sondern auch die Wiederverwendbarkeit verbesserte. Insbesondere die explizite Steuerung der Bluetooth-Geräte im Container war essenziell, um Systemressourcen wie DBus und \texttt{/dev/hci0} (vgl. Listing.~\ref{fig:bleViaContainer}) korrekt zugänglich zu machen.
