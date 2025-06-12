@@ -39,6 +39,7 @@
 \usepackage{fancyhdr} % Kopf- und Fußzeile
 \usepackage[export]{adjustbox} % Bilder alignment
 \usepackage{stfloats} % Tabular at bottom
+\usepackage{float}
 %\usepackage[table]{xcolor} %Tabellen farben
 \usepackage{tabularx} % Anpassbarere tabellen
 \usepackage{easyReview} % Review anmerkungen
@@ -66,28 +67,35 @@
 
 
 %--------------------Codeblöcke--------------------
-\usepackage{listings} %Für Codeblöcke
-\usepackage{color} %Farben für Codeblöcke?
-\definecolor{dkgreen}{rgb}{0,0.6,0}
-\definecolor{gray}{rgb}{0.5,0.5,0.5}
-\definecolor{mauve}{rgb}{0.58,0,0.82}
+\usepackage{listings} % Für Codeblöcke
+\usepackage{color}    % Farben für Codeblöcke?
 
-\lstset{
-	language=Java,
-	aboveskip=3mm,
-	belowskip=3mm,
-	showstringspaces=false,
-	columns=flexible,
-	basicstyle={\small\ttfamily},
-	numbers=none,
-	numberstyle=\tiny\color{gray},
-	keywordstyle=\color{blue},
-	commentstyle=\color{dkgreen},
-	stringstyle=\color{mauve},
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+% Define the style for the code listing
+\lstdefinestyle{mystyle}{
+	backgroundcolor=\color{backcolour},
+	commentstyle=\color{codegreen},
+	keywordstyle=\color{magenta},
+	numberstyle=\tiny\color{codegray},
+	stringstyle=\color{codepurple},
+	basicstyle=\ttfamily\footnotesize,
+	breakatwhitespace=false,
 	breaklines=true,
-	breakatwhitespace=true,
-	tabsize=3
+	captionpos=b,
+	keepspaces=true,
+	numbers=left,
+	numbersep=5pt,
+	showspaces=false,
+	showstringspaces=false,
+	showtabs=false,
+	tabsize=2
 }
+
+\lstset{style=mystyle}
 %-------------------------------------------------
 
 \usepackage{graphicx} %Package für Bilder
@@ -182,6 +190,7 @@
 
 %----------------Setup für Verlinkungen-----------------
 \usepackage{hyperref}
+\usepackage{cleveref}
 \hypersetup{
 	colorlinks,
 	citecolor=black,
@@ -372,15 +381,6 @@ Diese Arbeit wurde bisher in gleicher oder ähnlicher Form oder auszugsweise noc
 \include{chapters/schwierigkeiten/schwierigkeiten.tex}
 \pagebreak
 
-%********************************
-%Datenverarbeitung und Machine Learning
-%********************************
-\include{chapters/datenverarbeitungMachineLearning/datenverarbeitungMachineLearning.tex}
-\pagebreak
-
-%********************************
-%Prototyp-Erstellung und Testphase
-%********************************
 \include{chapters/prototypErstellungTestphase/prototypErstellungTestphase.tex}
 \pagebreak
 
@@ -403,6 +403,5 @@ Diese Arbeit wurde bisher in gleicher oder ähnlicher Form oder auszugsweise noc
 \renewcommand{\refname}{Literaturverzeichnis}
 \bibliographystyle{ieeetr}
 \bibliography{./sources}
-
 
 \end{document}
