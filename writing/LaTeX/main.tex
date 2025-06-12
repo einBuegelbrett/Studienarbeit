@@ -68,7 +68,6 @@
 \tikzstyle{arrow} = [thick,->,>=stealth]
 %--------------------------------------------------
 
-
 %--------------------Codeblöcke--------------------
 \usepackage{listings}
 \usepackage{xcolor}
@@ -214,6 +213,8 @@
 	\fancyfoot[C]{}
 }
 %-------------------------------------------------------
+\renewcommand\lstlistingname{Codeblöckeverzeichnis}
+\renewcommand\lstlistlistingname{Codeblöckeverzeichnis}
 
 \begin{document} 
 	
@@ -345,9 +346,6 @@ Diese Arbeit wurde bisher in gleicher oder ähnlicher Form oder auszugsweise noc
 \listoftables
 
 \newpage
-\chapter*{Listingsverzeichnis}
-\addcontentsline{toc}{chapter}{\protect\numberline{}Listingsverzeichnis}
-
 \lstlistoflistings
 
 \newpage
@@ -359,7 +357,17 @@ Diese Arbeit wurde bisher in gleicher oder ähnlicher Form oder auszugsweise noc
 %Abkürzungsverzeichnis
 %********************************
 \begin{acronym}[SOAP]
-	\acro{BA}{Beispiel Acronym}
+	\acro{BLE}{Bluetooth Low Energy}
+	\acro{IMU}{Inertial Measurement Unit}
+	\acro{ML}{Machine Learning}
+	\acro{ATT MTU}{Attribute Protocol Maximum Transmission Unit}
+	\acro{UUID}{Universally Unique Identifier}
+	\acro{ID}{Identifier}
+	\acro{CSV}{Comma-separated values}
+	\acro{SVM}{Support Vector Machines}
+	\acro{CNNs}{Convolutional Neural Networks}
+	\acro{RNNs}{Recurrent Neural Networks}
+	\acro{avg}{average}
 \end{acronym}
 
 
