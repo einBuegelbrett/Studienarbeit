@@ -287,7 +287,7 @@
 \renewcommand{\footrulewidth}{0.4pt} %Linie für Fußzeile
 
 
-\renewcommand{\sectionmark}[1]{\markboth{#1}{}} 
+\renewcommand{\chaptermark}[1]{\markboth{\thechapter\quad #1}{}}
 %-------------------------------------------------------
 
 \pagenumbering{Roman}
@@ -309,6 +309,7 @@ Diese Arbeit beschäftigt sich mit der Erkennung menschlicher Bewegungen mithilf
 \newpage
 \chapter*{Ehrenwörtliche Erklärung}
 \addcontentsline{toc}{chapter}{\protect\numberline{}Ehrenwörtliche Erklärung}
+\markboth{Ehrenwörtliche Erklärung}{Ehrenwörtliche Erklärung}
 
 Ich erkläre hiermit ehrenwörtlich, dass ich die vorliegende Arbeit selbstständig und ohne Benutzung anderer als der angegebenen Hilfsmittel angefertigt habe. Aus den benutzten Quellen, direkt oder indirekt, übernommene Gedanken habe ich als solche kenntlich gemacht.
 \\
@@ -327,6 +328,7 @@ Diese Arbeit wurde bisher in gleicher oder ähnlicher Form oder auszugsweise noc
 \newpage
 \chapter*{Abbildungsverzeichnis}
 \addcontentsline{toc}{chapter}{\protect\numberline{}Abbildungsverzeichnis}
+\markboth{Abbildungsverzeichnis}{Abbildungsverzeichnis}
 
 \listoffigures
 
@@ -336,6 +338,7 @@ Diese Arbeit wurde bisher in gleicher oder ähnlicher Form oder auszugsweise noc
 \newpage
 \chapter*{Tabellenverzeichnis}
 \addcontentsline{toc}{chapter}{\protect\numberline{}Tabellenverzeichnis}
+\markboth{Tabellenverzeichnis}{Tabellenverzeichnis}
 
 \listoftables
 
