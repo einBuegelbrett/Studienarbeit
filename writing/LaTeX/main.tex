@@ -57,6 +57,9 @@
 \usetikzlibrary{shapes.geometric, arrows}
 \setmainfont[Scale=1.1]{Arial}
 
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.17} 
+
 %--------------------Flowcharts--------------------
 \tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=red!30]
 \tikzstyle{io} = [trapezium, trapezium left angle=70, trapezium right angle=110, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=blue!30]
@@ -67,9 +70,10 @@
 
 
 %--------------------Codeblöcke--------------------
-\usepackage{listings} % Für Codeblöcke
-\usepackage{color}    % Farben für Codeblöcke?
+\usepackage{listings}
+\usepackage{xcolor}
 
+% Define colors for syntax highlighting
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
 \definecolor{codepurple}{rgb}{0.58,0,0.82}
@@ -285,14 +289,14 @@
 \renewcommand{\footrulewidth}{0.4pt} %Linie für Fußzeile
 
 
-\renewcommand{\sectionmark}[1]{\markboth{#1}{}} 
+\renewcommand{\chaptermark}[1]{\markboth{\thechapter\quad #1}{}}
 %-------------------------------------------------------
 
 \pagenumbering{Roman}
 \newpage
 \chapter*{Abstract}
 \addcontentsline{toc}{chapter}{\protect\numberline{}Abstract}
-Hier kommt der Abstract.
+Diese Arbeit beschäftigt sich mit der Erkennung menschlicher Bewegungen mithilfe von Sensorik und maschinellem Lernen. Ziel ist die Entwicklung eines Systems, das Bewegungsarten wie Gehen, Joggen und Rennen zuverlässig klassifizieren kann. Dazu werden ein Arduino Nano 33 BLE REV2 mit integrierter IMU sowie ein Raspberry Pi 4 zur Datenverarbeitung verwendet. Die Sensoren erfassen Beschleunigungs-, Rotations- und Magnetfeldwerte, die über Bluetooth an den Rechner übertragen werden. Die Daten werden aufbereitet, in Zeitpakete segmentiert und mittels Random-Forest-Modell klassifiziert. Trotz Herausforderungen wie Energieversorgung, Sensorplatzierung oder individueller Bewegungsmuster konnte das entwickelte System eine hohe Genauigkeit von 95\% bei der Klassifikation erzielen. Die Ergebnisse zeigen, dass die Kombination aus geeigneter Hardware und maschinellem Lernen ein effektives Mittel zur Bewegungsanalyse darstellt.
 \newpage
 
 %------------------Inhaltsverzeichnis-------------------
@@ -307,6 +311,7 @@ Hier kommt der Abstract.
 \newpage
 \chapter*{Ehrenwörtliche Erklärung}
 \addcontentsline{toc}{chapter}{\protect\numberline{}Ehrenwörtliche Erklärung}
+\markboth{Ehrenwörtliche Erklärung}{Ehrenwörtliche Erklärung}
 
 Ich erkläre hiermit ehrenwörtlich, dass ich die vorliegende Arbeit selbstständig und ohne Benutzung anderer als der angegebenen Hilfsmittel angefertigt habe. Aus den benutzten Quellen, direkt oder indirekt, übernommene Gedanken habe ich als solche kenntlich gemacht.
 \\
@@ -325,6 +330,7 @@ Diese Arbeit wurde bisher in gleicher oder ähnlicher Form oder auszugsweise noc
 \newpage
 \chapter*{Abbildungsverzeichnis}
 \addcontentsline{toc}{chapter}{\protect\numberline{}Abbildungsverzeichnis}
+\markboth{Abbildungsverzeichnis}{Abbildungsverzeichnis}
 
 \listoffigures
 
@@ -334,6 +340,7 @@ Diese Arbeit wurde bisher in gleicher oder ähnlicher Form oder auszugsweise noc
 \newpage
 \chapter*{Tabellenverzeichnis}
 \addcontentsline{toc}{chapter}{\protect\numberline{}Tabellenverzeichnis}
+\markboth{Tabellenverzeichnis}{Tabellenverzeichnis}
 
 \listoftables
 
@@ -391,10 +398,22 @@ Diese Arbeit wurde bisher in gleicher oder ähnlicher Form oder auszugsweise noc
 \pagebreak
 
 %********************************
+%Machine Learning
+%********************************
+\include{chapters/machineLearning/machineLearning.tex}
+\pagebreak
+
+%********************************
+%Ergebnis
+%********************************
+\include{chapters/ergebnis/ergebnis.tex}
+\pagebreak
+
+%********************************
 %Zusammenfassung und Ausblick
 %********************************
-\newpage
-\chapter{Kritische Reflexion und Ausblick}
+\include{chapters/reflexion/reflexion.tex}
+\pagebreak
 
 %********************************
 %Literaturverzeichnis

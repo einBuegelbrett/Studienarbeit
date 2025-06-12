@@ -1,3 +1,5 @@
 /programms/arduino/libraries/
-
 /.idea/*
+/daten/*
+/old_code/*
+my_table.csv
