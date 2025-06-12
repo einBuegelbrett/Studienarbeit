@@ -41,21 +41,21 @@ Bei 500ms wurde dann ein deutlicher Rückgang an Paketverlusten festgestellt (im
 
 Eine Konstante bei allen 3 Samplingrate waren die längeren Dauern. Diese haben nämlich auch ein praktisches Problem eingebracht: Die Testperson, der Pilotenphase, war physisch nicht in der Lage, die Aktivität konstant durchzuführen. Dies führte zu Übergangszuständen in der Bewegung und damit zu weniger klaren Klassifizierungen.
 
-Am Ende fiel die Entscheidung bewusst auf die Kombination aus 500ms Intervall und 125s Dauer. Ausschlaggebend war hierbei vor allem die niedrige Verlustquote. Das ML-Modell soll später in der Lage sein, die Bewegung anhand eines 5-Sekunden-Fensters zuverlässig zu klassifizieren \cite{jsss-13-187-2024}. Wenn innerhalb dieses Zeitfensters jedoch ein oder mehrere Datenpakete fehlen, könnte das zu Fehlklassifikationen führen, was unsere Hypothese direkt beeinträchtigt.\\
+Am Ende fiel die Entscheidung bewusst auf die Kombination aus 500ms Intervall und 125s Dauer. Ausschlaggebend war hierbei vor allem die niedrige Verlustquote. Das \ac{ML}-Modell soll später in der Lage sein, die Bewegung anhand eines 5-Sekunden-Fensters zuverlässig zu klassifizieren \cite{jsss-13-187-2024}. Wenn innerhalb dieses Zeitfensters jedoch ein oder mehrere Datenpakete fehlen, könnte das zu Fehlklassifikationen führen, was unsere Hypothese direkt beeinträchtigt.\\
 
-Die längere Messdauer (125s) erwies sich ebenso als vorteilhaft: Bei geringer Samplingrate fallen Bewegungsübergänge (z.B. Rhythmusänderungen) weniger stark auf, durch die geringere Datenmenge. Damit blieb die Klasse „Rennen“ in ihrer Reinform besser erhalten, was für die spätere Trainingsqualität des ML-Modells entscheidend ist.
+Die längere Messdauer (125s) erwies sich ebenso als vorteilhaft: Bei geringer Samplingrate fallen Bewegungsübergänge (z.B. Rhythmusänderungen) weniger stark auf, durch die geringere Datenmenge. Damit blieb die Klasse "Rennen“ in ihrer Reinform besser erhalten, was für die spätere Trainingsqualität des ML-Modells entscheidend ist.
 
 \section{Aufbau des Systems}
 
-Das Gesamtsystem besteht aus einem Sensor-Array auf einem Arduino Nano 33 BLE Rev2, das über Bluetooth Low Energy (BLE) drahtlos mit einem Raspberry Pi kommuniziert. Die Sensordaten werden anschließend in einer verteilten Datenbank (Apache Cassandra) gespeichert, um hohe Schreiblasten und Zuverlässigkeit zu gewährleisten. Durch diese Architektur lassen sich die Daten mobil erfassen und langfristig archivieren.
+Das Gesamtsystem besteht aus einem Sensor-Array auf einem Arduino Nano 33 BLE Rev2, das über BLE drahtlos mit einem Raspberry Pi kommuniziert. Die Sensordaten werden anschließend in einer verteilten Datenbank (Apache Cassandra) gespeichert, um hohe Schreiblasten und Zuverlässigkeit zu gewährleisten. Durch diese Architektur lassen sich die Daten mobil erfassen und langfristig archivieren.
 
 \section{Datenaufnahme}
 
-Die sensornahe Datenerhebung erfolgt vollständig auf einem Arduino Nano 33 BLE Rev2. Das Programm ist so aufgebaut, dass es nach dem Hochfahren zunächst sicherstellt, dass alle Systemkomponenten (Sensor und Bluetooth) einsatzbereit sind, und anschließend über einen festgelegten Zeitraum hinweg Bewegungsdaten aufzeichnet und via Bluetooth Low Energy (BLE) überträgt. Dieses Verhalten ist hart kodiert und läuft automatisiert ab – ohne weitere Interaktion.
+Die sensornahe Datenerhebung erfolgt vollständig auf einem Arduino Nano 33 BLE Rev2. Das Programm ist so aufgebaut, dass es nach dem Hochfahren zunächst sicherstellt, dass alle Systemkomponenten (Sensor und Bluetooth) einsatzbereit sind, und anschließend über einen festgelegten Zeitraum hinweg Bewegungsdaten aufzeichnet und via BLE überträgt. Dieses Verhalten ist hart kodiert und läuft automatisiert ab – ohne weitere Interaktion.
 
 \subsection{Ablauf der Messung}
 
-Zunächst wird geprüft, ob der verbaute Inertialsensor erfolgreich initialisiert werden kann. Ist dies nicht der Fall, wird der Vorgang abgebrochen und ein Fehler ausgegeben. Solche IMU-Datensätze (Inertial Measurement Unit) sind in der Literatur als dreiachsige Zeitreihen beschrieben, die sich besonders gut für Segmentierung und Featureextraktion eignen \cite{app13158684}.
+Zunächst wird geprüft, ob der verbaute Inertialsensor erfolgreich initialisiert werden kann. Ist dies nicht der Fall, wird der Vorgang abgebrochen und ein Fehler ausgegeben. Solche IMU-Datensätze sind in der Literatur als dreiachsige Zeitreihen beschrieben, die sich besonders gut für Segmentierung und Featureextraktion eignen \cite{app13158684}.
 Anschließend wird die BLE-Verbindung vorbereitet und aktiv beworben. Der Arduino wartet nun passiv, bis eine Verbindung vom Raspberry Pi hergestellt wurde:
 
 
@@ -120,7 +120,7 @@ Dadurch konnte verhindert werden, dass fehlerhafte oder zu lange Datenstrings ge
 
 Trotz dieser Vorsichtsmaßnahmen traten anfangs Datenverluste auf, die sich durch abgeschnittene Sensorzeilen am Empfänger äußerten. Beispielsweise fehlten einzelne Magnetfeldwerte oder das Paket endete mitten in einer Fließkommazahl. Die Ursache hierfür war eine unterschätzte technische Begrenzung: die maximale Datenlänge einer BLE-Übertragung.
 
-BLE verwendet standardmäßig eine Attribute Protocol Maximum Transmission Unit (ATT MTU) von 23 Bytes (davon 3 Bytes Overhead), also etwa 20 Bytes effektive Nutzlast pro Paket \cite{tosi2017performance, arduinoBLEdoc}. Längere Datenmengen müssen daher auf mehrere Pakete fragmentiert werden. Durch ATT-MTU-Negotiation kann die MTU-Vergrößert werden (z.B. bis 247 Bytes bei BLE 4.2), wodurch größere Datenblöcke pro GATT-Operation möglich sind \cite{arduinoBLEdoc, murugalakshmi2023evolution}. Ohne diese Anpassung entsteht Overhead durch Fragmentierung, was Latenz und möglichen Paketverlust verursachen kann. Die BLE-Spezifikation legt den 20-Byte-Grenzwert fest, sodass selbst bei Daten-Längen über diesem Wert mehrere ATT-Pakete geschickt werden müssen \cite{tosi2017performance}. Dies hätte nicht nur die Formatierung erschwert, da die Sensordaten immer variable Werte aufweisen und die Byte-Länge immer zu einem anderen Zeitpunkt erreicht wird. Zudem hätte dies eine Menge Probleme beim Empfang der Daten auf dem Raspberry Pi sowie bei der Speicherung der Datenbank verursacht. Durch die Anpassung der \texttt{BLECharacteristic}-Länge kann dies übergangen werden (vgl. Listing.~\ref{fig:byteLimit}), wie bereits oben erwähnt. Das heißt, eine Sensormessung, die größer als 20 Byte ist, wird in mehreren Paketen verschickt. 
+BLE verwendet standardmäßig eine \ac{ATT MTU} von 23 Bytes (davon 3 Bytes Overhead), also etwa 20 Bytes effektive Nutzlast pro Paket \cite{tosi2017performance, arduinoBLEdoc}. Längere Datenmengen müssen daher auf mehrere Pakete fragmentiert werden. Durch ATT-MTU-Negotiation kann die MTU-Vergrößert werden (z.B. bis 247 Bytes bei BLE 4.2), wodurch größere Datenblöcke pro GATT-Operation möglich sind \cite{arduinoBLEdoc, murugalakshmi2023evolution}. Ohne diese Anpassung entsteht Overhead durch Fragmentierung, was Latenz und möglichen Paketverlust verursachen kann. Die BLE-Spezifikation legt den 20-Byte-Grenzwert fest, sodass selbst bei Daten-Längen über diesem Wert mehrere ATT-Pakete geschickt werden müssen \cite{tosi2017performance}. Dies hätte nicht nur die Formatierung erschwert, da die Sensordaten immer variable Werte aufweisen und die Byte-Länge immer zu einem anderen Zeitpunkt erreicht wird. Zudem hätte dies eine Menge Probleme beim Empfang der Daten auf dem Raspberry Pi sowie bei der Speicherung der Datenbank verursacht. Durch die Anpassung der \texttt{BLECharacteristic}-Länge kann dies übergangen werden (vgl. Listing.~\ref{fig:byteLimit}), wie bereits oben erwähnt. Das heißt, eine Sensormessung, die größer als 20 Byte ist, wird in mehreren Paketen verschickt. 
 
 	\begin{lstlisting}[language=C++, caption={Ble Byte Limit Erhöhung}, label=fig:byteLimit]
 	BLECharacteristic sensorCharacteristic
@@ -129,7 +129,7 @@ BLE verwendet standardmäßig eine Attribute Protocol Maximum Transmission Unit 
 
 Diese Konfiguration erlaubte stabilere Übertragungen, solange die generierten Zeichenketten innerhalb dieses Rahmens blieben. Hier zeigte sich erneut die enge Verbindung zwischen Formatierungslogik und Hardware-Limit: Die Sensorwerte mussten so gestaltet sein, dass das resultierende ASCII-Paket inkl. Semikolons, Vorzeichen und Nachkommastellen stets im Rahmen der Byte Limitierung war.
 
-In Verbindung mit den beschriebenen Prüfmechanismen und der gezielten Limitierung auf zwei Nachkommastellen konnte so eine stabile BLE-Kommunikation realisiert werden. Dieser Aspekt verdeutlicht, dass viele der real auftretenden „BLE-Probleme“ nicht am Übertragungsprotokoll selbst, sondern an der konkreten Implementierung im System lagen. Insbesondere an der engen Kopplung zwischen Codierung, Speichergröße und Signalübertragung.
+In Verbindung mit den beschriebenen Prüfmechanismen und der gezielten Limitierung auf zwei Nachkommastellen konnte so eine stabile BLE-Kommunikation realisiert werden. Dieser Aspekt verdeutlicht, dass viele der real auftretenden "BLE-Probleme“ nicht am Übertragungsprotokoll selbst, sondern an der konkreten Implementierung im System lagen. Insbesondere an der engen Kopplung zwischen Codierung, Speichergröße und Signalübertragung.
 
 \section{Raspberry Pi Aufbau}
 
@@ -151,7 +151,7 @@ Zunächst wird ein Keyspace mit einfacher Replikation erstellt, die eigentliche 
 	);
 \end{lstlisting}
 
-Die Wahl eines UUID-Primärschlüssels erlaubt die eindeutige Zuordnung jedes Pakets, unabhängig von Quellgerät oder Zeit. Die Normalisierung der Sensorachsen nach Typ (Beschleunigung, Gyroskop, Magnetfeld) unterstützt spätere Auswertungen, etwa zur Bewegungserkennung oder Achsensymmetrie.
+Die Wahl eines \ac{UUID}-Primärschlüssels erlaubt die eindeutige Zuordnung jedes Pakets, unabhängig von Quellgerät oder Zeit. Die Normalisierung der Sensorachsen nach Typ (Beschleunigung, Gyroskop, Magnetfeld) unterstützt spätere Auswertungen, etwa zur Bewegungserkennung oder Achsensymmetrie.
 
 \subsection{Containerisierung mit Docker}
 

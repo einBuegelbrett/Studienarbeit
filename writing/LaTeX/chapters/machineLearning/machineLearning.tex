@@ -5,7 +5,7 @@ In diesem Teil werden die benötigte Datenreinigung, verschiedene Machine-Learni
 Bevor die Rohdaten dem überwachten Machine-Learning-Algorithmus übergeben werden können, müssen sie zunächst aufbereitet und gelabelt werden. Dies umfasst die Bereinigung der Rohdaten, die Umwandlung der Zeitstempel, die Sortierung der Daten, das Labeling, die Aufteilung in 5-Sekunden-Pakete und die Feature-Extraktion. 
 
 \subsection{Bereinigung der Rohdaten}
-Die Rohdaten enthalten verschiedene Attribute, darunter Beschleunigungsdaten (acc\_x, acc\_y, acc\_z), Gyroskopdaten (gyro\_x, gyro\_y, gyro\_z), Magnetometerdaten (mag\_x, mag\_y, mag\_z), eine ID und einen Zeitstempel. Ein wichtiger Schritt in der Datenreinigung ist das Entfernen der ID, da diese für das Training des Modells nicht relevant ist. Dies wird durch den folgenden Code erreicht:
+Die Rohdaten enthalten verschiedene Attribute, darunter Beschleunigungsdaten (acc\_x, acc\_y, acc\_z), Gyroskopdaten (gyro\_x, gyro\_y, gyro\_z), Magnetometerdaten (mag\_x, mag\_y, mag\_z), eine \ac{ID} und einen Zeitstempel. Ein wichtiger Schritt in der Datenreinigung ist das Entfernen der ID, da diese für das Training des Modells nicht relevant ist. Dies wird durch den folgenden Code erreicht:
 
 \begin{lstlisting}[language=Python]
 	df = df.drop(columns=['id'])
@@ -26,10 +26,10 @@ Die Daten werden nach den Zeitstempeln sortiert, um sicherzustellen, dass sie in
 \end{lstlisting}
 
 \subsection{Labeling}
-Labels sind essenziell, da sie dem überwachten Lernalgorithmus die Unterscheidung und Klassifizierung der verschiedenen Aktivitäten ermöglichen. Da die Daten unsortiert in der Datenbank gespeichert werden, muss während der Erfassung erfasst werden, zu welchen Zeiten welche Aktivität durchgeführt wurde. Dies war anhand des Zeitstempels möglich. Die gewählten Labels sind die Aktivitäten, die am Ende klassifiziert werden sollen, also "Gehen\dq, "Joggen\dq\, und "Rennen\dq. Für das Labeling werden alle zu einem Durchlauf gehörenden Daten in einer separaten CSV-Datei gespeichert. Dadurch entstehen für jeden Durchlauf, beispielsweise "Gehen”, mehrere CSV-Dateien, die jeweils einen vollständigen Durchlauf enthalten. Dies entspricht Schritt 1, wie in Abbildung \ref{fig:pakete} zu sehen ist.
+Labels sind essenziell, da sie dem überwachten Lernalgorithmus die Unterscheidung und Klassifizierung der verschiedenen Aktivitäten ermöglichen. Da die Daten unsortiert in der Datenbank gespeichert werden, muss während der Erfassung erfasst werden, zu welchen Zeiten welche Aktivität durchgeführt wurde. Dies war anhand des Zeitstempels möglich. Die gewählten Labels sind die Aktivitäten, die am Ende klassifiziert werden sollen, also "Gehen\dq, "Joggen\dq\, und "Rennen\dq. Für das Labeling werden alle zu einem Durchlauf gehörenden Daten in einer separaten \ac{CSV}-Datei gespeichert. Dadurch entstehen für jeden Durchlauf, beispielsweise "Gehen”, mehrere CSV-Dateien, die jeweils einen vollständigen Durchlauf enthalten. Dies entspricht Schritt 1, wie in Abbildung \ref{fig:pakete} zu sehen ist.
 
 \subsection{Aufteilung in 5 Sekunden Pakete}
-Das Ziel besteht darin, ein System zu entwickeln, das die aktuelle Bewegung einer Person erkennt. Rennt die Person beispielsweise, soll das System „Rennen” ausgeben. Die Herausforderung besteht darin, das System entsprechend zu trainieren. Zwar werden für eine Aktivität wie "Rennen\dq\, 2-minütige Daten aufgenommen, jedoch soll das System nicht erst nach 2 Minuten eine Antwort herausgeben, sondern sofort. Das System soll die Bewegung der Person möglichst schnell erkennen. Deswegen wurde überlegt, das System nicht auf die vollen zwei Minuten zu trainieren, sondern kleinere Pakete dieser zwei Minuten zu erstellen. 
+Das Ziel besteht darin, ein System zu entwickeln, das die aktuelle Bewegung einer Person erkennt. Rennt die Person beispielsweise, soll das System "Rennen” ausgeben. Die Herausforderung besteht darin, das System entsprechend zu trainieren. Zwar werden für eine Aktivität wie "Rennen\dq\, 2-minütige Daten aufgenommen, jedoch soll das System nicht erst nach 2 Minuten eine Antwort herausgeben, sondern sofort. Das System soll die Bewegung der Person möglichst schnell erkennen. Deswegen wurde überlegt, das System nicht auf die vollen zwei Minuten zu trainieren, sondern kleinere Pakete dieser zwei Minuten zu erstellen. 
 
 Um die Paketgröße zu bestimmen, wurde Folgendes getan: Würde man nur Daten aus einer Sekunde nehmen, gäbe es nur zwei Datenpunkte pro Paket, da der Arduino alle 0,5 Sekunden Daten sendet.  Bei nur zwei Datenpunkten kann das System nur schwer eine Bewegung oder ein Muster erkennen. Deswegen wurden fünf Sekunden gewählt. Bei fünf Sekunden sind es zehn Datenpunkte, was ausreicht, um ein Muster zu erkennen. Zugleich ist es kurz genug, um zu sagen, was die Person im Moment gerade macht.
 
@@ -99,11 +99,11 @@ Decision Trees sind einfache und interpretierbare Modelle, die gut für Klassifi
 \subsubsection{Random Forest}
 Random Forest ist ein Ensemble-Lernverfahren, das mehrere Decision Trees kombiniert, um die Genauigkeit zu erhöhen und Overfitting zu reduzieren. Es ist robust und funktioniert gut mit großen Datensätzen. \cite{chen2012random}
 
-\subsubsection{Support Vector Machines (SVM)}
+\subsubsection{\ac{SVM}}
 SVMs sind leistungsstarke Modelle für die Klassifizierung, insbesondere für hochdimensionale Daten. Sie können jedoch rechenintensiv sein und sind möglicherweise nicht ideal für Echtzeitanwendungen. \cite{mammone2009support}
 
 \subsubsection{Neural Networks}
-Neurale Netze, insbesondere Convolutional Neural Networks (CNNs) und Recurrent Neural Networks (RNNs), sind in der Lage, komplexe Muster in den Daten zu erkennen. Sie erfordern jedoch eine große Menge an Trainingsdaten und Rechenleistung. \cite{choi2020introduction}
+Neurale Netze, insbesondere \ac{CNNs} und \ac{RNNs}, sind in der Lage, komplexe Muster in den Daten zu erkennen. Sie erfordern jedoch eine große Menge an Trainingsdaten und Rechenleistung. \cite{choi2020introduction}
 
 \subsection{Gewähltes Modell}
 In Tabelle 3 ist noch einmal zu sehen, wie die verschiedenen Modelle hinsichtlich Genauigkeit, Trainingszeit und Echtzeitfähigkeit abschneiden.
@@ -134,7 +134,7 @@ In Tabelle 3 ist noch einmal zu sehen, wie die verschiedenen Modelle hinsichtlic
 
 Für dieses Projekt ist es entscheidend, ein Modell zu wählen, das eine hohe Genauigkeit aufweist und nicht zu Overfitting neigt. Der Hintergrund hierfür liegt in der Natur der zu verarbeitenden Daten und der Anwendung selbst. Die Bewegungsdaten, die alle fünf Sekunden neu erfasst und verarbeitet werden müssen, erfordern ein Modell, das zuverlässig und präzise arbeitet. Overfitting wäre hier besonders problematisch, da es dazu führen würde, dass das Modell zwar auf den Trainingsdaten gut funktioniert, aber bei neuen, unbekannten Daten versagt. Dies würde die Echtzeitfähigkeit und die Zuverlässigkeit des Systems erheblich beeinträchtigen.
 
-Decision Trees sind für dieses Projekt weniger geeignet, da sie bei begrenzten Trainingsdaten zu Overfitting neigen. Auch Neuronale Netzwerke scheiden aus, da die verfügbare Menge an Trainingsdaten nicht ausreicht, um ein solches Modell effektiv zu trainieren. Die Trainingszeit ist zwar weniger kritisch, da das Training nur einmal durchgeführt wird, jedoch ist die Echtzeitfähigkeit entscheidend. Support Vector Machines (SVM) sind aufgrund ihrer Rechenintensivität ebenfalls weniger geeignet.
+Decision Trees sind für dieses Projekt weniger geeignet, da sie bei begrenzten Trainingsdaten zu Overfitting neigen. Auch Neuronale Netzwerke scheiden aus, da die verfügbare Menge an Trainingsdaten nicht ausreicht, um ein solches Modell effektiv zu trainieren. Die Trainingszeit ist zwar weniger kritisch, da das Training nur einmal durchgeführt wird, jedoch ist die Echtzeitfähigkeit entscheidend. SVM sind aufgrund ihrer Rechenintensivität ebenfalls weniger geeignet.
 
 Am besten zu diesen Kriterien passt das Random-Forest-Modell, da es eine gute Balance zwischen Genauigkeit und Rechenaufwand bietet. Es ist robust gegenüber Overfitting und kann gut mit den vorliegenden Bewegungsdaten umgehen. Random Forest kombiniert mehrere Decision Trees und reduziert dadurch das Risiko von Overfitting, während es gleichzeitig eine hohe Genauigkeit und Echtzeitfähigkeit gewährleistet.
 
@@ -158,12 +158,12 @@ Nachdem das Modell trainiert wurde, kann ein Klassifikationsbericht erstellt wer
 	\item \textbf{f1-score}: Das harmonische Mittel aus Präzision und Recall. Es gibt einen einzigen Wert an, der die Balance zwischen Präzision und Recall berücksichtigt.
 	\item \textbf{support}: Die Anzahl der tatsächlichen Vorkommen der Klasse im Testset. Es gibt an, wie viele Instanzen jeder Klasse im Testset vorhanden sind.
 	\item \textbf{accuracy (Genauigkeit)}: Der Anteil der korrekt vorhergesagten Instanzen an allen Instanzen. Es gibt an, wie oft das Modell insgesamt richtig liegt.
-	\item \textbf{macro avg}: Der Durchschnitt der Metriken (Präzision, Recall, f1-score) über alle Klassen hinweg, ohne Berücksichtigung der Klassenhäufigkeit.
+	\item \textbf{macro \ac{avg}}: Der Durchschnitt der Metriken (Präzision, Recall, f1-score) über alle Klassen hinweg, ohne Berücksichtigung der Klassenhäufigkeit.
 	\item \textbf{weighted avg}: Der gewichtete Durchschnitt der Metriken (Präzision, Recall, f1-score) über alle Klassen hinweg, wobei die Klassenhäufigkeit berücksichtigt wird.
 \end{itemize}
 
 \subsection{Diskussion der Ergebnisse}
-Die in Abbildung ref{tab:klassifikationsreport} dargestellten Ergebnisse des Klassifikationsreports zeigen, dass das Modell besonders gut dazu in der Lage ist, die Aktivitäten "Gehen\dq\, und "Joggen\dq\, zu klassifizieren. Die Aktivität "Rennen\dq\, wurde ebenfalls gut erkannt, allerdings etwas schlechter als die Aktivitäten "Gehen\dq\, und "Joggen\dq. Die hohe Genauigkeit (Accuracy) von 0,95 sowie die hohen Werte für den makro- und gewichteten Durchschnitt (Macro Avg und Weighted Avg) von jeweils 0,95 bzw. 0,94 zeigen, dass das Modell insgesamt eine sehr gute Leistung erbringt. Für zukünftige Arbeiten könnte man sich darauf konzentrieren, noch mehr Daten von verschiedenen Testpersonen zur Aktivität "Rennen\dq\, zu sammeln, um die Leistung des Modells zu verbessern. Unsere Datenmenge sollte jedoch ausreichen, um sagen zu können, dass es sich um gute Ergebnisse handelt, da „Rennen” wahrscheinlich als schnelles "Joggen\dq\, klassifiziert wird und somit schwer zu unterscheiden ist. %Quelle hier hinzufügen
+Die in Abbildung ref{tab:klassifikationsreport} dargestellten Ergebnisse des Klassifikationsreports zeigen, dass das Modell besonders gut dazu in der Lage ist, die Aktivitäten "Gehen\dq\, und "Joggen\dq\, zu klassifizieren. Die Aktivität "Rennen\dq\, wurde ebenfalls gut erkannt, allerdings etwas schlechter als die Aktivitäten "Gehen\dq\, und "Joggen\dq. Die hohe Genauigkeit (accuracy) von 0,95 sowie die hohen Werte für den makro- und gewichteten Durchschnitt (Macro avg und Weighted avg) von jeweils 0,95 bzw. 0,94 zeigen, dass das Modell insgesamt eine sehr gute Leistung erbringt. Für zukünftige Arbeiten könnte man sich darauf konzentrieren, noch mehr Daten von verschiedenen Testpersonen zur Aktivität "Rennen\dq\, zu sammeln, um die Leistung des Modells zu verbessern. Unsere Datenmenge sollte jedoch ausreichen, um sagen zu können, dass es sich um gute Ergebnisse handelt, da „Rennen” wahrscheinlich als schnelles "Joggen\dq\, klassifiziert wird und somit schwer zu unterscheiden ist. 
 
 \bgroup
 \def\arraystretch{1.5}
