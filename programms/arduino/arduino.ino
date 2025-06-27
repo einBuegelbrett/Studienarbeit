@@ -44,16 +44,12 @@ void loop() {
     if (messungAktiv && (currentTime - startTime >= duration)) {
         Serial.println("ENDZEIT ERREICHT");
         sendSensorData("ENDZEIT");
-        messungAktiv = false;  // weitere Messungen stoppen
+        messungAktiv = false; 
         return;
     }
 
     // Nur weitermachen, wenn Messung noch aktiv
     if (messungAktiv && (currentTime - lastSendTime >= interval)) {
-        digitalWrite(LED_BUILTIN, HIGH); // LED einschalten um zu zeigen, dass Daten gesendet werden
-        delay(100);
-        digitalWrite(LED_BUILTIN, LOW);
-        delay(100);
         if (IMU.accelerationAvailable() && IMU.gyroscopeAvailable() && IMU.magneticFieldAvailable()) {
             float ax, ay, az;
             float gx, gy, gz;

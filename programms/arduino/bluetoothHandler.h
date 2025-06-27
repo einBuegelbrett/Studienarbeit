@@ -3,7 +3,6 @@
 
 #include <ArduinoBLE.h>
 
-// Wir "versprechen", dass es diese Funktionen gibt:
 void setupBLE();
 void sendSensorData(const char* data);
 bool isBLEConnected();

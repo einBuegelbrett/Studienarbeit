@@ -2,23 +2,20 @@ import pandas as pd
 from datetime import datetime, timedelta
 
 # Daten laden
-df = pd.read_csv('/home/sven/Dokumente/dhbw/studienarbeit/Studienarbeit/rennen5.csv', sep=',')
+pfad = 'pfad/zum/ordner'  # Ersetze dies mit dem tatsächlichen Pfad zu deinen CSV-Dateien
+df = pd.read_csv(f'{pfad}/mytable.csv', sep=',')
 
 df['timestamp'] = pd.to_datetime(df['timestamp'])
 
-# Nach Zeit sortieren
 df = df.sort_values('timestamp').reset_index(drop=True)
 
-# Labels definieren 
 labels = ['rennen']
 num_segments = len(labels)
 
-# Länge jedes Abschnitts (nach Anzahl Zeilen)
 segment_length = len(df) // num_segments
 
-packet_counter = 333
+packet_counter = 333 # Oder die Anzahl der bereits existierenden Pakete plus 1, um fortlaufend zu nummerieren
 
-# Jeden Abschnitt verarbeiten
 for i in range(num_segments):
     start_idx = i * segment_length
     end_idx = (i + 1) * segment_length if i < num_segments - 1 else len(df)
@@ -26,7 +23,6 @@ for i in range(num_segments):
     segment_df = df.iloc[start_idx:end_idx].copy()
     segment_label = labels[i]
     
-    # Segment-Zeitgrenzen
     segment_df = segment_df.sort_values('timestamp').reset_index(drop=True)
     start_time = segment_df['timestamp'].iloc[0]
     end_time = segment_df['timestamp'].iloc[-1]
@@ -51,12 +47,11 @@ for i in range(num_segments):
             
             packet_df['Timer'] = timer
 
-            # timestamp entfernen
             packet_df = packet_df.drop(columns=['timestamp'])
 
             # CSV speichern
             packet_df.to_csv(
-                f'/home/sven/Dokumente/dhbw/studienarbeit/Studienarbeit/daten/packet_{packet_counter}_{segment_label}.csv', index=False
+                f'{pfad}/daten/packet_{packet_counter}_{segment_label}.csv', index=False
             )
             packet_counter += 1
         

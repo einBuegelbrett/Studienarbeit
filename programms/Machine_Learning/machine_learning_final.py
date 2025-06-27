@@ -12,7 +12,8 @@ import joblib
 # -----------------------------------------
 # 1. Daten einlesen und Features berechnen
 # -----------------------------------------
-path = "/home/sven/Dokumente/dhbw/studienarbeit/Studienarbeit/daten"
+pfad = 'pfad/zum/ordner'  # Ersetze dies mit dem tatsächlichen Pfad zu deinen CSV-Dateien
+path = f'{pfad}/daten' 
 all_files = [f for f in os.listdir(path) if f.startswith("packet_") and f.endswith(".csv")]
 
 data = []
@@ -41,7 +42,6 @@ y = labels
 le = LabelEncoder()
 y_encoded = le.fit_transform(y)
 
-# Klassenverteilung anzeigen
 print("Verteilung der Klassen (vor dem Split):")
 print(pd.Series(y).value_counts())
 
@@ -139,17 +139,16 @@ plt.xlabel("Features")
 plt.savefig("time_series_pretty.png")
 plt.show()
 
-# Boxplot der Feature-Werte für jede Klasse separat
-plt.figure(figsize=(14, 16))  # Erhöhe die Höhe des gesamten Plots
+plt.figure(figsize=(14, 16)) 
 for i, label in enumerate(le.classes_):
     plt.subplot(3, 1, i + 1)
     sns.boxplot(data=X[y_encoded == i], orient="h", palette="Set2")
     plt.title(f"{label} - Feature Values", fontsize=14)
     plt.xlabel("Values", fontsize=12)
-    plt.yticks(ticks=np.arange(len(X.columns)), labels=X.columns, fontsize=6)  # Reduziere die Fontgröße der y-Achsen-Beschriftungen
+    plt.yticks(ticks=np.arange(len(X.columns)), labels=X.columns, fontsize=6)  
     plt.tight_layout()
 
-plt.subplots_adjust(hspace=0.5)  # Erhöhe den vertikalen Abstand zwischen den Subplots
+plt.subplots_adjust(hspace=0.5) 
 plt.savefig("boxplots_features_by_class_separate.png")
 plt.show()
 
