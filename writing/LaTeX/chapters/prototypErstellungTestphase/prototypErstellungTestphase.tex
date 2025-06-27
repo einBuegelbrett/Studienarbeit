@@ -103,11 +103,11 @@ Die Sensorwerte (Beschleunigung, Gyroskop, Magnetfeld) werden alle 500 Milliseku
 	sendSensorData(imuData);
 	\end{lstlisting}
 
-Neben der eigentlichen Datenerfassung werden auch Sonderereignisse geloggt. Eine dieser Sondermeldungen ist die Paketnummer (vgl. Listing.~\ref{fig:sensorvalues}) zu sehen, diese hilft bei der Identifizierung von fehlenden Paketen, wie wenn die Pakete im Log erst bei Sieben Starten oder früher enden. Weitere "Systemmeldungen" werden über dieselbe BLE-Charakteristik übertragen wie normale Sensorwerte, jedoch in speziell markiertem Format (z.\,B. \texttt{ENDZEIT} oder \texttt{SENSORFEHLER}) und als Seperate Nachricht gesendet, im Gegensatz zu den Paketnummern, welche gesendet werden mit den Sensordaten.
+Neben der eigentlichen Datenerfassung werden auch Sonderereignisse geloggt. Eine dieser Sondermeldungen ist die Paketnummer (vgl. Listing.~\ref{fig:sensorvalues}) zu sehen, diese hilft bei der Identifizierung von fehlenden Paketen, wie wenn die Pakete im Log erst bei Sieben Starten oder früher enden. Weitere \dq Systemmeldungen\dq\, werden über dieselbe BLE-Charakteristik übertragen wie normale Sensorwerte, jedoch in speziell markiertem Format (z.\,B. \texttt{ENDZEIT} oder \texttt{SENSORFEHLER}) und als Seperate Nachricht gesendet, im Gegensatz zu den Paketnummern, welche gesendet werden mit den Sensordaten.
 
 \subsection{Formatkontrolle}
 
-Während der Entwicklung zeigte sich, dass nicht nur die Sensorwerte an sich kritisch sind, sondern auch deren Formatierung. Bereits bei kleinsten Abweichungen – z.\,B. durch einen "Ausreißer" mit besonders vielen Dezimalstellen – konnte es zu BLE-Übertragungsfehlern kommen. Um diese potenziellen Fehlerquellen frühzeitig zu erkennen, wurden Sicherheitsmechanismen integriert:
+Während der Entwicklung zeigte sich, dass nicht nur die Sensorwerte an sich kritisch sind, sondern auch deren Formatierung. Bereits bei kleinsten Abweichungen – z.\,B. durch einen \dq Ausreißer\dq\, mit besonders vielen Dezimalstellen – konnte es zu BLE-Übertragungsfehlern kommen. Um diese potenziellen Fehlerquellen frühzeitig zu erkennen, wurden Sicherheitsmechanismen integriert:
 
 \begin{itemize}
 	\item Alle Sensordaten werden auf plausible Wertebereiche geprüft (z.\,B. max. Beschleunigung $< 16g$).
