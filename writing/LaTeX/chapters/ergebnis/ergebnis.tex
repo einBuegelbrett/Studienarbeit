@@ -44,8 +44,6 @@ Insgesamt zeigt die Matrix jedoch ein robustes Klassifikationsverhalten, insbeso
 	\label{fig:feature_importances}
 \end{figure}
 
-Die in Abbildung  dargestellten Feature Importances geben Aufschluss darüber, welche Eingabegrößen für das Modell am bedeutendsten waren, um zwischen den Bewegungsarten 
-
 Die in Abbildung \ref{fig:feature_importances} dargestellten Feature Importances zeigen, welche Eingabegrößen für das Modell am wichtigsten waren, um zwischen den Bewegungsarten "Gehen\dq, "Laufen\dq\, und "Rennen\dq\, zu unterscheiden. Die Wichtigkeit wurde dabei durch das trainierte Random-Forest-Modell anhand der Beitragshäufigkeit zur Reduktion der Gini-Impurity bestimmt.
 
 Es ist zu bemerken, dass die Standardabweichung der Beschleunigung in x-Richtung (\texttt{std\_acc\_x}) den mit Abstand größten Einfluss auf die Klassifikation hatte, gefolgt vom Maximalwert (\texttt{max\_acc\_x}) und dem Minimalwert (\texttt{min\_acc\_x}) der Beschleunigung in x-Richtung. Aufgrund dieser Dominanz der Merkmale entlang der x-Achse, die in vielen Sensoranordnungen mit der Vorwärtsbewegung korrespondiert, lässt sich schließen, dass die Bewegungsdynamik in Längsrichtung besonders charakteristisch für die Unterscheidung der Bewegungsformen ist.
@@ -98,7 +96,7 @@ Der Boxplot zur Aktivität "Gehen\dq\, zeigt, dass die meisten Featurewerte eng 
 Der Boxplot für die Aktivität "Laufen\dq\, zeigt eine größere Variabilität der Feature-Werte als der Boxplot für die Aktivität "Gehen\dq. Die Werte sind über einen breiteren Bereich von etwa -6 bis 4 verteilt und konzentrieren sich um den Median. Es gibt zahlreiche Ausreißer, die auf eine höhere Dynamik und Variabilität der Bewegungen beim Laufen hindeuten. Diese größere Variabilität ist ein Indikator für die erhöhte Intensität und Komplexität der Bewegungen beim Laufen.
 
 \subsubsection{Rennen}
-Der Boxplot für die Aktivität „Rennen” zeigt die größte Variabilität der Feature-Werte unter den drei Aktivitäten. Die Werte sind über einen breiten Bereich von etwa -4 bis 3 verteilt und konzentrieren sich um den Median. Wie beim Laufen gibt es zahlreiche Ausreißer, die auf eine hohe Dynamik und Variabilität der Bewegungen beim Rennen hindeuten. Die Variabilität ist jedoch tendenziell etwas ausgeprägter als beim Laufen, was auf eine noch höhere Intensität und Komplexität der Bewegungen hindeutet.
+Der Boxplot für die Aktivität "Rennen" zeigt die größte Variabilität der Feature-Werte unter den drei Aktivitäten. Die Werte sind über einen breiten Bereich von etwa -4 bis 3 verteilt und konzentrieren sich um den Median. Wie beim Laufen gibt es zahlreiche Ausreißer, die auf eine hohe Dynamik und Variabilität der Bewegungen beim Rennen hindeuten. Die Variabilität ist jedoch tendenziell etwas ausgeprägter als beim Laufen, was auf eine noch höhere Intensität und Komplexität der Bewegungen hindeutet.
 
 \subsection{Fazit}
 Die Boxplots verdeutlichen, dass die Variabilität der Feature-Werte beim Übergang vom Gehen über das Laufen bis hin zum Rennen zunimmt. Gehen ist durch eine geringe Variabilität und stabile Bewegungen gekennzeichnet, Laufen und Rennen hingegen durch eine höhere Variabilität und dynamischere Bewegungen. Diese Unterschiede in der Variabilität sowie die zentralen Tendenzen der Daten sind wichtige Indikatoren für die Intensität und Komplexität der Bewegungen während der verschiedenen Aktivitäten.

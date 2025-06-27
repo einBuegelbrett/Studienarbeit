@@ -1,8 +1,8 @@
 \chapter{Prototyp-Erstellung}
 \label{proto}
-Auf Grundlage der in Kapitel \ref{schweirigkeiten} ermittelten technischen Herausforderungen wurde ein funktionaler, tragbarer Prototyp entwickelt, der sowohl Mobilität als auch Datenqualität vereint. Das Ziel bestand darin, die im vorherigen Kapitel identifizierten Probleme durch ein eng abgestimmtes Konzept aus Hardware- und Softwarekomponenten zu lösen. Dabei spielten theoretische Überlegungen, etwa zur Datenübertragungsstabilität oder Fehlervorhersage, eine ebenso wichtige Rolle wie die konkrete technische Umsetzung.
+Auf Grundlage der in Kapitel \ref{schwierigkeiten} ermittelten technischen Herausforderungen wurde ein funktionaler, tragbarer Prototyp entwickelt, der sowohl Mobilität als auch Datenqualität vereint. Das Ziel bestand darin, die im vorherigen Kapitel identifizierten Probleme durch ein eng abgestimmtes Konzept aus Hardware- und Softwarekomponenten zu lösen. Dabei spielten theoretische Überlegungen, etwa zur Datenübertragungsstabilität oder Fehlervorhersage, eine ebenso wichtige Rolle wie die konkrete technische Umsetzung.
 
-Der Fokus lag auf der Entwicklung eines Systems, das einerseits höchste Datengenauigkeit liefert und andererseits durch drahtlose Anbindung flexibel einsetzbar ist. Diese Anforderungen wurden in Kapitel \ref{schweirigkeiten} diskutiert; insbesondere erhöhte BLE-Stabilität und Strategien gegen Datenverluste waren entscheidend. Das folgende Kapitel beschreibt schrittweise den Aufbau des Prototyps, die Datenerhebung und den Gewichtseinfluss, und gibt einen Ausblick auf erfolgreich bewältigte Herausforderungen.
+Der Fokus lag auf der Entwicklung eines Systems, das einerseits höchste Datengenauigkeit liefert und andererseits durch drahtlose Anbindung flexibel einsetzbar ist. Diese Anforderungen wurden in Kapitel \ref{schwierigkeiten} diskutiert; insbesondere erhöhte BLE-Stabilität und Strategien gegen Datenverluste waren entscheidend. Das folgende Kapitel beschreibt schrittweise den Aufbau des Prototyps, die Datenerhebung und den Gewichtseinfluss, und gibt einen Ausblick auf erfolgreich bewältigte Herausforderungen.
 
 \section{Optimierung der Abtastrate}
 \label{samplingrateAbs}
@@ -11,7 +11,7 @@ Eine zentrale Herausforderung bestand darin, eine geeignete Samplingrate zu wäh
 Neben den technischen Faktoren musste aber auch die Belastung der Testpersonen berücksichtigt werden. Gerade bei anstrengenderen Aktivitäten wie Rennen oder schnellem Gehen lässt sich nicht jede Erhebungsdauer problemlos durchhalten. In der Pilotenphase zeigte sich, dass längere Messzeiten, insbesondere über 90 Sekunden, häufig zu Ermüdung und Aktivitätswechseln führten, etwa dem Übergang von Rennen zu Gehen. Solche Übergänge verzerren die Klassifizierbarkeit der Daten erheblich.
 
 Um diese unterschiedlichen Anforderungen zu adressieren, wurde eine systematische Testreihe durchgeführt. Dabei wurden verschiedene Samplingraten und Erhebungszeiträume kombiniert und hinsichtlich Stabilität, Datenvollständigkeit und Praxistauglichkeit bewertet.
-Typischerweise genügen Samplingraten zwischen 20Hz und 100Hz, je nach Bewegungskomplexität. Für einfache Aktivitätserkennung zeigen Studien, dass auch 2Hz bis 10Hz brauchbare Ergebnisse liefern können, sofern geeignete Zeitfenster (1–5s) verwendet \cite{jsss-13-187-2024}
+Typischerweise genügen Samplingraten zwischen 20Hz und 100Hz, je nach Bewegungskomplexität. Für einfache Aktivitätserkennung zeigen Studien, dass auch 2Hz bis 10Hz brauchbare Ergebnisse liefern können, sofern geeignete Zeitfenster (1–5s) verwendet \cite{jsss-13-187-2024}.
 
 \begin{table}[H]
 	\centering
@@ -103,11 +103,11 @@ Die Sensorwerte (Beschleunigung, Gyroskop, Magnetfeld) werden alle 500 Milliseku
 	sendSensorData(imuData);
 	\end{lstlisting}
 
-Neben der eigentlichen Datenerfassung werden auch Sonderereignisse geloggt. Eine dieser Sondermeldungen ist die Paketnummer (vgl. Listing.~\ref{fig:sensorvalues}) zu sehen, diese hilft bei der Identifizierung von fehlenden Paketen, wie wenn die Pakete im Log erst bei Sieben Starten oder früher enden. Weitere „Systemmeldungen“ werden über dieselbe BLE-Charakteristik übertragen wie normale Sensorwerte, jedoch in speziell markiertem Format (z.\,B. \texttt{ENDZEIT} oder \texttt{SENSORFEHLER}) und als Seperate Nachricht gesendet, im Gegensatz zu den Paketnummern, welche gesendet werden mit den Sensordaten.
+Neben der eigentlichen Datenerfassung werden auch Sonderereignisse geloggt. Eine dieser Sondermeldungen ist die Paketnummer (vgl. Listing.~\ref{fig:sensorvalues}) zu sehen, diese hilft bei der Identifizierung von fehlenden Paketen, wie wenn die Pakete im Log erst bei Sieben Starten oder früher enden. Weitere "Systemmeldungen" werden über dieselbe BLE-Charakteristik übertragen wie normale Sensorwerte, jedoch in speziell markiertem Format (z.\,B. \texttt{ENDZEIT} oder \texttt{SENSORFEHLER}) und als Seperate Nachricht gesendet, im Gegensatz zu den Paketnummern, welche gesendet werden mit den Sensordaten.
 
 \subsection{Formatkontrolle}
 
-Während der Entwicklung zeigte sich, dass nicht nur die Sensorwerte an sich kritisch sind, sondern auch deren Formatierung. Bereits bei kleinsten Abweichungen – z.\,B. durch einen „Ausreißer“ mit besonders vielen Dezimalstellen – konnte es zu BLE-Übertragungsfehlern kommen. Um diese potenziellen Fehlerquellen frühzeitig zu erkennen, wurden Sicherheitsmechanismen integriert:
+Während der Entwicklung zeigte sich, dass nicht nur die Sensorwerte an sich kritisch sind, sondern auch deren Formatierung. Bereits bei kleinsten Abweichungen – z.\,B. durch einen "Ausreißer" mit besonders vielen Dezimalstellen – konnte es zu BLE-Übertragungsfehlern kommen. Um diese potenziellen Fehlerquellen frühzeitig zu erkennen, wurden Sicherheitsmechanismen integriert:
 
 \begin{itemize}
 	\item Alle Sensordaten werden auf plausible Wertebereiche geprüft (z.\,B. max. Beschleunigung $< 16g$).
@@ -185,7 +185,7 @@ Konkret wurde der Container, in dem der BLE-Empfänger läuft, im \texttt{privil
 	- /var/run/dbus:/var/run/dbus
 \end{lstlisting}
 
-Diese Konfiguration ist notwendig, da Bibliotheken wie \texttt{bleak} auf das Host-Bluetooth-Interface und den D-Bus zugreifen müssen, um BLE-Verbindungen aufzubauen und aufrechtzuerhalten. Ohne die Weiterleitung dieser Ressourcen sind BLE-Operationen im Container nicht funktionsfähig. Die manuelle Weitergabe ausgewählter Ressourcen ist zudem sicherer als ein pauschaler \texttt{--net=host}-Modus und entspricht den Empfehlungen für containerisierten Zugriff auf Host-Hardware \cite{huffert2021bluetoothdocker, dockerbluetoothaccess}
+Diese Konfiguration ist notwendig, da Bibliotheken wie \texttt{bleak} auf das Host-Bluetooth-Interface und den D-Bus zugreifen müssen, um BLE-Verbindungen aufzubauen und aufrechtzuerhalten. Ohne die Weiterleitung dieser Ressourcen sind BLE-Operationen im Container nicht funktionsfähig. Die manuelle Weitergabe ausgewählter Ressourcen ist zudem sicherer als ein pauschaler \texttt{--net=host}-Modus und entspricht den Empfehlungen für containerisierten Zugriff auf Host-Hardware \cite{huffert2021bluetoothdocker, dockerbluetoothaccess}.
 
 \subsection{Ablauf der Containerinitialisierung}
 

@@ -94,16 +94,16 @@ Für die Klassifizierung der Bewegungsdaten wurden verschiedene Machine Learning
 Im Folgenden werden die meistgenutzten überwachten Machine-Learning-Modelle betrachtet und ihre jeweiligen Vor- und Nachteile analysiert, um das passende Modell zu finden. Ein wichtiger Aspekt bei der Bewertung dieser Modelle ist das Problem des Overfittings, das auftritt, wenn ein Modell zu stark an die Trainingsdaten angepasst wird und dabei auch das Rauschen und die Besonderheiten der Trainingsdaten lernt, anstatt allgemeingültige Muster zu erkennen. Dies führt dazu, dass das Modell auf den Trainingsdaten eine hohe Genauigkeit aufweist, auf neuen, unbekannten Daten jedoch schlecht generalisiert \cite{dietterich1995overfitting}.
 
 \subsubsection{Decision Trees}
-Decision Trees sind einfache und interpretierbare Modelle, die gut für Klassifizierungsaufgaben geeignet sind. Sie können jedoch zu Overfitting neigen und sind möglicherweise nicht die beste Wahl für komplexe Datensätze. \cite{kingsford2008decision}
+Decision Trees sind einfache und interpretierbare Modelle, die gut für Klassifizierungsaufgaben geeignet sind. Sie können jedoch zu Overfitting neigen und sind möglicherweise nicht die beste Wahl für komplexe Datensätze \cite{kingsford2008decision}.
 
 \subsubsection{Random Forest}
-Random Forest ist ein Ensemble-Lernverfahren, das mehrere Decision Trees kombiniert, um die Genauigkeit zu erhöhen und Overfitting zu reduzieren. Es ist robust und funktioniert gut mit großen Datensätzen. \cite{chen2012random}
+Random Forest ist ein Ensemble-Lernverfahren, das mehrere Decision Trees kombiniert, um die Genauigkeit zu erhöhen und Overfitting zu reduzieren. Es ist robust und funktioniert gut mit großen Datensätzen \cite{chen2012random}.
 
 \subsubsection{\ac{SVM}}
-SVMs sind leistungsstarke Modelle für die Klassifizierung, insbesondere für hochdimensionale Daten. Sie können jedoch rechenintensiv sein und sind möglicherweise nicht ideal für Echtzeitanwendungen. \cite{mammone2009support}
+SVMs sind leistungsstarke Modelle für die Klassifizierung, insbesondere für hochdimensionale Daten. Sie können jedoch rechenintensiv sein und sind möglicherweise nicht ideal für Echtzeitanwendungen \cite{mammone2009support}.
 
 \subsubsection{Neural Networks}
-Neurale Netze, insbesondere \ac{CNNs} und \ac{RNNs}, sind in der Lage, komplexe Muster in den Daten zu erkennen. Sie erfordern jedoch eine große Menge an Trainingsdaten und Rechenleistung. \cite{choi2020introduction}
+Neurale Netze, insbesondere \ac{CNNs} und \ac{RNNs}, sind in der Lage, komplexe Muster in den Daten zu erkennen. Sie erfordern jedoch eine große Menge an Trainingsdaten und Rechenleistung \cite{choi2020introduction}.
 
 \subsection{Gewähltes Modell}
 In Tabelle 3 ist noch einmal zu sehen, wie die verschiedenen Modelle hinsichtlich Genauigkeit, Trainingszeit und Echtzeitfähigkeit abschneiden.
@@ -142,7 +142,7 @@ Am besten zu diesen Kriterien passt das Random-Forest-Modell, da es eine gute Ba
 In diesem Abschnitt werden die Implementierung und das Ergebnis des Lernverfahrens präsentiert.
 
 \subsection{Implementierung}
-Das Random-Forest-Modell wurde mit der Python-Bibliothek „scikit-learn” implementiert. Die Trainingsdaten werden in Daten, mit denen das Modell trainiert wird, und Daten, mit denen das Modell anschließend getestet wird, um die Leistung des Modells zu evaluieren, unterteilt. Dies erfolgt mit dem folgenden Code:
+Das Random-Forest-Modell wurde mit der Python-Bibliothek "scikit-learn" implementiert. Die Trainingsdaten werden in Daten, mit denen das Modell trainiert wird, und Daten, mit denen das Modell anschließend getestet wird, um die Leistung des Modells zu evaluieren, unterteilt. Dies erfolgt mit dem folgenden Code:
 
 \begin{lstlisting}[language=Python]
 	X_train, X_test, y_train, y_test = train_test_split(X, y_encoded, test_size=0.2, random_state=42)
@@ -163,7 +163,7 @@ Nachdem das Modell trainiert wurde, kann ein Klassifikationsbericht erstellt wer
 \end{itemize}
 
 \subsection{Diskussion der Ergebnisse}
-Die in Abbildung ref{tab:klassifikationsreport} dargestellten Ergebnisse des Klassifikationsreports zeigen, dass das Modell besonders gut dazu in der Lage ist, die Aktivitäten "Gehen\dq\, und "Laufen\dq\, zu klassifizieren. Die Aktivität "Rennen\dq\, wurde ebenfalls gut erkannt, allerdings etwas schlechter als die Aktivitäten "Gehen\dq\, und "Laufen\dq. Die hohe Genauigkeit (accuracy) von 0,95 sowie die hohen Werte für den makro- und gewichteten Durchschnitt (Macro avg und Weighted avg) von jeweils 0,95 bzw. 0,94 zeigen, dass das Modell insgesamt eine sehr gute Leistung erbringt. Für zukünftige Arbeiten könnte man sich darauf konzentrieren, noch mehr Daten von verschiedenen Testpersonen zur Aktivität "Rennen\dq\, zu sammeln, um die Leistung des Modells zu verbessern. Unsere Datenmenge sollte jedoch ausreichen, um sagen zu können, dass es sich um gute Ergebnisse handelt, da „Rennen” wahrscheinlich als schnelles "Laufen\dq\, klassifiziert wird und somit schwer zu unterscheiden ist. 
+Die in Abbildung \ref{tab:klassifikationsreport} dargestellten Ergebnisse des Klassifikationsreports zeigen, dass das Modell besonders gut dazu in der Lage ist, die Aktivitäten "Gehen\dq\, und "Laufen\dq\, zu klassifizieren. Die Aktivität "Rennen\dq\, wurde ebenfalls gut erkannt, allerdings etwas schlechter als die Aktivitäten "Gehen\dq\, und "Laufen\dq. Die hohe Genauigkeit (accuracy) von 0,95 sowie die hohen Werte für den makro- und gewichteten Durchschnitt (Macro avg und Weighted avg) von jeweils 0,95 bzw. 0,94 zeigen, dass das Modell insgesamt eine sehr gute Leistung erbringt. Für zukünftige Arbeiten könnte man sich darauf konzentrieren, noch mehr Daten von verschiedenen Testpersonen zur Aktivität "Rennen\dq\, zu sammeln, um die Leistung des Modells zu verbessern. Unsere Datenmenge sollte jedoch ausreichen, um sagen zu können, dass es sich um gute Ergebnisse handelt, da "Rennen" wahrscheinlich als schnelles "Laufen\dq\, klassifiziert wird und somit schwer zu unterscheiden ist. 
 
 \bgroup
 \def\arraystretch{1.5}
